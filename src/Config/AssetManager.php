@@ -8,6 +8,10 @@ class AssetManager
     'assets/css/style.css'
   ];
 
+  private $sql = [
+    'assets/sql/ykschool.sql'
+  ];
+
   public function importCSS()
   {
     $allfiles = "";
@@ -16,5 +20,21 @@ class AssetManager
     }
 
     return $allfiles;
+  }
+
+  public function importSQL()
+  {
+    $sql_array = [];
+
+    foreach ($this->sql as $file) {
+      $sql_str = file_get_contents($file);
+      if ($sql_str === false) {
+        LogManager::error("Failed to read SQL file");
+        return;
+      }
+      array_push($sql_array, $sql_str);
+    }
+
+    return $sql_array;
   }
 }
