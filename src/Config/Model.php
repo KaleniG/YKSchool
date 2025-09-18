@@ -32,7 +32,7 @@ class Model
     }
   }
 
-  protected static function getConn()
+  public static function getConn()
   {
     if (!isset(self::$db_conn))
       self::initDB();
