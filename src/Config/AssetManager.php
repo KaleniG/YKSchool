@@ -9,8 +9,8 @@ class AssetManager
   ];
 
   private $sql = [
-    'assets/sql/ykschool.sql',
-    'assets/sql/add_admin.sql'
+    'assets/sql/ykschool.sql'
+    //'assets/sql/add_admin.sql'
   ];
 
   public function importCSS()

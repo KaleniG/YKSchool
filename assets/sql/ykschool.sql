@@ -54,6 +54,17 @@ CREATE TABLE IF NOT EXISTS courses (
         REFERENCES subjects (id) ON DELETE SET NULL
 );
 
+-- Subject-Teachers table
+CREATE TABLE IF NOT EXISTS subject_teachers (
+    id SERIAL NOT NULL PRIMARY KEY,
+    subject_id INT NOT NULL,
+    teacher_id INT NOT NULL,
+    CONSTRAINT fk_subject FOREIGN KEY (subject_id)
+        REFERENCES courses (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_teacher FOREIGN KEY (teacher_id)
+        REFERENCES teachers (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 -- Course-Teachers table
 CREATE TABLE IF NOT EXISTS course_teachers (
     id SERIAL NOT NULL PRIMARY KEY,

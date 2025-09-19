@@ -4,30 +4,30 @@ namespace App\Config;
 
 class Path
 {
-  private static $administrator = __DIR__ . "/../Interfaces/Administration/";
-  private static $common = __DIR__ . "/../Interfaces/Common/";
-  private static $teacher = __DIR__ . "/../Interfaces/Teacher/";
-  private static $student = __DIR__ . "/../Interfaces/Student/";
+  private static $config = __DIR__ . "/";
+  private static $views = __DIR__ . "/../Views/";
+  private static $controllers = __DIR__ . "/../Controllers/";
+  private static $models = __DIR__ . "/../Models/";
   private static $autoloader = __DIR__ . "/../../vendor/autoload.php";
 
-  public static function administrator($string)
+  public static function config($string)
   {
-    return Path::$administrator . $string;
+    return Path::$config . $string;
   }
 
-  public static function common($string)
+  public static function views($string)
   {
-    return Path::$common . $string;
+    return Path::$views . $string;
   }
 
-  public static function teacher($string)
+  public static function controllers($string)
   {
-    return Path::$teacher . $string;
+    return Path::$controllers . $string;
   }
 
-  public static function student($string)
+  public static function models($string)
   {
-    return Path::$student . $string;
+    return Path::$models . $string;
   }
 
   public static function autoloader()
