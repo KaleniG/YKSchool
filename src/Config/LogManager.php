@@ -36,4 +36,9 @@ class LogManager
     header("Location: runtime/");
     exit;
   }
+
+  public static function info($string)
+  {
+    self::getLogger()->info($string);
+  }
 }

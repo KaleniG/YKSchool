@@ -1,6 +1,7 @@
 <?php
 
 use App\Config\AssetManager;
+use App\Config\LogManager;
 use App\Config\Path;
 
 $assets = new AssetManager();
@@ -17,15 +18,16 @@ $assets = new AssetManager();
 
 <body>
   <header>
-    <form><button type="submit" name="page" value="home">Home</button>
-
+    <form method="post">
+      <button type="submit" name="page" value="home">Home</button>
       <?php
-      if ($this->page != 'home') {
-        include(Path::common("Views/Home.php"));
-      }
-
+      if (isset($this->user))
+        echo ("<button type='submit' name='logout' value='yes'>Logout</button>");
       ?>
 
+      <?php
+      $this->handleRendering();
+      ?>
 </body>
 
 </html>
