@@ -8,6 +8,7 @@ class Teacher
   public $surname = "";
   public $email = "";
   public $phone_number = "";
+  public $teaching_subjects = [];
 
   public function validate()
   {

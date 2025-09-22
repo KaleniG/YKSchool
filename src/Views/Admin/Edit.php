@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <form method="post">
+  <form method="post" id="main_form" action="">
     <button type="submit" name="logout">Logout</button>
     <br>
     <select name="edit_selection">
@@ -30,7 +30,20 @@
 
 
     switch ($this->edit_selection) {
-      case "teachers":
+      case "teachers": {
+          echo ("
+            <table border='2'>
+              <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>E-mail</th>
+                <th>Phone Number</th>
+                <th>Teaching Subjects</th>
+                <th></th>
+              </tr>
+            ");
+          break;
+        }
       case "admins": {
           echo ("
             <table border='2'>
@@ -68,14 +81,62 @@
             ");
           break;
         }
+      case "courses": {
+          echo ("
+            <table border='2'>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Subject</th>
+                <th>Teachers</th>
+                <th>Students</th>
+                <th></th>
+              </tr>
+            ");
+          break;
+        }
     }
 
-    
+
 
     foreach ($this->current_table[$this->edit_selection] as $row) {
 
       switch ($this->edit_selection) {
-        case "teachers":
+        case "teachers": {
+            $id = $row["id"];
+            $email = $row["email"];
+            $phone_number = $row["phone_number"];
+            $subjects_table = $this->current_table["subjects"];
+            $subject_teachers_table = $this->current_table["subject_teachers"];
+            echo ("
+              <tr>
+                <td>{$row['name']}</td>
+                <td>{$row['surname']}</td>
+                <td><input type='email' name='modified_table[{$id}][email]' value='{$email}'></td>
+                <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}'></td>
+                <td><select name='modified_table[{$id}][teaching_subjects][]' multiple>");
+
+            $teacher_subjects_array = [];
+            foreach ($subject_teachers_table as $subject_teachers_row) {
+              if ($subject_teachers_row["teacher_id"] == $id) {
+                $teacher_subjects_array = str_getcsv(trim($subject_teachers_row['subjects'], '{}'));
+              }
+            }
+
+            foreach ($subjects_table as $subject_row) {
+              $subject_name = $subject_row['subject'];
+              $subject_id = $subject_row['id'];
+              $selected = in_array($subject_name, $teacher_subjects_array) ? "selected" : "";
+              echo ("<option value='{$subject_id}' $selected>$subject_name</option>");
+            }
+
+
+            echo ("</select></td>
+              <td><button type='submit' name='operation' value='delete|{$id}'>Delete</button></td>
+            </tr>");
+            break;
+          }
         case "admins": {
             $id = $row["id"];
             $email = $row["email"];
@@ -121,6 +182,40 @@
             ");
             break;
           }
+        case "courses": {
+            $id = $row["id"];
+            $name = $row["name"];
+            $description = $row["description"];
+            $status = $row["status"];
+
+            $subjects_table = $this->current_table["subjects"];
+            echo ("
+              <tr>
+                <td><input type='text' name='modified_table[{$id}][name]' value='{$name}'></td>
+                <td><textarea name='modified_table[{$id}][description]'>$description</textarea></td>
+                <td>
+                  <select name='modified_table[{$id}][status]'>
+                    <option>Choose an option</option>
+                    <option value='Active' " . (($status == "Active") ? "selected" : "") . ">Active</option>
+                    <option value='Suspended' " . (($status == "Suspended") ? "selected" : "") . ">Suspended</option>
+                    <option value='UnderDevelopment' " . (($status == "UnderDevelopment") ? "selected" : "") . ">Under Development</option>
+                  </select>
+                </td>
+                <td>
+                  <select name='modified_table[{$id}][subject]'>
+                    <option>Choose an option</option>
+                    <option value='Active' " . (($status == "Active") ? "selected" : "") . ">Active</option>
+                    <option value='Suspended' " . (($status == "Suspended") ? "selected" : "") . ">Suspended</option>
+                    <option value='UnderDevelopment' " . (($status == "UnderDevelopment") ? "selected" : "") . ">Under Development</option>
+                  </select>
+                </td>
+                <td>STUDENTS</td>
+                <td>TEACHERS</td>
+                <td><button type='submit' name='operation' value='delete|{$id}'>Delete</button></td>
+              </tr>
+            ");
+            break;
+          }
       }
     }
 
@@ -143,15 +238,22 @@
           break;
         }
       case "teachers": {
+          $subjects_table = $this->current_table["subjects"];
           echo ("
             <tr>
               <td><input type='text' name='new_teacher[name]'></td>
               <td><input type='text' name='new_teacher[surname]'></td>
               <td><input type='email' name='new_teacher[email]'></td>
               <td><input type='text' name='new_teacher[phone_number]'></td>
+              <td><select name='new_teacher[teaching_subjects][]' multiple>");
+          foreach ($subjects_table as $subject_row) {
+            $subject_name = $subject_row["subject"];
+            $subject_id = $subject_row["id"];
+            echo ("<option value='$subject_id'>$subject_name</option>");
+          }
+          echo ("</select></td>
               <td><button type='submit' name='operation' value='add'>Add</button></td>
-            </tr>
-          ");
+            </tr>");
           break;
         }
       case "students": {
@@ -174,6 +276,51 @@
               <td><button type='submit' name='operation' value='add'>Add</button></td>
             </tr>
           ");
+          break;
+        }
+      case "courses": {
+          $subjects_table = $this->current_table["subjects"];
+          $teacher_subjects_table = $this->current_table["subject_teachers"];
+          $students_table = $this->current_table["students"];
+          $teachers_table = $this->current_table["teachers"];
+          echo ("
+              <tr>
+                <td><input type='text' name='new_course[name]'></td>
+                <td><textarea name='new_course[description]'></textarea></td>
+                <td>
+                  <select name='new_course[status]'>
+                    <option>Choose an option</option>
+                    <option value='Active'>Active</option>
+                    <option value='Suspended'>Suspended</option>
+                    <option value='UnderDevelopment'>Under Development</option>
+                  </select>
+                </td>
+                <td><select name='new_course[subject]'>");
+          foreach ($subjects_table as $subject_row) {
+            $subject_name = $subject_row["subject"];
+            $subject_id = $subject_row["id"];
+            echo ("<option value='$subject_id'>$subject_name</option>");
+          }
+          echo ("</select><button type='submit' name='operation' value='select_subject'>Add</button></td>
+          <td><select name='new_course[teachers][]' multiple>");
+
+          foreach ($teachers_table as $teacher_row) {
+            $teacher_id = $teacher_row["id"];
+            $teacher_name = $teacher_row["name"];
+            $teacher_surname = $teacher_row["surname"];
+            echo ("<option value='$teacher_id'>$teacher_name $teacher_surname</option>");
+          }
+          echo ("</td><td><select name='new_course[students][]' multiple>");
+          foreach ($students_table as $student_row) {
+            $student_id = $student_row["id"];
+            $student_name = $student_row["name"];
+            $student_surname = $student_row["surname"];
+            if ($student_row["tuition_enabled"] == "t")
+              echo ("<option value='$student_id'>$student_name $student_surname</option>");
+          }
+          echo ("</select></td>
+                <td><button type='submit' name='operation' value='add'>Add</button></td>
+              </tr>");
           break;
         }
     }

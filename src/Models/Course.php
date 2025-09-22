@@ -5,12 +5,14 @@ namespace App\Models;
 class Course
 {
   public $name = "";
-  public $surname = "";
-  public $email = "";
-  public $phone_number = "";
+  public $description = "";
+  public $status = "";
+  public $subject = "";
+  public $teachers = [];
+  public $students = [];
 
   public function validate()
   {
-    return !empty($this->name) && !empty($this->surname);
+    return !empty($this->name) && !empty($this->status) && !empty($this->subject);
   }
 }

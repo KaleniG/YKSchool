@@ -12,6 +12,6 @@ class Student
 
   public function validate()
   {
-    return !empty($this->name) && !empty($this->surname) && isset($this->tuition_enabled);
+    return !empty($this->name) && !empty($this->surname);
   }
 }

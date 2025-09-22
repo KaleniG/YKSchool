@@ -6,6 +6,8 @@ use App\Config\LogManager;
 use App\Config\Path;
 use App\Models\Admin;
 use App\Models\AdminManager;
+use App\Models\Course;
+use App\Models\CourseManager;
 use App\Models\Student;
 use App\Models\StudentManager;
 use App\Models\Subject;
@@ -120,6 +122,9 @@ class MainController
                 case "teachers": {
                     $manager = new TeacherManager();
                     $this->current_table["teachers"] = $manager->getAllTeachers();
+                    $this->current_table["subject_teachers"] = $manager->getAllTeacherSubjects();
+                    $manager = new SubjectManager();
+                    $this->current_table["subjects"] = $manager->getAllSubjects();
                     $_SESSION["current_table"] = $this->current_table;
                     if (isset($_POST["operation"])) {
                       $manager = new TeacherManager();
@@ -136,11 +141,13 @@ class MainController
                         $teacher->surname = $_POST["new_teacher"]["surname"] ?? "";
                         $teacher->email = $_POST["new_teacher"]["email"] ?? "";
                         $teacher->phone_number = $_POST["new_teacher"]["phone_number"] ?? "";
+                        $teacher->teaching_subjects = $_POST["new_teacher"]["teaching_subjects"] ?? "";
                         if ($teacher->validate())
                           $manager->add($teacher);
                       }
 
                       $this->current_table["teachers"] = $manager->getAllTeachers();
+                      $this->current_table["subject_teachers"] = $manager->getAllTeacherSubjects();
                       $_SESSION["current_table"] = $this->current_table;
                     }
                     break;
@@ -202,6 +209,51 @@ class MainController
                       }
 
                       $this->current_table["subjects"] = $manager->getAllSubjects();
+                      $_SESSION["current_table"] = $this->current_table;
+                    }
+                    break;
+                  }
+
+                  // COURSE EDITING LOGIC
+                case "courses": {
+                    $manager = new CourseManager();
+                    $this->current_table["courses"] = $manager->getAllCourses();
+                    $this->current_table["course_teachers"] = $manager->getAllCourseTeachers();
+                    $this->current_table["course_students"] = $manager->getAllCourseStudents();
+                    $manager = new StudentManager();
+                    $this->current_table["students"] = $manager->getAllStudents();
+                    $manager = new TeacherManager();
+                    $this->current_table["teacher_subjects"] = $manager->getAllTeacherSubjects();
+                    $manager = new SubjectManager();
+                    $this->current_table["subjects"] = $manager->getAllSubjects();
+                    $_SESSION["current_table"] = $this->current_table;
+
+                    if (isset($_POST["operation"])) {
+                      $manager = new CourseManager();
+
+                      if ($_POST["operation"] == "save_changes") {
+                        $modified_table = $_POST["modified_table"] ?? [];
+                        $manager->updateChanges($modified_table);
+                      } else if (str_contains($_POST["operation"], "delete")) {
+                        $array = explode("|", $_POST["operation"]);
+                        $manager->delete($array[1]);
+                      } else if ($_POST["operation"] == "add") {
+                        $course = new Course();
+                        $course->name = $_POST["new_course"]["name"] ?? "";
+                        if ($course->validate())
+                          $manager->add($course);
+                      } else if ($_POST["operation"] == "select_subject") {
+                        $manager = new TeacherManager();
+                        if (isset($_POST["new_course"]["subject"]) && !empty($_POST["new_course"]["subject"])) {
+                          $this->current_table["teachers"] = $manager->getAllSubjectTeachers($_POST["new_course"]["subject"]);
+                          $_SESSION["current_table"] = $this->current_table;
+                        }
+                      }
+
+                      $manager = new CourseManager();
+                      $this->current_table["courses"] = $manager->getAllCourses();
+                      $this->current_table["course_teachers"] = $manager->getAllCourseTeachers();
+                      $this->current_table["course_students"] = $manager->getAllCourseStudents();
                       $_SESSION["current_table"] = $this->current_table;
                     }
                     break;
