@@ -49,9 +49,9 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     echo ("<select name='modified_table[$id][teachers][]' multiple>");
 
     foreach ($this->temp["selected_subject"][$id] as $teacher_row) {
-      $teacher_id = $teacher_row["id"];
-      $teacher_name = $teacher_row["name"];
-      $teacher_surname = $teacher_row["surname"];
+      $teacher_id = $teacher_row["teacher_id"];
+      $teacher_name = $teacher_row["teacher_name"];
+      $teacher_surname = $teacher_row["teacher_surname"];
       $selected = "";
 
       foreach ($course_teachers_table as $course_teachers_row)
@@ -111,13 +111,14 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
       echo ("</select></td><td>");
 
       $teachers_table = $this->current_table["teachers"];
+      LogManager::info(var_export($teachers_table, true));
       if (!empty($teachers_table)) {
         echo ("<select name='new_course[teachers][]' multiple>");
 
         foreach ($teachers_table as $teacher_row) {
-          $teacher_id = $teacher_row["id"];
-          $teacher_name = $teacher_row["name"];
-          $teacher_surname = $teacher_row["surname"];
+          $teacher_id = $teacher_row["teacher_id"];
+          $teacher_name = $teacher_row["teacher_name"];
+          $teacher_surname = $teacher_row["teacher_surname"];
           echo ("<option value='$teacher_id'>$teacher_name $teacher_surname</option>");
         }
 

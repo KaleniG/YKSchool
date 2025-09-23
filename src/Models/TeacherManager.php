@@ -18,6 +18,50 @@ class TeacherManager extends Model
     return $count > 0;
   }
 
+  public function getTeacher($name, $surname)
+  {
+    pg_prepare(
+      Model::getConn(),
+      "get_{$name}_{$surname}_teacher",
+      "SELECT 
+        t.id AS teacher_id,
+        t.email AS teacher_email, 
+        t.phone_number AS teacher_phone_number, 
+        ARRAY_AGG(s.subject) AS teacher_subjects
+     FROM teachers t
+     LEFT JOIN subject_teachers st ON t.id = st.teacher_id
+     LEFT JOIN subjects s ON st.subject_id = s.id
+     WHERE t.name = $1 AND t.surname = $2
+     GROUP BY t.id, t.email, t.phone_number"
+    );
+
+    $result = pg_execute(Model::getConn(), "get_{$name}_{$surname}_teacher", [$name, $surname]);
+    if (!$result) {
+      LogManager::error("Query failed: " . Model::getError());
+    }
+
+    $row = pg_fetch_assoc($result);
+
+    if (!$row) {
+      return null; // teacher not found
+    }
+
+    // teacher_subjects is a Postgres array literal or NULL
+    $teacher_subjects_string = $row['teacher_subjects'] ?? '{}';
+
+    // convert to PHP array:
+    $teacher_subjects_array = str_getcsv(trim($teacher_subjects_string, '{}'));
+
+    return [
+      "id" => $row['teacher_id'],
+      "name" => $name,
+      "surname" => $surname,
+      "email" => $row['teacher_email'],
+      "phone_number" => $row['teacher_phone_number'],
+      "teaching_subjects" => $teacher_subjects_array
+    ];
+  }
+
   public function getAllTeachers()
   {
     $query = "SELECT * FROM teachers";
@@ -33,15 +77,22 @@ class TeacherManager extends Model
     pg_prepare(
       Model::getConn(),
       "get_subject_teachers",
-      "SELECT *
-      FROM teachers t
-      LEFT JOIN subject_teachers st ON t.id = st.teacher_id
-      WHERE st.subject_id = $1"
+      "SELECT 
+            t.id AS teacher_id, 
+            t.name AS teacher_name, 
+            t.surname AS teacher_surname
+         FROM teachers t
+         LEFT JOIN subject_teachers st 
+            ON t.id = st.teacher_id
+         WHERE st.subject_id = $1"
     );
 
-    $result = pg_execute(Model::getConn(), "get_subject_teachers", array($subject_id));
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
-    return pg_fetch_all($result);
+    $result = pg_execute(Model::getConn(), "get_subject_teachers", [$subject_id]);
+    if (!$result) {
+      LogManager::error("Query failed: " . Model::getError());
+    }
+
+    return pg_fetch_all($result) ?: [];
   }
 
   public function getAllTeacherSubjects()
@@ -49,13 +100,8 @@ class TeacherManager extends Model
     $query = "SELECT t.id AS teacher_id, STRING_AGG(s.subject, ',') AS subjects
     FROM teachers t
     LEFT JOIN subject_teachers st ON t.id = st.teacher_id
-    LEFT JOIN subjects s ON st.subject_id = s.id";
-
-    if (isset($subject) && !empty($subject)) {
-      $query .= " WHERE s.id = " . $subject;
-    }
-
-    $query .= " GROUP BY t.id, t.name, t.surname";
+    LEFT JOIN subjects s ON st.subject_id = s.id
+    GROUP BY t.id, t.name, t.surname";
 
     $result = pg_query(Model::getConn(), $query);
 

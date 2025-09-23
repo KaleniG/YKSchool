@@ -8,6 +8,7 @@
 </head>
 
 <body>
+  <h1>ADMINISTRATOR</h1>
   <form method="post">
     <button type="submit" name="page" value="Home.php">Home</button>
     <br>

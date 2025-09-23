@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Administrator</title>
   <script>
     function selected_subject_submit() {
       document.getElementById('main_form').submit();
@@ -16,7 +16,7 @@
   <form method="post" id="main_form" action="">
     <button type="submit" name="logout">Logout</button>
     <br>
-    <select name="edit_selection">
+    <select name="edit_selection" onchange='selected_subject_submit();'>
       <option>Choose an option</option>
       <option value="admins" <?= ($this->edit_selection == "admins") ? "selected" : ""; ?>>Administrators</option>
       <option value="teachers" <?= ($this->edit_selection == "teachers") ? "selected" : ""; ?>>Teachers</option>
@@ -24,7 +24,6 @@
       <option value="subjects" <?= ($this->edit_selection == "subjects") ? "selected" : ""; ?>>Subjects</option>
       <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>
     </select>
-    <button type="submit" name="submit_edit_selection">Select</button>
     <br>
     <?php
 

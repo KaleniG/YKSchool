@@ -66,7 +66,7 @@ class MainController
           break;
         case "Teacher/Login.php":
         case "Teacher/Edit.php":
-          $this->handleAdminClient();
+          $this->handleTeacherClient();
           break;
       }
 
@@ -101,10 +101,8 @@ class MainController
           }
 
           // PRESSED SELECT ON ADMINISTRATOR EDITING CHOICES
-          if (isset($_POST["submit_edit_selection"])) {
-            $this->edit_selection = $_POST["edit_selection"] ?? null;
-            $_SESSION["edit_selection"] = $this->edit_selection;
-          }
+          $this->edit_selection = $_POST["edit_selection"] ?? null;
+          $_SESSION["edit_selection"] = $this->edit_selection;
 
           // HANDLING ALL EDITING LOGIC
           if (isset($this->edit_selection)) {
@@ -297,6 +295,9 @@ class MainController
         $course->subject = $_POST["new_course"]["subject"] ?? "";
         $course->teachers = $_POST["new_course"]["teachers"] ?? "";
         $course->students = $_POST["new_course"]["students"] ?? "";
+
+        LogManager::info(var_export($course, true));
+
         if ($course->validate())
           $manager->add($course);
       }
@@ -331,7 +332,7 @@ class MainController
           if ($manager->validate($teacher)) {
             $this->user = serialize($teacher);
             $_SESSION["user"] = $this->user;
-            $this->page = "Admin/Edit.php";
+            $this->page = "Teacher/Edit.php";
             $_SESSION["page"] = $this->page;
           }
           break;
@@ -343,20 +344,18 @@ class MainController
             break;
           }
 
-          // PRESSED SELECT ON ADMINISTRATOR EDITING CHOICES
-          if (isset($_POST["submit_edit_selection"])) {
-            $this->edit_selection = $_POST["edit_selection"] ?? null;
-            $_SESSION["edit_selection"] = $this->edit_selection;
-          }
+          // PRESSED SELECT ON TEACHER EDITING CHOICES
+          $this->edit_selection = $_POST["edit_selection"] ?? null;
+          $_SESSION["edit_selection"] = $this->edit_selection;
 
-          // HANDLING ALL EDITING LOGIC
+          // HANDLING ALL EDITING/VIEWING LOGIC
           if (isset($this->edit_selection)) {
             switch ($this->edit_selection) {
               case "myaccount":
-                $this->handleAdminAdmins();
+                $this->handleTeacherAccount();
                 break;
               case "courses":
-                $this->handleAdminTeachers();
+                $this->handleTeacherCourses();
                 break;
             }
           }
@@ -364,4 +363,57 @@ class MainController
         }
     }
   }
+
+  public function handleTeacherAccount()
+  {
+    $manager = new TeacherManager();
+    $this->current_table["teachers"] = $manager->getTeacher($this->user->name, $this->user->surname);
+    LogManager::info(var_export($this->current_table["teachers"], true));
+    $manager = new SubjectManager();
+    $this->current_table["subjects"] = $manager->getAllSubjects();
+
+    $_SESSION["current_table"] = $this->current_table;
+
+    if (isset($_POST["operation"])) {
+      $manager = new TeacherManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      }
+
+      $this->current_table["teachers"] = $manager->getTeacher($this->user->name, $this->user->surname);
+      $_SESSION["current_table"] = $this->current_table;
+    }
+  }
+
+  public function handleTeacherCourses()
+  {
+    $manager = new TeacherManager();
+    $this->current_table["teachers"] = $manager->getTeacher($this->user->name, $this->user->surname);
+    //LogManager::info(var_export($this->current_table["teachers"]["id"], true));
+
+    $manager = new CourseManager();
+    $this->current_table["course_teachers"] = $manager->getCoursesOfTeacher($this->current_table["teachers"]["id"]);
+
+    $_SESSION["current_table"] = $this->current_table;
+
+    if (isset($_POST["operation"])) {
+      $manager = new TeacherManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      }
+    }
+
+    $manager = new TeacherManager();
+    $this->current_table["teachers"] = $manager->getTeacher($this->user->name, $this->user->surname);
+
+    $manager = new CourseManager();
+    $this->current_table["course_teachers"] = $manager->getCoursesOfTeacher($this->current_table["teachers"]["id"]);
+    $_SESSION["current_table"] = $this->current_table;
+  }
+
+  public function handleTeacherStudents() {}
 }
