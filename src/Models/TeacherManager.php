@@ -66,8 +66,6 @@ class TeacherManager extends Model
 
   public function updateChanges($changes)
   {
-    $teaching_subjects = $this->getAllTeacherSubjects("");
-
     pg_prepare(
       Model::getConn(),
       "teachers_update",
@@ -79,6 +77,7 @@ class TeacherManager extends Model
       $result = pg_execute(Model::getConn(), "teachers_update", array($email, $phone, $id));
       if (!$result) LogManager::error("Query failed: " . Model::getError());
 
+      // Teacher subjects handling
       pg_prepare(
         Model::getConn(),
         "teacher_subjects_query",
@@ -87,6 +86,9 @@ class TeacherManager extends Model
       $result = pg_execute(Model::getConn(), "teacher_subjects_query", array($id));
       if (!$result) LogManager::error("Query failed: " . Model::getError());
       $subjects = pg_fetch_all($result);
+
+      if (!isset($fields["teaching_subjects"]))
+        $fields["teaching_subjects"] = [];
 
       foreach ($subjects as $subject) {
         if (($where = array_search($subject["subject_id"], $fields["teaching_subjects"])) !== false) {

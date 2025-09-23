@@ -32,7 +32,8 @@ class LogManager
   {
     $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
     $callerFile = $backtrace[1]['file'] ?? 'unknown file';
-    self::getLogger()->error("[$callerFile] " . $string);
+    $callerLine = $backtrace[1]['line'] ?? 'unknown file';
+    self::getLogger()->error("[$callerFile] [$callerLine] " . $string);
     header("Location: runtime/");
     exit;
   }

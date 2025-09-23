@@ -31,6 +31,7 @@ class MainController
     "course_students" => [],
     "" => []
   ];
+  private $temp = [];
 
   public function handleRequests()
   {
@@ -54,217 +55,19 @@ class MainController
       "course_students" => [],
       "" => []
     ];
+    $this->temp = $_SESSION["temp"] ?? [];
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       switch ($this->page) {
-        case "Admin/Login.php": {
-            $manager = new AdminManager();
-            $admin = new Admin();
-            $admin->name = $_POST["name"] ?? "";
-            $admin->surname = $_POST["surname"] ?? "";
-            if ($manager->validate($admin)) {
-              $this->user = serialize($admin);
-              $_SESSION["user"] = $this->user;
-              $this->page = "Admin/Edit.php";
-              $_SESSION["page"] = $this->page;
-            }
-            break;
-          }
-        case "Admin/Edit.php": {
-            // LOG OUT CASE
-            if (isset($_POST["logout"])) {
-              session_unset();
-              break;
-            }
-
-            // PRESSED SELECT ON ADMINISTRATOR EDITING CHOICES
-            if (isset($_POST["submit_edit_selection"])) {
-              $this->edit_selection = $_POST["edit_selection"] ?? null;
-              $_SESSION["edit_selection"] = $this->edit_selection;
-            }
-
-            // HANDLING ALL EDITING LOGIC
-            if (isset($this->edit_selection)) {
-              switch ($this->edit_selection) {
-
-                // EDITING LOGIC FOR ADMIN
-                case "admins": {
-                    $manager = new AdminManager();
-                    $this->current_table["admins"] = $manager->getAllAdmins();
-                    $_SESSION["current_table"] = $this->current_table;
-                    if (isset($_POST["operation"])) {
-                      $manager = new AdminManager();
-
-                      if ($_POST["operation"] == "save_changes") {
-                        $modified_table = $_POST["modified_table"] ?? [];
-                        $manager->updateChanges($modified_table);
-                      } else if (str_contains($_POST["operation"], "delete")) {
-                        $array = explode("|", $_POST["operation"]);
-                        $manager->delete($array[1]);
-                      } else if ($_POST["operation"] == "add") {
-                        $admin = new Admin();
-                        $admin->name = $_POST["new_admin"]["name"] ?? "";
-                        $admin->surname = $_POST["new_admin"]["surname"] ?? "";
-                        $admin->email = $_POST["new_admin"]["email"] ?? "";
-                        $admin->phone_number = $_POST["new_admin"]["phone_number"] ?? "";
-                        if ($admin->validate())
-                          $manager->add($admin);
-                      }
-
-                      $this->current_table["admins"] = $manager->getAllAdmins();
-                      $_SESSION["current_table"] = $this->current_table;
-                    }
-                    break;
-                  }
-
-                  // TEACHER EDITING LOGIC
-                case "teachers": {
-                    $manager = new TeacherManager();
-                    $this->current_table["teachers"] = $manager->getAllTeachers();
-                    $this->current_table["subject_teachers"] = $manager->getAllTeacherSubjects();
-                    $manager = new SubjectManager();
-                    $this->current_table["subjects"] = $manager->getAllSubjects();
-                    $_SESSION["current_table"] = $this->current_table;
-                    if (isset($_POST["operation"])) {
-                      $manager = new TeacherManager();
-
-                      if ($_POST["operation"] == "save_changes") {
-                        $modified_table = $_POST["modified_table"] ?? [];
-                        $manager->updateChanges($modified_table);
-                      } else if (str_contains($_POST["operation"], "delete")) {
-                        $array = explode("|", $_POST["operation"]);
-                        $manager->delete($array[1]);
-                      } else if ($_POST["operation"] == "add") {
-                        $teacher = new Teacher();
-                        $teacher->name = $_POST["new_teacher"]["name"] ?? "";
-                        $teacher->surname = $_POST["new_teacher"]["surname"] ?? "";
-                        $teacher->email = $_POST["new_teacher"]["email"] ?? "";
-                        $teacher->phone_number = $_POST["new_teacher"]["phone_number"] ?? "";
-                        $teacher->teaching_subjects = $_POST["new_teacher"]["teaching_subjects"] ?? "";
-                        if ($teacher->validate())
-                          $manager->add($teacher);
-                      }
-
-                      $this->current_table["teachers"] = $manager->getAllTeachers();
-                      $this->current_table["subject_teachers"] = $manager->getAllTeacherSubjects();
-                      $_SESSION["current_table"] = $this->current_table;
-                    }
-                    break;
-                  }
-
-                  // STUDENT EDITING LOGIC
-                case "students": {
-                    $manager = new StudentManager();
-                    $this->current_table["students"] = $manager->getAllStudents();
-                    $_SESSION["current_table"] = $this->current_table;
-                    if (isset($_POST["operation"])) {
-                      $manager = new StudentManager();
-
-                      if ($_POST["operation"] == "save_changes") {
-                        $modified_table = $_POST["modified_table"] ?? [];
-                        $manager->updateChanges($modified_table);
-                      } else if (str_contains($_POST["operation"], "delete")) {
-                        $array = explode("|", $_POST["operation"]);
-                        $manager->delete($array[1]);
-                      } else if ($_POST["operation"] == "add") {
-                        $student = new Student();
-                        $student->name = $_POST["new_student"]["name"] ?? "";
-                        $student->surname = $_POST["new_student"]["surname"] ?? "";
-                        $student->email = $_POST["new_student"]["email"] ?? "";
-                        $student->phone_number = $_POST["new_student"]["phone_number"] ?? "";
-                        if (isset($_POST["new_student"]["tuition_enabled"]))
-                          $student->tuition_enabled = ($_POST["new_student"]["tuition_enabled"] == "t");
-                        else
-                          $student->tuition_enabled = null;
-                        if ($student->validate())
-                          $manager->add($student);
-                      }
-
-                      $this->current_table["students"] = $manager->getAllStudents();
-                      $_SESSION["current_table"] = $this->current_table;
-                    }
-                    break;
-                  }
-
-                  // SUBJECT EDITING LOGIC
-                case "subjects": {
-                    $manager = new SubjectManager();
-                    $this->current_table["subjects"] = $manager->getAllSubjects();
-                    $_SESSION["current_table"] = $this->current_table;
-                    if (isset($_POST["operation"])) {
-                      $manager = new SubjectManager();
-
-                      if ($_POST["operation"] == "save_changes") {
-                        $modified_table = $_POST["modified_table"] ?? [];
-                        $manager->updateChanges($modified_table);
-                      } else if (str_contains($_POST["operation"], "delete")) {
-                        $array = explode("|", $_POST["operation"]);
-                        $manager->delete($array[1]);
-                      } else if ($_POST["operation"] == "add") {
-                        $subject = new Subject();
-                        $subject->subject = $_POST["new_subject"]["subject"] ?? "";
-                        if ($subject->validate())
-                          $manager->add($subject);
-                      }
-
-                      $this->current_table["subjects"] = $manager->getAllSubjects();
-                      $_SESSION["current_table"] = $this->current_table;
-                    }
-                    break;
-                  }
-
-                  // COURSE EDITING LOGIC
-                case "courses": {
-                    $manager = new CourseManager();
-                    $this->current_table["courses"] = $manager->getAllCourses();
-                    $this->current_table["course_teachers"] = $manager->getAllCourseTeachers();
-                    $this->current_table["course_students"] = $manager->getAllCourseStudents();
-                    $manager = new StudentManager();
-                    $this->current_table["students"] = $manager->getAllStudents();
-                    $manager = new TeacherManager();
-                    $this->current_table["teacher_subjects"] = $manager->getAllTeacherSubjects();
-                    $manager = new SubjectManager();
-                    $this->current_table["subjects"] = $manager->getAllSubjects();
-                    $_SESSION["current_table"] = $this->current_table;
-
-                    if (isset($_POST["operation"])) {
-                      $manager = new CourseManager();
-
-                      if ($_POST["operation"] == "save_changes") {
-                        $modified_table = $_POST["modified_table"] ?? [];
-                        $manager->updateChanges($modified_table);
-                      } else if (str_contains($_POST["operation"], "delete")) {
-                        $array = explode("|", $_POST["operation"]);
-                        $manager->delete($array[1]);
-                      } else if ($_POST["operation"] == "add") {
-                        $course = new Course();
-                        $course->name = $_POST["new_course"]["name"] ?? "";
-                        if ($course->validate())
-                          $manager->add($course);
-                      } else if ($_POST["operation"] == "select_subject") {
-                        $manager = new TeacherManager();
-                        if (isset($_POST["new_course"]["subject"]) && !empty($_POST["new_course"]["subject"])) {
-                          $this->current_table["teachers"] = $manager->getAllSubjectTeachers($_POST["new_course"]["subject"]);
-                          $_SESSION["current_table"] = $this->current_table;
-                        }
-                      }
-
-                      $manager = new CourseManager();
-                      $this->current_table["courses"] = $manager->getAllCourses();
-                      $this->current_table["course_teachers"] = $manager->getAllCourseTeachers();
-                      $this->current_table["course_students"] = $manager->getAllCourseStudents();
-                      $_SESSION["current_table"] = $this->current_table;
-                    }
-                    break;
-                  }
-              }
-            }
-
-
-
-            break;
-          }
+        case "Admin/Login.php":
+        case "Admin/Edit.php":
+          $this->handleAdminClient();
+          break;
+        case "Teacher/Login.php":
+        case "Teacher/Edit.php":
+          $this->handleAdminClient();
+          break;
       }
 
       header("Location: index.php");
@@ -272,5 +75,293 @@ class MainController
     }
 
     include Path::views($this->page);
+  }
+
+  public function handleAdminClient()
+  {
+    switch ($this->page) {
+      case "Admin/Login.php": {
+          $manager = new AdminManager();
+          $admin = new Admin();
+          $admin->name = $_POST["name"] ?? "";
+          $admin->surname = $_POST["surname"] ?? "";
+          if ($manager->validate($admin)) {
+            $this->user = serialize($admin);
+            $_SESSION["user"] = $this->user;
+            $this->page = "Admin/Edit.php";
+            $_SESSION["page"] = $this->page;
+          }
+          break;
+        }
+      case "Admin/Edit.php": {
+          // LOG OUT CASE
+          if (isset($_POST["logout"])) {
+            session_unset();
+            break;
+          }
+
+          // PRESSED SELECT ON ADMINISTRATOR EDITING CHOICES
+          if (isset($_POST["submit_edit_selection"])) {
+            $this->edit_selection = $_POST["edit_selection"] ?? null;
+            $_SESSION["edit_selection"] = $this->edit_selection;
+          }
+
+          // HANDLING ALL EDITING LOGIC
+          if (isset($this->edit_selection)) {
+            switch ($this->edit_selection) {
+              case "admins":
+                $this->handleAdminAdmins();
+                break;
+              case "teachers":
+                $this->handleAdminTeachers();
+                break;
+              case "students":
+                $this->handleAdminStudents();
+                break;
+              case "subjects":
+                $this->handleAdminSubjects();
+                break;
+              case "courses":
+                $this->handleAdminCourses();
+                break;
+            }
+          }
+          break;
+        }
+    }
+  }
+
+  public function handleAdminAdmins()
+  {
+    $manager = new AdminManager();
+    $this->current_table["admins"] = $manager->getAllAdmins();
+    $_SESSION["current_table"] = $this->current_table;
+    if (isset($_POST["operation"])) {
+      $manager = new AdminManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      } else if (str_contains($_POST["operation"], "delete")) {
+        $array = explode("|", $_POST["operation"]);
+        $manager->delete($array[1]);
+      } else if ($_POST["operation"] == "add") {
+        $admin = new Admin();
+        $admin->name = $_POST["new_admin"]["name"] ?? "";
+        $admin->surname = $_POST["new_admin"]["surname"] ?? "";
+        $admin->email = $_POST["new_admin"]["email"] ?? "";
+        $admin->phone_number = $_POST["new_admin"]["phone_number"] ?? "";
+        if ($admin->validate())
+          $manager->add($admin);
+      }
+
+      $this->current_table["admins"] = $manager->getAllAdmins();
+      $_SESSION["current_table"] = $this->current_table;
+    }
+  }
+
+  public function handleAdminTeachers()
+  {
+    $manager = new TeacherManager();
+    $this->current_table["teachers"] = $manager->getAllTeachers();
+    $this->current_table["subject_teachers"] = $manager->getAllTeacherSubjects();
+    $manager = new SubjectManager();
+    $this->current_table["subjects"] = $manager->getAllSubjects();
+    $_SESSION["current_table"] = $this->current_table;
+    if (isset($_POST["operation"])) {
+      $manager = new TeacherManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      } else if (str_contains($_POST["operation"], "delete")) {
+        $array = explode("|", $_POST["operation"]);
+        $manager->delete($array[1]);
+      } else if ($_POST["operation"] == "add") {
+        $teacher = new Teacher();
+        $teacher->name = $_POST["new_teacher"]["name"] ?? "";
+        $teacher->surname = $_POST["new_teacher"]["surname"] ?? "";
+        $teacher->email = $_POST["new_teacher"]["email"] ?? "";
+        $teacher->phone_number = $_POST["new_teacher"]["phone_number"] ?? "";
+        $teacher->teaching_subjects = $_POST["new_teacher"]["teaching_subjects"] ?? "";
+        if ($teacher->validate())
+          $manager->add($teacher);
+      }
+
+      $this->current_table["teachers"] = $manager->getAllTeachers();
+      $this->current_table["subject_teachers"] = $manager->getAllTeacherSubjects();
+      $_SESSION["current_table"] = $this->current_table;
+    }
+  }
+
+  public function handleAdminStudents()
+  {
+    $manager = new StudentManager();
+    $this->current_table["students"] = $manager->getAllStudents();
+    $_SESSION["current_table"] = $this->current_table;
+    if (isset($_POST["operation"])) {
+      $manager = new StudentManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      } else if (str_contains($_POST["operation"], "delete")) {
+        $array = explode("|", $_POST["operation"]);
+        $manager->delete($array[1]);
+      } else if ($_POST["operation"] == "add") {
+        $student = new Student();
+        $student->name = $_POST["new_student"]["name"] ?? "";
+        $student->surname = $_POST["new_student"]["surname"] ?? "";
+        $student->email = $_POST["new_student"]["email"] ?? "";
+        $student->phone_number = $_POST["new_student"]["phone_number"] ?? "";
+        if (isset($_POST["new_student"]["tuition_enabled"]))
+          $student->tuition_enabled = ($_POST["new_student"]["tuition_enabled"] == "t");
+        else
+          $student->tuition_enabled = null;
+        if ($student->validate())
+          $manager->add($student);
+      }
+
+      $this->current_table["students"] = $manager->getAllStudents();
+      $_SESSION["current_table"] = $this->current_table;
+    }
+  }
+
+  public function handleAdminSubjects()
+  {
+    $manager = new SubjectManager();
+    $this->current_table["subjects"] = $manager->getAllSubjects();
+    $_SESSION["current_table"] = $this->current_table;
+    if (isset($_POST["operation"])) {
+      $manager = new SubjectManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      } else if (str_contains($_POST["operation"], "delete")) {
+        $array = explode("|", $_POST["operation"]);
+        $manager->delete($array[1]);
+      } else if ($_POST["operation"] == "add") {
+        $subject = new Subject();
+        $subject->subject = $_POST["new_subject"]["subject"] ?? "";
+        if ($subject->validate())
+          $manager->add($subject);
+      }
+
+      $this->current_table["subjects"] = $manager->getAllSubjects();
+      $_SESSION["current_table"] = $this->current_table;
+    }
+  }
+
+  public function handleAdminCourses()
+  {
+    $manager = new CourseManager();
+    $this->current_table["courses"] = $manager->getAllCourses();
+
+    $this->current_table["course_teachers"] = $manager->getAllCourseTeachers();
+    $this->current_table["course_students"] = $manager->getAllCourseStudents();
+    $manager = new StudentManager();
+    $this->current_table["students"] = $manager->getAllStudents();
+
+    $manager = new TeacherManager();
+
+    foreach ($this->current_table["courses"] as $course) {
+      $this->temp["selected_subject"][$course["id"]] = $manager->getAllSubjectTeachers($course["subject_id"]);
+      $_SESSION["temp"] = $this->temp;
+    }
+    $this->temp["selected_subject_insert"] = $_POST["new_course"]["subject"] ?? "";
+    if (isset($this->temp["selected_subject_insert"]) && !empty($this->temp["selected_subject_insert"])) {
+      $this->current_table["teachers"] = $manager->getAllSubjectTeachers($this->temp["selected_subject_insert"]);
+      $_SESSION["temp"] = $this->temp;
+    }
+    $this->current_table["teacher_subjects"] = $manager->getAllTeacherSubjects();
+    $manager = new SubjectManager();
+    $this->current_table["subjects"] = $manager->getAllSubjects();
+    $_SESSION["current_table"] = $this->current_table;
+
+    if (isset($_POST["operation"])) {
+      unset($_SESSION["temp"]["selected_subject_insert"]);
+      $manager = new CourseManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      } else if (str_contains($_POST["operation"], "delete")) {
+        $array = explode("|", $_POST["operation"]);
+        $manager->delete($array[1]);
+      } else if ($_POST["operation"] == "add") {
+        $course = new Course();
+        $course->name = $_POST["new_course"]["name"] ?? "";
+        $course->description = $_POST["new_course"]["description"] ?? "";
+        $course->status = $_POST["new_course"]["status"] ?? "";
+        $course->subject = $_POST["new_course"]["subject"] ?? "";
+        $course->teachers = $_POST["new_course"]["teachers"] ?? "";
+        $course->students = $_POST["new_course"]["students"] ?? "";
+        if ($course->validate())
+          $manager->add($course);
+      }
+
+      $manager = new CourseManager();
+      $this->current_table["courses"] = $manager->getAllCourses();
+      $this->current_table["course_teachers"] = $manager->getAllCourseTeachers();
+      $this->current_table["course_students"] = $manager->getAllCourseStudents();
+
+      $manager = new TeacherManager();
+      foreach ($this->current_table["courses"] as $course) {
+        $this->temp["selected_subject"][$course["id"]] = $manager->getAllSubjectTeachers($course["id"]);
+        $_SESSION["temp"] = $this->temp;
+      }
+
+      foreach ($this->current_table["courses"] as $course) {
+        $this->temp["selected_subject"][$course["id"]] = $manager->getAllSubjectTeachers($course["subject_id"]);
+        $_SESSION["temp"] = $this->temp;
+      }
+      $_SESSION["current_table"] = $this->current_table;
+    }
+  }
+
+  public function handleTeacherClient()
+  {
+    switch ($this->page) {
+      case "Teacher/Login.php": {
+          $manager = new TeacherManager();
+          $teacher = new Teacher();
+          $teacher->name = $_POST["name"] ?? "";
+          $teacher->surname = $_POST["surname"] ?? "";
+          if ($manager->validate($teacher)) {
+            $this->user = serialize($teacher);
+            $_SESSION["user"] = $this->user;
+            $this->page = "Admin/Edit.php";
+            $_SESSION["page"] = $this->page;
+          }
+          break;
+        }
+      case "Teacher/Edit.php": {
+          // LOG OUT CASE
+          if (isset($_POST["logout"])) {
+            session_unset();
+            break;
+          }
+
+          // PRESSED SELECT ON ADMINISTRATOR EDITING CHOICES
+          if (isset($_POST["submit_edit_selection"])) {
+            $this->edit_selection = $_POST["edit_selection"] ?? null;
+            $_SESSION["edit_selection"] = $this->edit_selection;
+          }
+
+          // HANDLING ALL EDITING LOGIC
+          if (isset($this->edit_selection)) {
+            switch ($this->edit_selection) {
+              case "myaccount":
+                $this->handleAdminAdmins();
+                break;
+              case "courses":
+                $this->handleAdminTeachers();
+                break;
+            }
+          }
+          break;
+        }
+    }
   }
 }
