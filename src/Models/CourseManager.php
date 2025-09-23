@@ -134,6 +134,21 @@ class CourseManager extends Model
     }
   }
 
+  public function updateDescription($changes)
+  {
+    pg_prepare(
+      Model::getConn(),
+      "course_update",
+      "UPDATE courses SET description=$1 WHERE id=$2"
+    );
+    foreach ($changes as $id => $fields) {
+      $description = $fields['description'];
+
+      $result = pg_execute(Model::getConn(), "course_update", array($description, $id));
+      if (!$result) LogManager::error('Query failed: ' . Model::getError());
+    }
+  }
+
   public function delete($id)
   {
     pg_prepare(Model::getConn(), "course_delete", "DELETE FROM courses WHERE id=$1");

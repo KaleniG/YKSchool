@@ -399,11 +399,11 @@ class MainController
     $_SESSION["current_table"] = $this->current_table;
 
     if (isset($_POST["operation"])) {
-      $manager = new TeacherManager();
+      $manager = new CourseManager();
 
       if ($_POST["operation"] == "save_changes") {
         $modified_table = $_POST["modified_table"] ?? [];
-        $manager->updateChanges($modified_table);
+        $manager->updateDescription($modified_table);
       }
     }
 
