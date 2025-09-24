@@ -76,9 +76,9 @@ class CourseManager extends Model
       "UPDATE courses SET name=$1, description=$2, status=$3 WHERE id=$4"
     );
     foreach ($changes as $id => $fields) {
-      $name = $fields['name'];
-      $description = $fields['description'];
-      $status = $fields['status'];
+      $name = htmlspecialchars($fields['name']);
+      $description = htmlspecialchars($fields['description']);
+      $status = htmlspecialchars($fields['status']);
 
       $result = pg_execute(Model::getConn(), "course_update", array($name, $description, $status, $id));
       if (!$result) LogManager::error('Query failed: ' . Model::getError());
@@ -157,7 +157,7 @@ class CourseManager extends Model
       "UPDATE courses SET description=$1 WHERE id=$2"
     );
     foreach ($changes as $id => $fields) {
-      $description = $fields['description'];
+      $description = htmlspecialchars($fields['description']);
 
       $result = pg_execute(Model::getConn(), "course_update", array($description, $id));
       if (!$result) LogManager::error('Query failed: ' . Model::getError());

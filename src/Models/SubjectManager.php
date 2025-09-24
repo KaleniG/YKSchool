@@ -26,7 +26,7 @@ class SubjectManager extends Model
       "UPDATE subjects SET subject=$1 WHERE id=$2"
     );
     foreach ($changes as $id => $fields) {
-      $subject = $fields['subject'];
+      $subject = htmlspecialchars($fields['subject']);
       pg_execute(Model::getConn(), "subjects_update", array($subject, $id));
     }
   }

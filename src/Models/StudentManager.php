@@ -59,9 +59,9 @@ class StudentManager extends Model
       "UPDATE students SET email=$1, phone_number=$2, tuition_enabled=$3 WHERE id=$4"
     );
     foreach ($changes as $id => $fields) {
-      $email = $fields['email'];
-      $phone = $fields['phone_number'];
-      $tuition_enabled = $fields['tuition_enabled'];
+      $email = htmlspecialchars($fields['email']);
+      $phone = htmlspecialchars($fields['phone_number']);
+      $tuition_enabled = htmlspecialchars($fields['tuition_enabled']);
 
       pg_execute(Model::getConn(), "students_update", array($email, $phone, $tuition_enabled, $id));
     }

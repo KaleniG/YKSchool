@@ -37,8 +37,8 @@ class AdminManager extends Model
       "UPDATE administrators SET email=$1, phone_number=$2 WHERE id=$3"
     );
     foreach ($changes as $id => $fields) {
-      $email = $fields['email'];
-      $phone = $fields['phone_number'];
+      $email = htmlspecialchars($fields['email']);
+      $phone = htmlspecialchars($fields['phone_number']);
 
       LogManager::info("$id, $email, $phone");
       pg_execute(Model::getConn(), "admin_update", array($email, $phone, $id));

@@ -87,8 +87,8 @@ class MainController
       case "Admin/Login.php": {
           $manager = new AdminManager();
           $admin = new Admin();
-          $admin->name = $_POST["name"] ?? "";
-          $admin->surname = $_POST["surname"] ?? "";
+          $admin->name = htmlspecialchars($_POST["name"] ?? "");
+          $admin->surname = htmlspecialchars($_POST["surname"] ?? "");
           if ($manager->validate($admin)) {
             $this->user = serialize($admin);
             $_SESSION["user"] = $this->user;
@@ -149,10 +149,10 @@ class MainController
         $manager->delete($array[1]);
       } else if ($_POST["operation"] == "add") {
         $admin = new Admin();
-        $admin->name = $_POST["new_admin"]["name"] ?? "";
-        $admin->surname = $_POST["new_admin"]["surname"] ?? "";
-        $admin->email = $_POST["new_admin"]["email"] ?? "";
-        $admin->phone_number = $_POST["new_admin"]["phone_number"] ?? "";
+        $admin->name = htmlspecialchars($_POST["new_admin"]["name"] ?? "");
+        $admin->surname = htmlspecialchars($_POST["new_admin"]["surname"] ?? "");
+        $admin->email = htmlspecialchars($_POST["new_admin"]["email"] ?? "");
+        $admin->phone_number = htmlspecialchars($_POST["new_admin"]["phone_number"] ?? "");
         if ($admin->validate())
           $manager->add($admin);
       }
@@ -181,11 +181,11 @@ class MainController
         $manager->delete($array[1]);
       } else if ($_POST["operation"] == "add") {
         $teacher = new Teacher();
-        $teacher->name = $_POST["new_teacher"]["name"] ?? "";
-        $teacher->surname = $_POST["new_teacher"]["surname"] ?? "";
-        $teacher->email = $_POST["new_teacher"]["email"] ?? "";
-        $teacher->phone_number = $_POST["new_teacher"]["phone_number"] ?? "";
-        $teacher->teaching_subjects = $_POST["new_teacher"]["teaching_subjects"] ?? "";
+        $teacher->name = htmlspecialchars($_POST["new_teacher"]["name"] ?? "");
+        $teacher->surname = htmlspecialchars($_POST["new_teacher"]["surname"] ?? "");
+        $teacher->email = htmlspecialchars($_POST["new_teacher"]["email"] ?? "");
+        $teacher->phone_number = htmlspecialchars($_POST["new_teacher"]["phone_number"] ?? "");
+        $teacher->teaching_subjects = htmlspecialchars($_POST["new_teacher"]["teaching_subjects"] ?? "");
         if ($teacher->validate())
           $manager->add($teacher);
       }
@@ -212,10 +212,10 @@ class MainController
         $manager->delete($array[1]);
       } else if ($_POST["operation"] == "add") {
         $student = new Student();
-        $student->name = $_POST["new_student"]["name"] ?? "";
-        $student->surname = $_POST["new_student"]["surname"] ?? "";
-        $student->email = $_POST["new_student"]["email"] ?? "";
-        $student->phone_number = $_POST["new_student"]["phone_number"] ?? "";
+        $student->name = htmlspecialchars($_POST["new_student"]["name"] ?? "");
+        $student->surname = htmlspecialchars($_POST["new_student"]["surname"] ?? "");
+        $student->email = htmlspecialchars($_POST["new_student"]["email"] ?? "");
+        $student->phone_number = htmlspecialchars($_POST["new_student"]["phone_number"] ?? "");
         if (isset($_POST["new_student"]["tuition_enabled"]))
           $student->tuition_enabled = ($_POST["new_student"]["tuition_enabled"] == "t");
         else
@@ -245,7 +245,7 @@ class MainController
         $manager->delete($array[1]);
       } else if ($_POST["operation"] == "add") {
         $subject = new Subject();
-        $subject->subject = $_POST["new_subject"]["subject"] ?? "";
+        $subject->subject = htmlspecialchars($_POST["new_subject"]["subject"] ?? "");
         if ($subject->validate())
           $manager->add($subject);
       }
@@ -293,10 +293,10 @@ class MainController
         $manager->delete($array[1]);
       } else if ($_POST["operation"] == "add") {
         $course = new Course();
-        $course->name = $_POST["new_course"]["name"] ?? "";
-        $course->description = $_POST["new_course"]["description"] ?? "";
-        $course->status = $_POST["new_course"]["status"] ?? "";
-        $course->subject = $_POST["new_course"]["subject"] ?? "";
+        $course->name = htmlspecialchars($_POST["new_course"]["name"] ?? "");
+        $course->description = htmlspecialchars($_POST["new_course"]["description"] ?? "");
+        $course->status = htmlspecialchars($_POST["new_course"]["status"] ?? "");
+        $course->subject = htmlspecialchars($_POST["new_course"]["subject"] ?? "");
         $course->teachers = $_POST["new_course"]["teachers"] ?? "";
         $course->students = $_POST["new_course"]["students"] ?? "";
 
@@ -329,8 +329,8 @@ class MainController
       case "Teacher/Login.php": {
           $manager = new TeacherManager();
           $teacher = new Teacher();
-          $teacher->name = $_POST["name"] ?? "";
-          $teacher->surname = $_POST["surname"] ?? "";
+          $teacher->name = htmlspecialchars($_POST["name"] ?? "");
+          $teacher->surname = htmlspecialchars($_POST["surname"] ?? "");
           if ($manager->validate($teacher)) {
             $this->user = serialize($teacher);
             $_SESSION["user"] = $this->user;
@@ -422,8 +422,8 @@ class MainController
       case "Student/Login.php": {
           $manager = new StudentManager();
           $student = new Student();
-          $student->name = $_POST["name"] ?? "";
-          $student->surname = $_POST["surname"] ?? "";
+          $student->name = htmlspecialchars($_POST["name"] ?? "");
+          $student->surname = htmlspecialchars($_POST["surname"] ?? "");
           if ($manager->validate($student)) {
             $this->user = serialize($student);
             $_SESSION["user"] = $this->user;
