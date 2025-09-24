@@ -19,9 +19,10 @@ class AssetManager
 
   public function importCSS()
   {
+    $id = session_id();
     $allfiles = "";
     foreach ($this->css as $css_file)
-      $allfiles .= "<link rel='stylesheet' href='{$css_file}'>";
+      $allfiles .= "<link rel='stylesheet' href='{$css_file}?v={$id}3s'>";
     return $allfiles;
   }
 

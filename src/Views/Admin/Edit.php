@@ -17,10 +17,9 @@ $asset = new AssetManager();
 </head>
 
 <body>
-  <form method="post" id="main_form" action="">
-    <button type="submit" name="logout">Logout</button>
-    <br>
-    <select name="edit_selection" onchange='selected_subject_submit();'>
+  <form method="post" id="main_form" action="" class="main_form">
+    <button type="submit" name="logout" class="nav-button">Logout</button>
+    <select name="edit_selection" onchange='selected_subject_submit();' class="edit-select">
       <option>Choose an option</option>
       <option value="admins" <?= ($this->edit_selection == "admins") ? "selected" : ""; ?>>Administrators</option>
       <option value="teachers" <?= ($this->edit_selection == "teachers") ? "selected" : ""; ?>>Teachers</option>
@@ -31,11 +30,10 @@ $asset = new AssetManager();
     <br>
     <?php
 
-
     use App\Config\Path;
 
     if (!empty($this->edit_selection))
-      echo ("<table border='2'>");
+      echo ("<table class='main-table'>");
 
     switch ($this->edit_selection) {
       case "admins":
@@ -56,7 +54,7 @@ $asset = new AssetManager();
     }
 
     if (isset($this->edit_selection))
-      echo ("</table><br><button type='submit' name='operation' value='save_changes'>Save Changes</button>");
+      echo ("</table><br><button type='submit' name='operation' value='save_changes' class='nav-button'>Save Changes</button>");
     ?>
   </form>
 </body>

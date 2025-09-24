@@ -22,7 +22,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     <td><input type='email' name='modified_table[{$id}][email]' value='{$email}'></td>
     <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}'></td>
     <td><input type='checkbox' name='modified_table[{$id}][tuition_enabled]' value='t' $checked></td>
-    <td><button type='submit' name='operation' value='delete|{$id}'>Delete</button></td>
+    <td><button type='submit' name='operation' value='delete|{$id}' class='nav-button'>Delete</button></td>
     </tr>");
 }
 ?>
@@ -33,5 +33,5 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   <td><input type='email' name='new_student[email]'></td>
   <td><input type='text' name='new_student[phone_number]'></td>
   <td><input type='checkbox' name='new_student[tuition_enabled]' value='t'></td>
-  <td><button type='submit' name='operation' value='add'>Add</button></td>
+  <td><button type='submit' name='operation' value='add' class='nav-button'>Add</button></td>
 </tr>

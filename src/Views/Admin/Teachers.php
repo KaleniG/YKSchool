@@ -41,7 +41,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   }
   // End: Multiple subject selection logic
 
-  echo ("</select></td><td><button type='submit' name='operation' value='delete|{$id}'>Delete</button></td></tr>");
+  echo ("</select></td><td><button type='submit' name='operation' value='delete|{$id}' class='nav-button'>Delete</button></td></tr>");
 }
 ?>
 <tr>
@@ -65,5 +65,5 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
       ?>
 
     </select></td>
-  <td><button type='submit' name='operation' value='add'>Add</button></td>
+  <td><button type='submit' name='operation' value='add' class='nav-button'>Add</button></td>
 </tr>

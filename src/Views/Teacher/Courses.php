@@ -3,13 +3,13 @@
 use App\Config\LogManager;
 
 if (isset($this->edit_selection)) {
-  echo ("<table border='1'>
+  echo ("<table>
     <tr>
       <th>Name</th>
       <th>Description</th>
     </tr>");
 
-  
+
   foreach ($this->current_table["course_teachers"] as $course) {
     $course_id = $course["id"];
     $course_name = $course["name"];
@@ -17,9 +17,9 @@ if (isset($this->edit_selection)) {
 
     echo ("<tr>
       <td>$course_name</td>
-      <td><textarea name='modified_table[$course_id][description]'>$course_description</textarea></t>
+      <td><textarea name='modified_table[$course_id][description]' class='teacher-course-textarea'>$course_description</textarea></t>
     </tr>");
   }
 
-  echo ("</table><br><button type='submit' name='operation' value='save_changes'>Save Changes</button>");
+  echo ("</table><br><button type='submit' name='operation' value='save_changes' class='nav-button'>Save Changes</button>");
 }

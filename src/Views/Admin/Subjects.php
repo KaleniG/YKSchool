@@ -10,12 +10,12 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   $subject = $row["subject"];
   echo ("<tr>
     <td><input type='text' name='modified_table[{$id}][subject]' value='{$subject}'></td>
-    <td><button type='submit' name='operation' value='delete|{$id}'>Delete</button></td>
+    <td><button type='submit' name='operation' value='delete|{$id}' class='nav-button'>Delete</button></td>
     </tr>");
 }
 ?>
 
 <tr>
   <td><input type='text' name='new_subject[subject]'></td>
-  <td><button type='submit' name='operation' value='add'>Add</button></td>
+  <td><button type='submit' name='operation' value='add' class='nav-button'>Add</button></td>
 </tr>

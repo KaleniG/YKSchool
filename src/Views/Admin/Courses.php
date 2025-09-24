@@ -80,7 +80,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     if ($student_row["tuition_enabled"] == "t")
       echo ("<option value='$student_id' {$selected}>$student_name $student_surname</option>");
   }
-  echo ("</select></td><td><button type='submit' name='operation' value='delete|$id'>Delete</button></td></tr>");
+  echo ("</select></td><td><button type='submit' name='operation' value='delete|$id' class='nav-button'>Delete</button></td></tr>");
 }
 
 ?>
@@ -88,7 +88,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   <td><input type='text' name='new_course[name]'></td>
   <td><textarea name='new_course[description]'></textarea></td>
   <td>
-    <select name='new_course[status]'>
+    <select name='new_course[status]' class="edit-select">
       <option>Choose an option</option>
       <option value='Active'>Active</option>
       <option value='Suspended'>Suspended</option>
@@ -96,7 +96,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     </select>
   </td>
   <td>
-    <select name='new_course[subject]' onchange='selected_subject_submit();'>
+    <select name='new_course[subject]' onchange='selected_subject_submit();' class="edit-select">
 
       <?php
       // ADD
@@ -140,4 +140,4 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
         echo ("</select></td>");
       } else
         echo ("<td></td>");
-      echo ("<td><button type='submit' name='operation' value='add'>Add</button></td></tr>");
+      echo ("<td><button type='submit' name='operation' value='add' class='nav-button'>Add</button></td></tr>");

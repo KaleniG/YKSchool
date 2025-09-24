@@ -3,7 +3,7 @@
 use App\Config\LogManager;
 
 if (isset($this->edit_selection)) {
-  echo ("<table border='1'>
+  echo ("<table>
     <tr>
       <th>Name</th>
       <th>Description</th>
@@ -32,5 +32,5 @@ if (isset($this->edit_selection)) {
     </tr>");
   }
 
-  echo ("</table><br><button type='submit' name='operation' value='save_changes'>Save Changes</button>");
+  echo ("</table><br><button type='submit' name='operation' value='save_changes' class='nav-button'>Save Changes</button>");
 }
