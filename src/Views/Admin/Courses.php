@@ -101,6 +101,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
       <?php
       // ADD
       $subjects_table = $this->current_table["subjects"];
+      echo ("<option value=''>Choose a subject</option>");
       foreach ($subjects_table as $subject_row) {
         $subject_name = $subject_row["subject"];
         $subject_id = $subject_row["id"];
@@ -112,6 +113,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
 
       $teachers_table = $this->current_table["teachers"];
       LogManager::info(var_export($teachers_table, true));
+
       if (!empty($teachers_table)) {
         echo ("<select name='new_course[teachers][]' multiple>");
 
@@ -126,12 +128,16 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
       }
 
       $students_table = $this->current_table["students"];
-      echo ("</td><td><select name='new_course[students][]' multiple>");
-      foreach ($students_table as $student_row) {
-        $student_id = $student_row["id"];
-        $student_name = $student_row["name"];
-        $student_surname = $student_row["surname"];
-        if ($student_row["tuition_enabled"] == "t")
-          echo ("<option value='$student_id'>$student_name $student_surname</option>");
-      }
-      echo ("</select></td><td><button type='submit' name='operation' value='add'>Add</button></td></tr>");
+      if (!empty($students_table)) {
+        echo ("</td><td><select name='new_course[students][]' multiple>");
+        foreach ($students_table as $student_row) {
+          $student_id = $student_row["id"];
+          $student_name = $student_row["name"];
+          $student_surname = $student_row["surname"];
+          if ($student_row["tuition_enabled"] == "t")
+            echo ("<option value='$student_id'>$student_name $student_surname</option>");
+        }
+        echo ("</select></td>");
+      } else
+        echo ("<td></td>");
+      echo ("<td><button type='submit' name='operation' value='add'>Add</button></td></tr>");

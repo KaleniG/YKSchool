@@ -164,6 +164,38 @@ class CourseManager extends Model
     }
   }
 
+  public function updateUser($changes, $student_id)
+  {
+    $courses = $this->getCoursesOfStudent($student_id);
+
+    $current_user_course_ids = [];
+    foreach ($courses as $course)
+      array_push($current_user_course_ids, $course["course_id"]);
+
+    foreach ($changes as $id => $user_id) {
+      if (($where = array_search($id, $current_user_course_ids)) !== false) {
+        unset($current_user_course_ids[$where]);
+        continue;
+      } else if (!in_array($id, $current_user_course_ids)) {
+        pg_prepare(
+          Model::getConn(),
+          "insert_course_user_student",
+          "INSERT INTO course_students (course_id, student_id) VALUES ($1, $2)"
+        );
+
+        $result = pg_execute(Model::getConn(), "insert_course_user_student", array($id, $student_id));
+        if (!$result) LogManager::info("Query failed: " . Model::getError());
+        continue;
+      }
+    }
+
+    foreach ($current_user_course_ids as $deleted_course) {
+      pg_prepare(Model::getConn(), "delete_student_course", "DELETE FROM course_students WHERE course_id=$1 AND student_id=$2");
+      $result = pg_execute(Model::getConn(), "delete_student_course", [$deleted_course, $student_id]);
+      if (!$result) LogManager::error("Query failed: " . Model::getError());
+    }
+  }
+
   public function delete($id)
   {
     pg_prepare(Model::getConn(), "course_delete", "DELETE FROM courses WHERE id=$1");

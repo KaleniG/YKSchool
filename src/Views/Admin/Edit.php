@@ -1,15 +1,19 @@
+<?php
+
+use App\Config\AssetManager;
+
+$asset = new AssetManager();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <?= $asset->importCSS(); ?>
+  <?= $asset->importJS(); ?>
   <title>Administrator</title>
-  <script>
-    function selected_subject_submit() {
-      document.getElementById('main_form').submit();
-    }
-  </script>
 </head>
 
 <body>

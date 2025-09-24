@@ -17,6 +17,7 @@ if (isset($this->edit_selection)) {
     $course_description = $course["description"];
     $checked = "";
 
+
     foreach ($this->current_table["course_students"] as $course_row) {
       if ($course_row["course_id"] == $course["id"]) {
         $checked = "checked";
@@ -27,7 +28,7 @@ if (isset($this->edit_selection)) {
     echo ("<tr>
       <td>$course_name</td>
       <td>$course_description</td>
-      <td><input type='checkbox' name='modified_table[$course_id][subscribed][$current_user_id]' $checked></td>
+      <td><input type='checkbox' name='modified_table[$course_id]' value='$current_user_id' $checked></td>
     </tr>");
   }
 

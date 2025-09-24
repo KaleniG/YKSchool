@@ -300,8 +300,6 @@ class MainController
         $course->teachers = $_POST["new_course"]["teachers"] ?? "";
         $course->students = $_POST["new_course"]["students"] ?? "";
 
-        LogManager::info(var_export($course, true));
-
         if ($course->validate())
           $manager->add($course);
       }
@@ -498,7 +496,7 @@ class MainController
 
       if ($_POST["operation"] == "save_changes") {
         $modified_table = $_POST["modified_table"] ?? [];
-        $manager->updateDescription($modified_table); ////////////////GYSGJDGAYGYJGSYJAGJSG
+        $manager->updateUser($modified_table, $this->current_table["students"]["id"]);
       }
     }
 
