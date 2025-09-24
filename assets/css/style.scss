@@ -1,4 +1,3 @@
-/* === Body & Global === */
 body {
   margin: 0;
   height: 100vh;
@@ -6,18 +5,27 @@ body {
   justify-content: center;
   align-items: center;
   background: #3b2524;
-  /* darkest background */
-  font-family: 'Segoe UI', Arial, sans-serif;
+
+  font-family: "Segoe UI", Arial, sans-serif;
   color: #ffffd5;
-  /* light text */
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
+}
+
+*::-moz-selection {
+  background-color: #ff9f72;
+
+  color: #3b2524;
+
 }
 
 *::selection {
   background-color: #ff9f72;
-  /* hover/accent color */
+
   color: #3b2524;
-  /* dark text */
+
 }
 
 *::-moz-selection {
@@ -25,13 +33,13 @@ body {
   color: #3b2524;
 }
 
-/* === Unified Buttons === */
+
 button,
 .home-button,
 .nav-button,
 .login-button {
   background-color: #735044;
-  /* medium dark button */
+
   color: #ffffd5;
   border: 1px solid #ffffd5;
   border-radius: 6px;
@@ -39,6 +47,8 @@ button,
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
@@ -47,18 +57,18 @@ button:hover,
 .nav-button:hover,
 .login-button:hover {
   background-color: #ff9f72;
-  /* hover accent */
+
   color: #3b2524;
   transform: translateY(-1px);
 }
 
-/* Smaller buttons in tables */
+
 table button {
   padding: 6px 12px;
   font-size: 14px;
 }
 
-/* === Home Form === */
+
 .home-form {
   display: flex;
   flex-direction: column;
@@ -66,14 +76,14 @@ table button {
   text-align: center;
 }
 
-/* === Login Form === */
+
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
   padding: 30px;
   background: #3b2524;
-  /* card background */
+
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   width: 320px;
@@ -92,8 +102,8 @@ table button {
   margin-top: 5px;
 }
 
-input[type="text"],
-input[type="email"] {
+input[type=text],
+input[type=email] {
   padding: 10px;
   border: 1px solid #735044;
   border-radius: 6px;
@@ -103,23 +113,24 @@ input[type="email"] {
   caret-color: #ff9f72;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus {
+input[type=text]:focus,
+input[type=email]:focus {
   border-color: #b76b53;
   box-shadow: 0 0 5px rgba(228, 131, 98, 0.5);
 }
 
-/* Autofill fix */
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0px 1000px #3b2524 inset;
   -webkit-text-fill-color: #ffffd5;
+  -webkit-transition: background-color 5000s ease-in-out 0s;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* === Main Form Container === */
+
 .main_form {
   width: 100%;
   max-width: 1400px;
@@ -163,7 +174,7 @@ input.edit-select-course {
   color: #ffffd5;
 }
 
-/* === Tables === */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -190,22 +201,21 @@ td {
   vertical-align: middle;
 }
 
-/* === Multi-selects === */
+
 select[multiple] {
   border: 1px solid #735044;
   border-radius: 6px;
   width: 150px;
 
-  /* Allow scrolling but hide scrollbar */
   overflow-y: auto;
-  /* enables scrolling */
+
   scrollbar-width: none;
-  /* hides scrollbar in Firefox */
+
   background: #3b2524;
   color: #ffffd5;
 }
 
-/* Hide scrollbar in WebKit browsers */
+
 select[multiple]::-webkit-scrollbar {
   display: none;
 }
@@ -214,7 +224,7 @@ select[multiple].teacher-subjects {
   width: 180px;
 }
 
-/* === Textareas === */
+
 textarea {
   border: 1px solid #735044;
   border-radius: 6px;
@@ -233,7 +243,7 @@ textarea.teacher-course-textarea {
   margin: auto -10px;
 }
 
-/* === Account Table === */
+
 .account-table {
   font-family: Arial, Helvetica, sans-serif;
   margin: 2rem auto;
@@ -251,36 +261,37 @@ textarea.teacher-course-textarea {
   color: #ffffd5;
 }
 
-/* === Custom Checkbox === */
-input[type="checkbox"] {
+
+input[type=checkbox] {
+  -moz-appearance: none;
   appearance: none;
-  /* remove default style */
+
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
   border: 2px solid #735044;
-  /* medium-dark border */
+
   border-radius: 4px;
   background-color: #3b2524;
-  /* background */
+
   cursor: pointer;
   position: relative;
   transition: background-color 0.2s, border-color 0.2s;
 }
 
-input[type="checkbox"]:hover {
+input[type=checkbox]:hover {
   border-color: #b76b53;
-  /* accent on hover */
+
 }
 
-input[type="checkbox"]:checked {
+input[type=checkbox]:checked {
   background-color: #ff9f72;
-  /* checked color */
+
   border-color: #ff9f72;
 }
 
-input[type="checkbox"]:checked::after {
-  content: '';
+input[type=checkbox]:checked::after {
+  content: "";
   position: absolute;
   top: 3px;
   left: 6px;
@@ -292,6 +303,8 @@ input[type="checkbox"]:checked::after {
 }
 
 select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
