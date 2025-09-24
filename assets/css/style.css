@@ -22,11 +22,6 @@ body {
   color: #3b2524;
 }
 
-*::-moz-selection {
-  background-color: #ff9f72;
-  color: #3b2524;
-}
-
 button,
 .home-button,
 .nav-button,
@@ -121,6 +116,7 @@ input:-webkit-autofill:active {
   max-width: 1400px;
   margin: 2rem auto;
   padding: 1.5rem;
+  margin-top: auto;
   background: #3b2524;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);

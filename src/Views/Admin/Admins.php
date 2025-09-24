@@ -21,7 +21,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     <td><input type='email' name='modified_table[{$id}][email]' value='{$email}' autocapitalize='off' spellcheck='false'></td>
     <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}' autocorrect='off' autocapitalize='off' spellcheck='false'></td>");
   if ($name == $this->user->name && $surname == $this->user->surname)
-    echo ("<td><button type='submit' class='nav-button' disabled>Delete</button></td>");
+    echo ("<td></td>");
   else
     echo ("<td><button type='submit' name='operation' value='delete|{$id}' class='nav-button'>Delete</button></td>");
   echo ("</tr>");

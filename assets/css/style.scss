@@ -5,10 +5,8 @@ body {
   justify-content: center;
   align-items: center;
   background: #3b2524;
-
   font-family: "Segoe UI", Arial, sans-serif;
   color: #ffffd5;
-
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -16,30 +14,19 @@ body {
 
 *::-moz-selection {
   background-color: #ff9f72;
-
   color: #3b2524;
-
 }
 
 *::selection {
   background-color: #ff9f72;
-
-  color: #3b2524;
-
-}
-
-*::-moz-selection {
-  background-color: #ff9f72;
   color: #3b2524;
 }
-
 
 button,
 .home-button,
 .nav-button,
 .login-button {
   background-color: #735044;
-
   color: #ffffd5;
   border: 1px solid #ffffd5;
   border-radius: 6px;
@@ -57,17 +44,14 @@ button:hover,
 .nav-button:hover,
 .login-button:hover {
   background-color: #ff9f72;
-
   color: #3b2524;
   transform: translateY(-1px);
 }
-
 
 table button {
   padding: 6px 12px;
   font-size: 14px;
 }
-
 
 .home-form {
   display: flex;
@@ -75,7 +59,6 @@ table button {
   gap: 10px;
   text-align: center;
 }
-
 
 .login-form {
   display: flex;
@@ -119,7 +102,6 @@ input[type=email]:focus {
   box-shadow: 0 0 5px rgba(228, 131, 98, 0.5);
 }
 
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -130,12 +112,12 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-
 .main_form {
   width: 100%;
   max-width: 1400px;
   margin: 2rem auto;
   padding: 1.5rem;
+  margin-top: auto;
   background: #3b2524;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
@@ -174,7 +156,6 @@ input.edit-select-course {
   color: #ffffd5;
 }
 
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -201,20 +182,15 @@ td {
   vertical-align: middle;
 }
 
-
 select[multiple] {
   border: 1px solid #735044;
   border-radius: 6px;
   width: 150px;
-
   overflow-y: auto;
-
   scrollbar-width: none;
-
   background: #3b2524;
   color: #ffffd5;
 }
-
 
 select[multiple]::-webkit-scrollbar {
   display: none;
@@ -223,7 +199,6 @@ select[multiple]::-webkit-scrollbar {
 select[multiple].teacher-subjects {
   width: 180px;
 }
-
 
 textarea {
   border: 1px solid #735044;
@@ -243,7 +218,6 @@ textarea.teacher-course-textarea {
   margin: auto -10px;
 }
 
-
 .account-table {
   font-family: Arial, Helvetica, sans-serif;
   margin: 2rem auto;
@@ -261,19 +235,15 @@ textarea.teacher-course-textarea {
   color: #ffffd5;
 }
 
-
 input[type=checkbox] {
   -moz-appearance: none;
   appearance: none;
-
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
   border: 2px solid #735044;
-
   border-radius: 4px;
   background-color: #3b2524;
-
   cursor: pointer;
   position: relative;
   transition: background-color 0.2s, border-color 0.2s;
@@ -281,12 +251,10 @@ input[type=checkbox] {
 
 input[type=checkbox]:hover {
   border-color: #b76b53;
-
 }
 
 input[type=checkbox]:checked {
   background-color: #ff9f72;
-
   border-color: #ff9f72;
 }
 
