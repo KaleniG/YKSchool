@@ -10,7 +10,9 @@
 <body>
   <form method="post">
     <button type="submit" name="page" value="Admin/Login.php">Admin Login</button>
+    <br>
     <button type="submit" name="page" value="Teacher/Login.php">Teacher Login</button>
+    <br>
     <button type="submit" name="page" value="Student/Login.php">Student Login</button>
   </form>
 </body>

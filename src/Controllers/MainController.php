@@ -68,6 +68,10 @@ class MainController
         case "Teacher/Edit.php":
           $this->handleTeacherClient();
           break;
+        case "Student/Login.php":
+        case "Student/Edit.php":
+          $this->handleStudentClient();
+          break;
       }
 
       header("Location: index.php");
@@ -391,7 +395,6 @@ class MainController
   {
     $manager = new TeacherManager();
     $this->current_table["teachers"] = $manager->getTeacher($this->user->name, $this->user->surname);
-    //LogManager::info(var_export($this->current_table["teachers"]["id"], true));
 
     $manager = new CourseManager();
     $this->current_table["course_teachers"] = $manager->getCoursesOfTeacher($this->current_table["teachers"]["id"]);
@@ -415,5 +418,96 @@ class MainController
     $_SESSION["current_table"] = $this->current_table;
   }
 
-  public function handleTeacherStudents() {}
+  public function handleStudentClient()
+  {
+    switch ($this->page) {
+      case "Student/Login.php": {
+          $manager = new StudentManager();
+          $student = new Student();
+          $student->name = $_POST["name"] ?? "";
+          $student->surname = $_POST["surname"] ?? "";
+          if ($manager->validate($student)) {
+            $this->user = serialize($student);
+            $_SESSION["user"] = $this->user;
+            $this->page = "Student/Edit.php";
+            $_SESSION["page"] = $this->page;
+          }
+          break;
+        }
+      case "Student/Edit.php": {
+          // LOG OUT CASE
+          if (isset($_POST["logout"])) {
+            session_unset();
+            break;
+          }
+
+          // PRESSED SELECT ON TEACHER EDITING CHOICES
+          $this->edit_selection = $_POST["edit_selection"] ?? null;
+          $_SESSION["edit_selection"] = $this->edit_selection;
+
+          // HANDLING ALL EDITING/VIEWING LOGIC
+          if (isset($this->edit_selection)) {
+            switch ($this->edit_selection) {
+              case "myaccount":
+                $this->handleStudentAccount();
+                break;
+              case "courses":
+                $this->handleStudentCourses();
+                break;
+            }
+          }
+          break;
+        }
+    }
+  }
+
+  public function handleStudentAccount()
+  {
+    $manager = new StudentManager();
+    $this->current_table["students"] = $manager->getStudent($this->user->name, $this->user->surname);
+
+    $_SESSION["current_table"] = $this->current_table;
+
+    if (isset($_POST["operation"])) {
+      $manager = new StudentManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateChanges($modified_table);
+      }
+
+      $this->current_table["teachers"] = $manager->getStudent($this->user->name, $this->user->surname);
+      $_SESSION["current_table"] = $this->current_table;
+    }
+  }
+
+  public function handleStudentCourses()
+  {
+    $manager = new StudentManager();
+    $this->current_table["students"] = $manager->getStudent($this->user->name, $this->user->surname);
+
+    $manager = new CourseManager();
+    $this->current_table["courses"] = $manager->getAllCourses();
+    $this->current_table["course_students"] = $manager->getCoursesOfStudent($this->current_table["students"]["id"]);
+    LogManager::info(var_export($this->current_table["course_students"], true));
+
+    $_SESSION["current_table"] = $this->current_table;
+
+    if (isset($_POST["operation"])) {
+      $manager = new CourseManager();
+
+      if ($_POST["operation"] == "save_changes") {
+        $modified_table = $_POST["modified_table"] ?? [];
+        $manager->updateDescription($modified_table); ////////////////GYSGJDGAYGYJGSYJAGJSG
+      }
+    }
+
+    $manager = new StudentManager();
+    $this->current_table["students"] = $manager->getStudent($this->user->name, $this->user->surname);
+
+    $manager = new CourseManager();
+    $this->current_table["course_students"] = $manager->getCoursesOfStudent($this->current_table["students"]["id"]);
+
+    $_SESSION["current_table"] = $this->current_table;
+  }
 }

@@ -16,8 +16,8 @@ if (isset($this->edit_selection)) {
     $course_description = $course["description"];
 
     echo ("<tr>
-      <th>$course_name</th>
-      <th><textarea name='modified_table[$course_id][description]'>$course_description</textarea></th>
+      <td>$course_name</td>
+      <td><textarea name='modified_table[$course_id][description]'>$course_description</textarea></t>
     </tr>");
   }
 

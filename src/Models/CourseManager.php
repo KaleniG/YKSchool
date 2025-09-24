@@ -43,6 +43,21 @@ class CourseManager extends Model
     return pg_fetch_all($result);
   }
 
+  public function getCoursesOfStudent($student_id)
+  {
+    pg_prepare(
+      Model::getConn(),
+      "get_courses_of_student",
+      "SELECT courses.id AS course_id, courses.name AS course_name, courses.description AS course_description
+      FROM course_students JOIN courses ON course_students.course_id = courses.id
+      WHERE course_students.student_id = $1"
+    );
+
+    $result = pg_execute(Model::getConn(), "get_courses_of_student", array($student_id));
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    return pg_fetch_all($result);
+  }
+
   public function getAllCourseStudents()
   {
     $query = "SELECT * FROM course_students";

@@ -29,6 +29,28 @@ class StudentManager extends Model
     return pg_fetch_all($result);
   }
 
+  public function getStudent($name, $surname)
+  {
+    pg_prepare(
+      Model::getConn(),
+      "get_student",
+      "SELECT * FROM students WHERE students.name=$1 AND students.surname=$2 LIMIT 1"
+    );
+
+    $result = pg_execute(Model::getConn(), "get_student", array($name, $surname));
+    if (!$result) LogManager::error("Query failed");
+
+    $row = pg_fetch_assoc($result);
+    return [
+      "id" => $row['id'],
+      "name" => $row['name'],
+      "surname" => $row['surname'],
+      "email" => $row['email'],
+      "phone_number" => $row['phone_number'],
+      "tuition_enabled" => $row['tuition_enabled']
+    ];
+  }
+
   public function updateChanges($changes)
   {
     pg_prepare(
@@ -41,7 +63,6 @@ class StudentManager extends Model
       $phone = $fields['phone_number'];
       $tuition_enabled = $fields['tuition_enabled'];
 
-      LogManager::info("$id, $email, $phone");
       pg_execute(Model::getConn(), "students_update", array($email, $phone, $tuition_enabled, $id));
     }
   }
