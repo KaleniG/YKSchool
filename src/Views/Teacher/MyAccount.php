@@ -16,7 +16,7 @@
 
   echo ("<label>E-mail:</label><input type='text' name='modified_table[{$id}][email]' value='{$email}'><br>");
   echo ("<label>Phone Number:</label><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}'><br>");
-  echo ("<label>Teaching Subjects:</label><select name='modified_table[{$id}][teaching_subjects][]' class='teacher-subjects' multiple>");
+  echo ("<label>Teaching Subjects:</label><select name='modified_table[{$id}][teaching_subjects][]' class='teacher-subjects' size='3' multiple>");
 
   foreach ($subjects_table as $subject_row) {
     $subject_name = $subject_row['subject'];

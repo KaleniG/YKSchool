@@ -206,14 +206,17 @@ td {
 select[multiple] {
   border: 1px solid #735044;
   border-radius: 6px;
-  height: 60px;
   width: 150px;
-  overflow: hidden;
+  /* Allow scrolling but hide scrollbar */
+  overflow-y: auto;
+  /* enables scrolling */
   scrollbar-width: none;
+  /* hides scrollbar in Firefox */
   background: #3b2524;
   color: #ffffd5;
 }
 
+/* Hide scrollbar in WebKit browsers */
 select[multiple]::-webkit-scrollbar {
   display: none;
 }

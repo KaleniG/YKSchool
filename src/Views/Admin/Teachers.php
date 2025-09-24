@@ -21,7 +21,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     <td><input type='text' value='{$surname}'disabled></td>
     <td><input type='email' name='modified_table[{$id}][email]' value='{$email}'></td>
     <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}'></td>
-    <td><select name='modified_table[{$id}][teaching_subjects][]' multiple>");
+    <td><select name='modified_table[{$id}][teaching_subjects][]' size='3' multiple>");
 
 
   // Start: Multiple subject selection logic
@@ -49,7 +49,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   <td><input type='text' name='new_teacher[surname]'></td>
   <td><input type='email' name='new_teacher[email]'></td>
   <td><input type='text' name='new_teacher[phone_number]'></td>
-  <td><select name='new_teacher[teaching_subjects][]' multiple>
+  <td><select name='new_teacher[teaching_subjects][]' size="3" multiple>
 
       <?php
       // ADD

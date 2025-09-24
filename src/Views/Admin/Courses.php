@@ -46,7 +46,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
 
   $course_teachers_table = $this->current_table["course_teachers"];
   if (!empty($this->temp["selected_subject"][$id])) {
-    echo ("<select name='modified_table[$id][teachers][]' multiple>");
+    echo ("<select name='modified_table[$id][teachers][]' size='3' multiple>");
 
     foreach ($this->temp["selected_subject"][$id] as $teacher_row) {
       $teacher_id = $teacher_row["teacher_id"];
@@ -68,7 +68,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
 
   $course_students_table = $this->current_table["course_students"];
   $students_table = $this->current_table["students"];
-  echo ("</td><td><select name='modified_table[$id][students][]' multiple>");
+  echo ("</td><td><select name='modified_table[$id][students][]' size='3' multiple>");
   foreach ($students_table as $student_row) {
     $student_id = $student_row["id"];
     $student_name = $student_row["name"];
@@ -117,7 +117,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
       LogManager::info(var_export($teachers_table, true));
 
       if (!empty($teachers_table)) {
-        echo ("<select name='new_course[teachers][]' multiple>");
+        echo ("<select name='new_course[teachers][]' size='3' multiple>");
 
         foreach ($teachers_table as $teacher_row) {
           $teacher_id = $teacher_row["teacher_id"];
@@ -133,7 +133,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
 
       $students_table = $this->current_table["students"];
       if (!empty($students_table)) {
-        echo ("</td><td><select name='new_course[students][]' multiple>");
+        echo ("</td><td><select name='new_course[students][]' size='3' multiple>");
         foreach ($students_table as $student_row) {
           $student_id = $student_row["id"];
           $student_name = $student_row["name"];

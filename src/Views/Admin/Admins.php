@@ -16,10 +16,10 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   $phone_number = $row["phone_number"];
 
   echo ("<tr>
-    <td><input type='text' value='{$name}'disabled></td>
-    <td><input type='text' value='{$surname}'disabled></td>
-    <td><input type='email' name='modified_table[{$id}][email]' value='{$email}'></td>
-    <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}'></td>");
+    <td><input type='text' value='{$name}' autocorrect='off' autocapitalize='off' spellcheck='false' disabled></td>
+    <td><input type='text' value='{$surname}' autocorrect='off' autocapitalize='off' spellcheck='false' disabled></td>
+    <td><input type='email' name='modified_table[{$id}][email]' value='{$email}' autocapitalize='off' spellcheck='false'></td>
+    <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}' autocorrect='off' autocapitalize='off' spellcheck='false'></td>");
   if ($name == $this->user->name && $surname == $this->user->surname)
     echo ("<td><button type='submit' class='nav-button' disabled>Delete</button></td>");
   else
@@ -28,9 +28,9 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
 }
 ?>
 <tr>
-  <td><input type='text' name='new_admin[name]'></td>
-  <td><input type='text' name='new_admin[surname]'></td>
-  <td><input type='email' name='new_admin[email]'></td>
-  <td><input type='text' name='new_admin[phone_number]'></td>
+  <td><input type='text' name='new_admin[name]' autocorrect='off' autocapitalize='on' spellcheck='false'></td>
+  <td><input type='text' name='new_admin[surname]' autocorrect='off' autocapitalize='on' spellcheck='false'></td>
+  <td><input type='email' name='new_admin[email]' autocapitalize='off' spellcheck='false'></td>
+  <td><input type='text' name='new_admin[phone_number]' autocorrect='off' autocapitalize='off' spellcheck='false'></td>
   <td><button type='submit' name='operation' value='add' class='nav-button'>Add</button></td>
 </tr>
