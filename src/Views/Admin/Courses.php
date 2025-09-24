@@ -24,7 +24,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   <td><input type='text' name='modified_table[{$id}][name]' value='{$name}'></td>
   <td><textarea name='modified_table[{$id}][description]'>$description</textarea></td>
   <td>
-  <select name='modified_table[{$id}][status]'>
+  <select name='modified_table[{$id}][status]' class='edit-select'>
   <option>Choose an option</option>
   <option value='Active' " . (($status == "Active") ? "selected" : "") . ">Active</option>
   <option value='Suspended' " . (($status == "Suspended") ? "selected" : "") . ">Suspended</option>
@@ -37,7 +37,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     $subject_name = $subject_row["subject"];
     $subject_id = $subject_row["id"];
     if ($course_subject_id == $subject_id) {
-      echo ("$subject_name");
+      echo ("<input type='text' value='{$subject_name}' class='edit-select-course' disabled>");
       break;
     }
   }
@@ -62,6 +62,8 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     }
 
     echo ("</select>");
+  } else {
+    echo ("<select multiple></select>");
   }
 
   $course_students_table = $this->current_table["course_students"];
@@ -96,7 +98,7 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
     </select>
   </td>
   <td>
-    <select name='new_course[subject]' onchange='selected_subject_submit();' class="edit-select">
+    <select name='new_course[subject]' onchange='selected_subject_submit();' class="edit-select-course">
 
       <?php
       // ADD
@@ -125,6 +127,8 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
         }
 
         echo ("</select>");
+      } else {
+        echo ("<select multiple></select>");
       }
 
       $students_table = $this->current_table["students"];
@@ -139,5 +143,5 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
         }
         echo ("</select></td>");
       } else
-        echo ("<td></td>");
+        echo ("<td><select multiple></select></td>");
       echo ("<td><button type='submit' name='operation' value='add' class='nav-button'>Add</button></td></tr>");

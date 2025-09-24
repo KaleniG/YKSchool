@@ -17,8 +17,8 @@ foreach ($this->current_table[$this->edit_selection] as $row) {
   $phone_number = $row["phone_number"];
 
   echo ("<tr>
-    <td>{$name}</td>
-    <td>{$surname}</td>
+    <td><input type='text' value='{$name}'disabled></td>
+    <td><input type='text' value='{$surname}'disabled></td>
     <td><input type='email' name='modified_table[{$id}][email]' value='{$email}'></td>
     <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}'></td>
     <td><select name='modified_table[{$id}][teaching_subjects][]' multiple>");

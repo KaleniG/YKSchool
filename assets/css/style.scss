@@ -10,6 +10,19 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   color: #ffffd5;
   /* light text */
+  user-select: none;
+}
+
+*::selection {
+  background-color: #ff9f72;
+  /* hover/accent color */
+  color: #3b2524;
+  /* dark text */
+}
+
+*::-moz-selection {
+  background-color: #ff9f72;
+  color: #3b2524;
 }
 
 /* === Unified Buttons === */
@@ -26,6 +39,7 @@ button,
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
+  user-select: none;
 }
 
 button:hover,
@@ -127,6 +141,28 @@ input:-webkit-autofill:active {
   color: #ffffd5;
 }
 
+select.edit-select-course {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #735044;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  background: #3b2524;
+  color: #ffffd5;
+}
+
+input.edit-select-course {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #735044;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  background: #3b2524;
+  color: #ffffd5;
+}
+
 /* === Tables === */
 table {
   width: 100%;
@@ -157,6 +193,7 @@ td {
 /* === Multi-selects === */
 select[multiple] {
   border: 1px solid #735044;
+  border-radius: 6px;
   height: 60px;
   width: 150px;
   overflow: hidden;
@@ -249,3 +286,20 @@ input[type="checkbox"]:checked::after {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
+select {
+  user-select: none;
+}
+
+select[multiple] option:checked {
+  background: #ff9f72 linear-gradient(0deg, #ff9f72 0%, #ff9f72 100%);
+}
+
+select:focus option:checked {
+  background: #ff9f72 linear-gradient(0deg, #ff9f72 0%, #ff9f72 100%);
+}
+
+select:focus option:hover {
+  background: #ff9f72 linear-gradient(0deg, #ff9f72 0%, #ff9f72 100%);
+}
+
