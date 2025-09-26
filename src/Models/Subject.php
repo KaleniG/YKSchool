@@ -4,10 +4,11 @@ namespace App\Models;
 
 class Subject
 {
-  public $subject = "";
+  public $id = null;
+  public $name = "";
 
   public function validate()
   {
-    return !empty($this->subject);
+    return !empty($this->name);
   }
 }

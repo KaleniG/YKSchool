@@ -3,34 +3,60 @@
   <th>Surname</th>
   <th>E-mail</th>
   <th>Phone Number</th>
-  <th></th>
+  <th style="min-width: 180px;"></th>
 </tr>
 
-<?php
-// UPDATE/DELETE
-foreach ($this->current_table[$this->edit_selection] as $row) {
-  $id = $row["id"];
-  $name = $row['name'];
-  $surname = $row['surname'];
-  $email = $row["email"];
-  $phone_number = $row["phone_number"];
-
-  echo ("<tr>
-    <td><input type='text' value='{$name}' autocorrect='off' autocapitalize='off' spellcheck='false' disabled></td>
-    <td><input type='text' value='{$surname}' autocorrect='off' autocapitalize='off' spellcheck='false' disabled></td>
-    <td><input type='email' name='modified_table[{$id}][email]' value='{$email}' autocapitalize='off' spellcheck='false'></td>
-    <td><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}' autocorrect='off' autocapitalize='off' spellcheck='false'></td>");
-  if ($name == $this->user->name && $surname == $this->user->surname)
-    echo ("<td></td>");
-  else
-    echo ("<td><button type='submit' name='operation' value='delete|{$id}' class='nav-button'>Delete</button></td>");
-  echo ("</tr>");
-}
+<!-- UPDATE/DELETE -->
+<?php foreach ($this->admins as $admin_row):
+  $id = $admin_row["id"];
+  $name = $admin_row["name"];
+  $surname = $admin_row["surname"];
+  $email = $admin_row["email"];
+  $phone = $admin_row["phone_number"];
 ?>
+  <tr>
+    <td><input type="text" value="<?= $name ?>" disabled></td>
+    <td><input type="text" value="<?= $surname ?>" disabled></td>
+    <td><input type="email" name="operation[save][<?= $id ?>][email]" value="<?= $email ?>"></td>
+    <td><input type="text" name="operation[save][<?= $id ?>][phone_number]" value="<?= $phone ?>"></td>
+    <td>
+      <?php if ($this->user["id"] != $id): ?>
+        <button type="submit" name="operation[delete]" value="<?= $id ?>" class="nav-button">Delete</button>
+      <?php endif; ?>
+      <script>
+        (function() {
+          const row = document.currentScript.parentNode.parentNode; // <tr>
+          const emailInput = row.querySelector('input[name="operation[save][<?= $id ?>][email]"]');
+          const phoneInput = row.querySelector('input[name="operation[save][<?= $id ?>][phone_number]"]');
+
+          const saveBtn = document.createElement('button');
+          saveBtn.type = 'submit';
+          saveBtn.name = 'operation[save][confirm]';
+          saveBtn.value = '<?= $id ?>';
+          saveBtn.className = 'nav-button';
+          saveBtn.textContent = 'Save';
+
+          function showSave() {
+            const cell = emailInput.closest('tr').querySelector('td:last-child');
+            if (!cell.contains(saveBtn)) {
+              cell.appendChild(saveBtn);
+            }
+          }
+
+          emailInput.addEventListener('input', showSave);
+          phoneInput.addEventListener('input', showSave);
+        })();
+      </script>
+    </td>
+  </tr>
+<?php endforeach; ?>
+
+
+<!-- INSERT -->
 <tr>
-  <td><input type='text' name='new_admin[name]' autocorrect='off' autocapitalize='on' spellcheck='false'></td>
-  <td><input type='text' name='new_admin[surname]' autocorrect='off' autocapitalize='on' spellcheck='false'></td>
-  <td><input type='email' name='new_admin[email]' autocapitalize='off' spellcheck='false'></td>
-  <td><input type='text' name='new_admin[phone_number]' autocorrect='off' autocapitalize='off' spellcheck='false'></td>
-  <td><button type='submit' name='operation' value='add' class='nav-button'>Add</button></td>
+  <td><input type='text' name='operation[add][name]' autocorrect='off' autocapitalize='on' spellcheck='false'></td>
+  <td><input type='text' name='operation[add][surname]' autocorrect='off' autocapitalize='on' spellcheck='false'></td>
+  <td><input type='email' name='operation[add][email]' autocapitalize='off' spellcheck='false'></td>
+  <td><input type='text' name='operation[add][phone_number]' autocorrect='off' autocapitalize='off' spellcheck='false'></td>
+  <td><button type='submit' name='operation[add][confirm]' class='nav-button'>Add</button></td>
 </tr>

@@ -22,7 +22,7 @@ class AssetManager
     $id = session_id();
     $allfiles = "";
     foreach ($this->css as $css_file)
-      $allfiles .= "<link rel='stylesheet' href='{$css_file}?v={$id}3s'>";
+      $allfiles .= "<link rel='stylesheet' href='{$css_file}?v={$id}3ds'>";
     return $allfiles;
   }
 

@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-class Model
+abstract class Model
 {
   private static $db_conn = null;
 
@@ -32,7 +32,7 @@ class Model
     }
   }
 
-  public static function getConn()
+  protected static function getConn()
   {
     if (!isset(self::$db_conn))
       self::initDB();
@@ -44,4 +44,6 @@ class Model
   {
     return pg_last_error(self::getConn());
   }
+
+  abstract public function prepareAll();
 }

@@ -7,6 +7,35 @@ use App\Config\Model;
 
 class StudentManager extends Model
 {
+  private static $prepared = false;
+
+  public function prepareAll()
+  {
+    if (StudentManager::$prepared) return;
+
+    pg_prepare(
+      Model::getConn(),
+      "get_all_students",
+      "SELECT * FROM students ORDER BY id ASC"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "student_delete",
+      "DELETE FROM students 
+      WHERE id=$1"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "student_add",
+      "INSERT INTO students (name, surname, email, phone_number, tuition_enabled) 
+      VALUES ($1, $2, $3, $4, $5)"
+    );
+
+    StudentManager::$prepared = true;
+  }
+
   public function validate(Student $admin)
   {
     $query = "SELECT COUNT(*) FROM students WHERE name = $1 AND surname = $2";
@@ -20,11 +49,13 @@ class StudentManager extends Model
 
   public function getAllStudents()
   {
-    $query = "SELECT * FROM students";
-    $result = pg_query(Model::getConn(), $query);
+    $result = pg_execute(
+      Model::getConn(),
+      "get_all_students",
+      []
+    );
 
-    if (!$result)
-      LogManager::error("Query failed");
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -67,15 +98,77 @@ class StudentManager extends Model
     }
   }
 
+  public function update($changes)
+  {
+    if (!isset($changes["id"]))
+      LogManager::error("Invalid student update parameters");
+
+    $id = $changes["id"];
+    $fields = [];
+    $values = [];
+
+    if (array_key_exists("email", $changes)) {
+      $fields[] = "email = $" . (count($values) + 1);
+      $values[] = $changes["email"];
+    }
+    if (array_key_exists("phone_number", $changes)) {
+      $fields[] = "phone_number = $" . (count($values) + 1);
+      $values[] = $changes["phone_number"];
+    }
+    if (array_key_exists("tuition_enabled", $changes)) {
+      $fields[] = "tuition_enabled = $" . (count($values) + 1);
+      $values[] = ($changes["tuition_enabled"]) ? 't' : 'f';
+    }
+
+    if (empty($fields))
+      return;
+
+    $values[] = $id;
+    $sql = "UPDATE students SET " . implode(", ", $fields) . " WHERE id=$" . count($values);
+
+    $result = pg_query_params(Model::getConn(), $sql, $values);
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+  }
+
   public function delete($id)
   {
-    pg_prepare(Model::getConn(), "students_delete", "DELETE FROM students WHERE id=$1");
-    pg_execute(Model::getConn(), "students_delete", array($id));
+    if (!isset($id))
+      LogManager::error("Invalid student delete parameter");
+
+    /*
+    pg_prepare(
+      Model::getConn(),
+      "student_delete",
+      "DELETE FROM students 
+      WHERE id=$1"
+    );
+*/
+    $result = pg_execute(
+      Model::getConn(),
+      "student_delete",
+      [$id]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
   }
 
   public function add(Student $student)
   {
-    pg_prepare(Model::getConn(), "students_add", "INSERT INTO students (name, surname, email, phone_number, tuition_enabled) VALUES ($1, $2, $3, $4, $5)");
-    pg_execute(Model::getConn(), "students_add", array($student->name, $student->surname, $student->email, $student->phone_number, $student->tuition_enabled));
+    /*
+    pg_prepare(
+      Model::getConn(),
+      "student_add",
+      "INSERT INTO students (name, surname, email, phone_number, tuition_enabled) 
+      VALUES ($1, $2, $3, $4, $5)"
+    );*/
+
+    $result = pg_execute(
+      Model::getConn(),
+      "student_add",
+      [$student->name, $student->surname, $student->email, $student->phone_number, (($student->tuition_enabled) ? "t" : "f")]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
   }
 }

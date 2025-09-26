@@ -7,6 +7,57 @@ use App\Config\Model;
 
 class TeacherManager extends Model
 {
+  private static $prepared = false;
+
+  public function prepareAll()
+  {
+    if (TeacherManager::$prepared) return;
+
+    pg_prepare(
+      Model::getConn(),
+      "get_all_teachers_with_subjects",
+      "SELECT 
+      t.id AS id, 
+      t.name AS name, 
+      t.surname AS surname, 
+      t.email AS email, 
+      t.phone_number AS phone_number, 
+      COALESCE(ARRAY_AGG(st.subject_id ORDER BY st.subject_id), '{}') AS teaching_subjects
+      FROM teachers t
+      LEFT JOIN subject_teachers st ON t.id = st.teacher_id
+      GROUP BY t.id, t.name, t.surname, t.email, t.phone_number
+      ORDER BY t.id"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "delete_teacher_subject",
+      "DELETE FROM subject_teachers WHERE subject_id=$1 AND teacher_id=$2"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "add_teacher_subject",
+      "INSERT INTO subject_teachers (subject_id, teacher_id) 
+      VALUES ($1, $2)"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "delete_teacher",
+      "DELETE FROM teachers WHERE id=$1"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "add_teacher",
+      "INSERT INTO teachers (name, surname, email, phone_number) 
+      VALUES ($1, $2, $3, $4) RETURNING id"
+    );
+
+    TeacherManager::$prepared = true;
+  }
+
   public function validate(Teacher $teacher)
   {
     $query = "SELECT COUNT(*) FROM teachers WHERE name = $1 AND surname = $2";
@@ -62,14 +113,28 @@ class TeacherManager extends Model
     ];
   }
 
-  public function getAllTeachers()
+  public function getAllTeachersWithSubjects()
   {
-    $query = "SELECT * FROM teachers";
-    $result = pg_query(Model::getConn(), $query);
+    $result = pg_execute(
+      Model::getConn(),
+      "get_all_teachers_with_subjects",
+      []
+    );
 
     if (!$result) LogManager::error("Query failed: " . Model::getError());
 
-    return pg_fetch_all($result);
+    $teachers = pg_fetch_all($result);
+
+    if (!$teachers) return [];
+
+    foreach ($teachers as &$teacher) {
+      if (isset($teacher['teaching_subjects'])) {
+        $pgArray = trim($teacher['teaching_subjects'], '{}');
+        $teacher['teaching_subjects'] = $pgArray === '' ? [] : array_map('intval', explode(',', $pgArray));
+      }
+    }
+
+    return $teachers;
   }
 
   public function getAllSubjectTeachers($subject_id)
@@ -159,23 +224,98 @@ class TeacherManager extends Model
     }
   }
 
+  public function update($changes)
+  {
+    if (!isset($changes["id"]))
+      LogManager::error("Invalid student update parameters");
+
+    $id = $changes["id"];
+    $fields = [];
+    $values = [];
+
+    if (array_key_exists("email", $changes)) {
+      $fields[] = "email = $" . (count($values) + 1);
+      $values[] = $changes["email"];
+    }
+    if (array_key_exists("phone_number", $changes)) {
+      $fields[] = "phone_number = $" . (count($values) + 1);
+      $values[] = $changes["phone_number"];
+    }
+
+    $values[] = $id;
+    $sql = "UPDATE teachers SET " . implode(", ", $fields) . " WHERE id=$" . count($values);
+
+    $result = pg_query_params(Model::getConn(), $sql, $values);
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+
+    $manager = new SubjectManager();
+    $manager->prepareAll();
+    $all_subjects = $manager->getTeacherSubjects($id) ?? [];
+
+    // Ensure array
+    $changes["teaching_subjects"] = isset($changes["teaching_subjects"])
+      ? (array)$changes["teaching_subjects"]
+      : [];
+
+    foreach ($all_subjects as $subject) {
+      $subjectId = $subject["id"];
+      if (($key = array_search($subjectId, $changes["teaching_subjects"])) !== false) {
+        unset($changes["teaching_subjects"][$key]);
+      } else if (!in_array($subjectId, $changes["teaching_subjects"])) {
+        $result = pg_execute(
+          Model::getConn(),
+          "delete_teacher_subject",
+          [$subjectId, $id]
+        );
+        if (!$result) LogManager::error("Query failed: " . Model::getError());
+      }
+    }
+
+    foreach ($changes["teaching_subjects"] as $subjectId) {
+      $result = pg_execute(
+        Model::getConn(),
+        "add_teacher_subject",
+        [$subjectId, $id]
+      );
+      if (!$result) LogManager::error("Query failed: " . Model::getError());
+    }
+  }
+
   public function delete($id)
   {
-    pg_prepare(Model::getConn(), "teachers_delete", "DELETE FROM teachers WHERE id=$1");
-    $result = pg_execute(Model::getConn(), "teachers_delete", array($id));
+    if (!isset($id))
+      LogManager::error("Invalid subject delete parameters");
+
+    $result = pg_execute(
+      Model::getConn(),
+      "delete_teacher",
+      [$id]
+    );
+
     if (!$result) LogManager::error("Query failed: " . Model::getError());
   }
 
   public function add(Teacher $teacher)
   {
-    pg_prepare(Model::getConn(), "teachers_add", "INSERT INTO teachers (name, surname, email, phone_number) VALUES ($1, $2, $3, $4) RETURNING id");
-    $result = pg_execute(Model::getConn(), "teachers_add", array($teacher->name, $teacher->surname, $teacher->email, $teacher->phone_number));
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
-    $new_teacher_id = pg_fetch_result($result, 0, 'id');
+    $result = pg_execute(
+      Model::getConn(),
+      "add_teacher",
+      [$teacher->name, $teacher->surname, $teacher->email, $teacher->phone_number]
+    );
 
-    foreach ($teacher->teaching_subjects as $subject_name) {
-      pg_prepare(Model::getConn(), "add_subject_teacher", "INSERT INTO subject_teachers (subject_id, teacher_id) VALUES ($1, $2) ON CONFLICT DO NOTHING");
-      $result = pg_execute(Model::getConn(), "add_subject_teacher", [$subject_name, $new_teacher_id]);
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+
+    $new_teacher_id = pg_fetch_assoc($result, 0);
+
+    foreach ($teacher->teaching_subjects as $teaching_subject) {
+
+      $result = pg_execute(
+        Model::getConn(),
+        "add_teacher_subject",
+        [$teaching_subject, $new_teacher_id["id"]]
+      );
+
       if (!$result) LogManager::error("Query failed: " . Model::getError());
     }
   }

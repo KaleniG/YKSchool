@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS students (
 -- Subjects table
 CREATE TABLE IF NOT EXISTS subjects (
     id SERIAL NOT NULL PRIMARY KEY,
-    subject VARCHAR(20) NOT NULL
+    name VARCHAR(20) NOT NULL
 );
 
 -- Courses table
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS courses (
     status course_status DEFAULT 'UnderDevelopment',
     subject_id INT DEFAULT NULL,
     CONSTRAINT fk_course_subject FOREIGN KEY (subject_id)
-        REFERENCES subjects (id) ON DELETE SET NULL
+        REFERENCES subjects (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Subject-Teachers table

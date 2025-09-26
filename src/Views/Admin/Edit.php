@@ -18,7 +18,7 @@ $asset = new AssetManager();
 
 <body>
   <form method="post" id="main_form" action="" class="main_form">
-    <button type="submit" name="logout" class="nav-button">Logout</button>
+    <button type="submit" name="page" value="Home.php" class="nav-button">Logout</button>
     <select name="edit_selection" onchange='selected_subject_submit();' class="edit-select">
       <option>Choose an option</option>
       <option value="admins" <?= ($this->edit_selection == "admins") ? "selected" : ""; ?>>Administrators</option>
@@ -28,34 +28,35 @@ $asset = new AssetManager();
       <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>
     </select>
     <br>
-    <?php
+    <?php if (!empty($this->edit_selection)): ?>
+      <table class='main-table'>
+      <?php endif; ?>
+      <?php
 
-    use App\Config\Path;
+      use App\Config\Path;
 
-    if (!empty($this->edit_selection))
-      echo ("<table class='main-table'>");
+      switch ($this->edit_selection) {
+        case "admins":
+          include(Path::views("Admin/Admins.php"));
+          break;
+        case "teachers":
+          include(Path::views("Admin/Teachers.php"));
+          break;
+        case "students":
+          include(Path::views("Admin/Students.php"));
+          break;
+        case "subjects":
+          include(Path::views("Admin/Subjects.php"));
+          break;
+        case "courses":
+          include(Path::views("Admin/Courses.php"));
+          break;
+      }
 
-    switch ($this->edit_selection) {
-      case "admins":
-        include(Path::views("Admin/Admins.php"));
-        break;
-      case "teachers":
-        include(Path::views("Admin/Teachers.php"));
-        break;
-      case "students":
-        include(Path::views("Admin/Students.php"));
-        break;
-      case "subjects":
-        include(Path::views("Admin/Subjects.php"));
-        break;
-      case "courses":
-        include(Path::views("Admin/Courses.php"));
-        break;
-    }
-
-    if (isset($this->edit_selection))
-      echo ("</table><br><button type='submit' name='operation' value='save_changes' class='nav-button'>Save Changes</button>");
-    ?>
+      ?>
+      <?php if (isset($this->edit_selection)): ?>
+      </table>
+    <?php endif; ?>
   </form>
 </body>
 

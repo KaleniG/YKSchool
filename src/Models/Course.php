@@ -4,10 +4,11 @@ namespace App\Models;
 
 class Course
 {
+  public $id = null;
   public $name = "";
   public $description = "";
   public $status = "";
-  public $subject = "";
+  public $subject = null;
   public $teachers = [];
   public $students = [];
 

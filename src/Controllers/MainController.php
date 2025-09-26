@@ -74,7 +74,7 @@ class MainController
           break;
       }
 
-      header("Location: index.php");
+      header("Location: {$_SERVER['PHP_SELF']}");
       exit;
     }
 
@@ -218,8 +218,6 @@ class MainController
         $student->phone_number = htmlspecialchars($_POST["new_student"]["phone_number"] ?? "");
         if (isset($_POST["new_student"]["tuition_enabled"]))
           $student->tuition_enabled = ($_POST["new_student"]["tuition_enabled"] == "t");
-        else
-          $student->tuition_enabled = null;
         if ($student->validate())
           $manager->add($student);
       }

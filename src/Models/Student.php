@@ -4,6 +4,7 @@ namespace App\Models;
 
 class Student
 {
+  public $id = null;
   public $name = "";
   public $surname = "";
   public $email = "";

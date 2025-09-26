@@ -7,13 +7,67 @@ use App\Config\Model;
 
 class SubjectManager extends Model
 {
+  private static $prepared = false;
+
+  public function prepareAll()
+  {
+    if (SubjectManager::$prepared) return;
+
+    pg_prepare(
+      Model::getConn(),
+      "get_all_subjects",
+      "SELECT * FROM subjects ORDER BY id ASC"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "get_teacher_subjects",
+      "SELECT subject_id AS id FROM subject_teachers WHERE teacher_id=$1 ORDER BY id ASC"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "update_subject",
+      "UPDATE subjects SET name=$1 WHERE id=$2"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "delete_subject",
+      "DELETE FROM subjects WHERE id=$1"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "add_subject",
+      "INSERT INTO subjects (name) VALUES ($1)"
+    );
+
+    SubjectManager::$prepared = true;
+  }
+
   public function getAllSubjects()
   {
-    $query = "SELECT * FROM subjects";
-    $result = pg_query(Model::getConn(), $query);
+    $result = pg_execute(
+      Model::getConn(),
+      "get_all_subjects",
+      []
+    );
 
-    if (!$result)
-      LogManager::error("Query failed");
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+
+    return pg_fetch_all($result);
+  }
+
+  public function getTeacherSubjects($id)
+  {
+    $result = pg_execute(
+      Model::getConn(),
+      "get_teacher_subjects",
+      [$id]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -31,15 +85,45 @@ class SubjectManager extends Model
     }
   }
 
+  public function update($changes)
+  {
+    if (!isset($changes["id"], $changes["name"]))
+      LogManager::error("Invalid student update parameters");
+
+    $id = $changes["id"];
+    $changed_name = $changes["name"] ?? "";
+
+    $result = pg_execute(
+      Model::getConn(),
+      "update_subject",
+      [$changed_name, $id]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+  }
+
   public function delete($id)
   {
-    pg_prepare(Model::getConn(), "subjects_delete", "DELETE FROM subjects WHERE id=$1");
-    pg_execute(Model::getConn(), "subjects_delete", array($id));
+    if (!isset($id))
+      LogManager::error("Invalid subject delete parameters");
+
+    $result = pg_execute(
+      Model::getConn(),
+      "delete_subject",
+      [$id]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
   }
 
   public function add(Subject $subject)
   {
-    pg_prepare(Model::getConn(), "subjects_add", "INSERT INTO subjects (subject) VALUES ($1)");
-    pg_execute(Model::getConn(), "subjects_add", array($subject->subject));
+    $result = pg_execute(
+      Model::getConn(),
+      "add_subject",
+      [$subject->name]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
   }
 }
