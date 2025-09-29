@@ -68,6 +68,8 @@ class AdminManager extends Model
 
   public function getAllAdmins()
   {
+    $this->prepareAll();
+
     $result = pg_execute(
       Model::getConn(),
       "get_all_admins",
@@ -79,22 +81,10 @@ class AdminManager extends Model
     return pg_fetch_all($result);
   }
 
-  public function updateChanges($changes) 
-  {
-    pg_prepare(
-      Model::getConn(),
-      "admin_update",
-      "UPDATE administrators SET email=$1, phone_number=$2 WHERE id=$3"
-    );
-    foreach ($changes as $id => $fields) {
-      $email = htmlspecialchars($fields['email']);
-      $phone = htmlspecialchars($fields['phone_number']);
-      pg_execute(Model::getConn(), "admin_update", array($email, $phone, $id));
-    }
-  }
-
   public function update($changes)
   {
+    $this->prepareAll();
+
     if (!isset($changes["id"]))
       LogManager::error("Invalid admin update parameters");
 
@@ -124,6 +114,8 @@ class AdminManager extends Model
 
   public function delete($id)
   {
+    $this->prepareAll();
+
     if (!isset($id))
       LogManager::error("Invalid admin delete parameter");
 
@@ -138,6 +130,8 @@ class AdminManager extends Model
 
   public function add(Admin $admin)
   {
+    $this->prepareAll();
+
     $result = pg_execute(
       Model::getConn(),
       "admin_add",

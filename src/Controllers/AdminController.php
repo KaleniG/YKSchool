@@ -159,7 +159,6 @@ class AdminController
 
     // SESSION/DATABASE ADMINS LOADING (BUT ONLY ONCE)
     $manager = new AdminManager();
-    $manager->prepareAll();
     if (isset($_SESSION["admins"]))
       $this->admins = $_SESSION["admins"];
     else {
@@ -206,7 +205,6 @@ class AdminController
       $this->teachers = $_SESSION["teachers"];
     else {
       $manager = new TeacherManager();
-      $manager->prepareAll();
       $this->teachers = $manager->getAllTeachersWithSubjects() ?? [];
       $_SESSION["teachers"] = $this->teachers;
     }
@@ -216,7 +214,6 @@ class AdminController
       $this->subjects = $_SESSION["subjects"];
     else {
       $manager = new SubjectManager();
-      $manager->prepareAll();
       $this->subjects = $manager->getAllSubjects() ?? [];
       $_SESSION["subjects"] = $this->subjects;
     }
@@ -224,7 +221,6 @@ class AdminController
     // OPERATIONS ON TEACHERS
     if (isset($_POST["operation"])) {
       $manager = new TeacherManager();
-      $manager->prepareAll();
 
       if (isset($_POST["operation"]["save"]["confirm"])) {
         $id = $_POST["operation"]["save"]["confirm"];
@@ -250,7 +246,6 @@ class AdminController
 
       // SESSION VALUES REALOAD ON CHANGE
       $manager = new TeacherManager();
-      $manager->prepareAll();
       $this->teachers = $manager->getAllTeachersWithSubjects() ?? [];
       $_SESSION["teachers"] = $this->teachers;
     }
@@ -264,7 +259,6 @@ class AdminController
 
     // SESSION/DATABASE STUDENTS LOADING (BUT ONLY ONCE)
     $manager = new StudentManager();
-    $manager->prepareAll();
     if (isset($_SESSION["students"]))
       $this->students = $_SESSION["students"];
     else {
@@ -310,7 +304,6 @@ class AdminController
 
     // SESSION/DATABASE SUBJECTS LOADING (BUT ONLY ONCE)
     $manager = new SubjectManager();
-    $manager->prepareAll();
     if (isset($_SESSION["subjects"]))
       $this->subjects = $_SESSION["subjects"];
     else {
@@ -346,7 +339,6 @@ class AdminController
   {
     // SESSION/DATABASE COURSES LOADING
     $manager = new CourseManager();
-    $manager->prepareAll();
     if (isset($_SESSION["courses"]))
       $this->courses = $_SESSION["courses"];
     else {
@@ -359,7 +351,6 @@ class AdminController
       $this->subjects = $_SESSION["subjects"];
     else {
       $manager = new SubjectManager();
-      $manager->prepareAll();
       $this->subjects = $manager->getAllSubjects() ?? [];
       $_SESSION["subjects"] = $this->subjects;
     }
@@ -369,7 +360,6 @@ class AdminController
       $this->teachers = $_SESSION["teachers"];
     else {
       $manager = new TeacherManager();
-      $manager->prepareAll();
       $this->teachers = $manager->getAllTeachersWithSubjects() ?? [];
       $_SESSION["teachers"] = $this->teachers;
     }
@@ -379,7 +369,6 @@ class AdminController
       $this->students = $_SESSION["students"];
     else {
       $manager = new StudentManager();
-      $manager->prepareAll();
       $this->students = $manager->getAllStudents() ?? [];
       $_SESSION["students"] = $this->students;
     }
@@ -399,7 +388,6 @@ class AdminController
     // OPERATIONS ON COURSES
     if (isset($_POST["operation"])) {
       $manager = new CourseManager();
-      $manager->prepareAll();
 
       if (isset($_POST["operation"]["save"]["confirm"])) {
         $id = $_POST["operation"]["save"]["confirm"];

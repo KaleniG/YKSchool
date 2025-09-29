@@ -126,7 +126,6 @@ class StudentController
     // OPERATIONS ON PERSONAL TEACHER ACCOUNT
     if (isset($_POST["operation"])) {
       $manager = new StudentManager();
-      $manager->prepareAll();
 
       if (isset($_POST["operation"]["save"]["confirm"])) {
         $id = $_POST["operation"]["save"]["confirm"];
@@ -149,7 +148,6 @@ class StudentController
     // SESSION/DATABASE COURSES LOADING (BUT ONLY ONCE)
     if (isset($this->courses)) {
       $manager = new CourseManager();
-      $manager->prepareAll();
       $this->courses = $manager->getAllCoursesOnStudent($this->user["id"]) ?? [];
       $_SESSION["courses"] = $this->courses;
     }
@@ -157,7 +155,6 @@ class StudentController
     // OPERATIONS ON PERSONAL TEACHER ACCOUNT
     if (isset($_POST["operation"])) {
       $manager = new CourseManager();
-      $manager->prepareAll();
 
       if (isset($_POST["operation"]["save"]["confirm"])) {
         $id = $_POST["operation"]["save"]["confirm"];
@@ -171,7 +168,6 @@ class StudentController
 
       // SESSION VALUES REALOAD ON CHANGE
       $manager = new CourseManager();
-      $manager->prepareAll();
       $this->courses = $manager->getAllCoursesOnStudent($this->user["id"]) ?? [];
       $_SESSION["courses"] = $this->courses;
     }

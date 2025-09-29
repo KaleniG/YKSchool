@@ -79,6 +79,8 @@ class StudentManager extends Model
 
   public function getAllStudents()
   {
+    $this->prepareAll();
+
     $result = pg_execute(
       Model::getConn(),
       "get_all_students",
@@ -92,6 +94,8 @@ class StudentManager extends Model
 
   public function getStudent($id)
   {
+    $this->prepareAll();
+
     if (!isset($id))
       LogManager::error("Invalid student get parameters");
 
@@ -111,24 +115,10 @@ class StudentManager extends Model
     ];
   }
 
-  public function updateChanges($changes)
-  {
-    pg_prepare(
-      Model::getConn(),
-      "students_update",
-      "UPDATE students SET email=$1, phone_number=$2, tuition_enabled=$3 WHERE id=$4"
-    );
-    foreach ($changes as $id => $fields) {
-      $email = htmlspecialchars($fields['email']);
-      $phone = htmlspecialchars($fields['phone_number']);
-      $tuition_enabled = htmlspecialchars($fields['tuition_enabled']);
-
-      pg_execute(Model::getConn(), "students_update", array($email, $phone, $tuition_enabled, $id));
-    }
-  }
-
   public function update($changes)
   {
+    $this->prepareAll();
+
     if (!isset($changes["id"]))
       LogManager::error("Invalid student update parameters");
 
@@ -162,6 +152,8 @@ class StudentManager extends Model
 
   public function delete($id)
   {
+    $this->prepareAll();
+
     if (!isset($id))
       LogManager::error("Invalid student delete parameter");
 
@@ -176,6 +168,8 @@ class StudentManager extends Model
 
   public function add(Student $student)
   {
+    $this->prepareAll();
+
     $result = pg_execute(
       Model::getConn(),
       "student_add",

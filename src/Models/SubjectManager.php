@@ -48,6 +48,8 @@ class SubjectManager extends Model
 
   public function getAllSubjects()
   {
+    $this->prepareAll();
+
     $result = pg_execute(
       Model::getConn(),
       "get_all_subjects",
@@ -61,6 +63,8 @@ class SubjectManager extends Model
 
   public function getTeacherSubjects($id)
   {
+    $this->prepareAll();
+
     $result = pg_execute(
       Model::getConn(),
       "get_teacher_subjects",
@@ -72,21 +76,10 @@ class SubjectManager extends Model
     return pg_fetch_all($result);
   }
 
-  public function updateChanges($changes)
-  {
-    pg_prepare(
-      Model::getConn(),
-      "subjects_update",
-      "UPDATE subjects SET subject=$1 WHERE id=$2"
-    );
-    foreach ($changes as $id => $fields) {
-      $subject = htmlspecialchars($fields['subject']);
-      pg_execute(Model::getConn(), "subjects_update", array($subject, $id));
-    }
-  }
-
   public function update($changes)
   {
+    $this->prepareAll();
+
     if (!isset($changes["id"], $changes["name"]))
       LogManager::error("Invalid student update parameters");
 
@@ -104,6 +97,8 @@ class SubjectManager extends Model
 
   public function delete($id)
   {
+    $this->prepareAll();
+
     if (!isset($id))
       LogManager::error("Invalid subject delete parameters");
 
@@ -118,6 +113,8 @@ class SubjectManager extends Model
 
   public function add(Subject $subject)
   {
+    $this->prepareAll();
+
     $result = pg_execute(
       Model::getConn(),
       "add_subject",

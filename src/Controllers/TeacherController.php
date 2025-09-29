@@ -138,7 +138,6 @@ class TeacherController
     // SESSION/DATABASE SUBJECTS LOADING (BUT ONLY ONCE)
     if (isset($this->subjects)) {
       $manager = new SubjectManager();
-      $manager->prepareAll();
       $this->subjects = $manager->getAllSubjects() ?? [];
       $_SESSION["subjects"] = $this->subjects;
     }
@@ -146,7 +145,6 @@ class TeacherController
     // OPERATIONS ON PERSONAL TEACHER ACCOUNT
     if (isset($_POST["operation"])) {
       $manager = new TeacherManager();
-      $manager->prepareAll();
 
       if (isset($_POST["operation"]["save"]["confirm"])) {
         $id = $_POST["operation"]["save"]["confirm"];
@@ -170,7 +168,6 @@ class TeacherController
     // SESSION/DATABASE COURSES LOADING (BUT ONLY ONCE)
     if (!isset($this->courses)) {
       $manager = new TeacherManager();
-      $manager->prepareAll();
       $this->courses = $manager->getTeacherCourses($this->user["id"]) ?? [];
       $_SESSION["courses"] = $this->courses;
     }
@@ -178,7 +175,6 @@ class TeacherController
     // OPERATIONS ON PERSONAL TEACHER ACCOUNT
     if (isset($_POST["operation"])) {
       $manager = new CourseManager();
-      $manager->prepareAll();
 
       if (isset($_POST["operation"]["save"]["confirm"])) {
         $id = $_POST["operation"]["save"]["confirm"];
@@ -191,7 +187,6 @@ class TeacherController
 
       // SESSION VALUES REALOAD ON CHANGE
       $manager = new CourseManager();
-      $manager->prepareAll();
       $this->courses = $manager->getAllCourses() ?? [];
       $_SESSION["courses"] = $this->courses;
     }
