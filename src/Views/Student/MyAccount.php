@@ -7,22 +7,22 @@ $phone_number = $this->user["phone_number"];
 $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
 ?>
 
-<div>
-  <label>Name:</label>
-  <input type="text" value="<?= $name ?>" disabled>
-  <br>
-  <label>Surname:</label>
-  <input type="text" value="<?= $surname ?>" disabled>
-  <br>
-  <label>E-mail:</label>
-  <input type='text' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>'>
-  <br>
-  <label>Phone Number:</label>
-  <input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>'>
-  <br>
-  <label>Tution Status:</label>
-  <input type='text' name='operation[save][<?= $id ?>][tuition_enabled]' value='<?= $tuition_enabled ?>' disabled>
-  <br>
+<div class="edit-account">
+  <label class="edit">Name:
+    <input type="text" value="<?= $name ?>" class="edit" disabled>
+  </label>
+  <label class="edit">Surname:
+    <input type="text" value="<?= $surname ?>" class="edit" disabled>
+  </label>
+  <label class="edit">E-mail:
+    <input type='text' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' class="edit">
+  </label>
+  <label class="edit">Phone Number:
+    <input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' class="edit">
+  </label>
+  <label class="edit">Tution Status:
+    <input type='text' name='operation[save][<?= $id ?>][tuition_enabled]' value='<?= $tuition_enabled ?>' class="edit" disabled>
+  </label>
 </div>
 <script>
   (function() {
@@ -34,11 +34,15 @@ $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
     saveBtn.type = 'submit';
     saveBtn.name = 'operation[save][confirm]';
     saveBtn.value = '<?= $id ?>';
+    saveBtn.className = "edit-account-option-button-add"
     saveBtn.textContent = 'Save Changes';
 
     function showSave() {
       if (!saveBtn.isConnected) {
         container.insertAdjacentElement('afterend', saveBtn);
+        requestAnimationFrame(() => {
+          saveBtn.classList.add('visible'); // trigger fade-in
+        });
       }
     }
 

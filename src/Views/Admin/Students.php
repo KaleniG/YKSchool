@@ -18,13 +18,13 @@
 ?>
 
   <tr>
-    <td><input type='text' value='<?= $name ?>' disabled></td>
-    <td><input type='text' value='<?= $surname ?>' disabled></td>
-    <td><input type='email' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>'></td>
-    <td><input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>'></td>
-    <td><input type='checkbox' name='operation[save][<?= $id ?>][tuition_enabled]' value='t' <?= $checked ?>></td>
+    <td><input type='text' value='<?= $name ?>' class="edit" disabled></td>
+    <td><input type='text' value='<?= $surname ?>' class="edit" disabled></td>
+    <td><input type='email' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' class="edit"></td>
+    <td><input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' class="edit"></td>
+    <td><input type='checkbox' name='operation[save][<?= $id ?>][tuition_enabled]' value='t' class="edit" <?= $checked ?>></td>
     <td>
-      <button type="submit" name="operation[delete]" value="<?= $id ?>">Delete</button>
+      <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit-option-button">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode; // <tr>
@@ -36,12 +36,16 @@
           saveBtn.type = 'submit';
           saveBtn.name = 'operation[save][confirm]';
           saveBtn.value = '<?= $id ?>';
+          saveBtn.className = 'edit-option-button-add';
           saveBtn.textContent = 'Save';
 
           function showSave() {
-            const cell = emailInput.closest('tr').querySelector('td:last-child');
+            const cell = tuitionInput.closest('tr').querySelector('td:last-child');
             if (!cell.contains(saveBtn)) {
               cell.appendChild(saveBtn);
+              requestAnimationFrame(() => {
+                saveBtn.classList.add('visible'); // trigger fade-in
+              });
             }
           }
 
@@ -56,10 +60,10 @@
 
 <!-- INSERT -->
 <tr>
-  <td><input type='text' name='operation[add][name]'></td>
-  <td><input type='text' name='operation[add][surname]'></td>
-  <td><input type='email' name='operation[add][email]'></td>
-  <td><input type='text' name='operation[add][phone_number]'></td>
-  <td><input type='checkbox' name='operation[add][tuition_enabled]' value='t'></td>
-  <td><button type='submit' name='operation[add][confirm]'>Add</button></td>
+  <td><input type='text' name='operation[add][name]' class="edit"></td>
+  <td><input type='text' name='operation[add][surname]' class="edit"></td>
+  <td><input type='email' name='operation[add][email]' class="edit"></td>
+  <td><input type='text' name='operation[add][phone_number]' class="edit"></td>
+  <td><input type='checkbox' name='operation[add][tuition_enabled]' value='t' class="edit"></td>
+  <td><button type='submit' name='operation[add][confirm]' class=" edit-option-button">Add</button></td>
 </tr>

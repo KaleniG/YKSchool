@@ -16,15 +16,16 @@ $asset = new AssetManager();
   <title>Teacher</title>
 </head>
 
-<body>
-  <form method="post" id="main_form">
-    <button type="submit" name="page" value="Home.php">Logout</button>
-    <select name="edit_selection" onchange='selected_subject_submit();'>
-      <option>Choose an option</option>
-      <option value="myaccount" <?= ($this->edit_selection == "myaccount") ? "selected" : ""; ?>>My Account</option>
-      <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>
-    </select>
-    <br>
+<body class="edit">
+  <form method="post" id="main_form" class="edit">
+    <div class="edit-navbar">
+      <button type="submit" name="page" value="Home.php" class="edit">Logout</button>
+      <select name="edit_selection" onchange='selected_subject_submit();' class="edit-navbar">
+        <option>Choose an option</option>
+        <option value="myaccount" <?= ($this->edit_selection == "myaccount") ? "selected" : ""; ?>>My Account</option>
+        <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>
+      </select>
+    </div>
     <?php
 
     use App\Config\Path;

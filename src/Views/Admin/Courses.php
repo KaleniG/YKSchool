@@ -24,10 +24,10 @@ use App\Config\LogManager;
   $course_teachers = $course_row["course_teachers"];
 ?>
   <tr>
-    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>'></td>
-    <td><textarea name='operation[save][<?= $id ?>][description]'><?= $description ?></textarea></td>
+    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>' class="edit"></td>
+    <td><textarea name='operation[save][<?= $id ?>][description]' class="edit"><?= $description ?></textarea></td>
     <td>
-      <select name='operation[save][<?= $id ?>][status]'>
+      <select name='operation[save][<?= $id ?>][status]' class="edit">
         <option>Choose an option</option>
         <option value='Active' <?= (($status == "Active") ? "selected" : "") ?>>Active</option>
         <option value='Suspended' <?= (($status == "Suspended") ? "selected" : "") ?>>Suspended</option>
@@ -40,14 +40,14 @@ use App\Config\LogManager;
         $subject_id = $subject_row["id"];
       ?>
         <?php if ($course_subject_id == $subject_id): ?>
-          <input type='hidden' name='operation[save][<?= $id ?>][subject]' value='<?= $subject_id ?>'>
-          <input type='text' value='<?= $subject_name ?>' disabled>
+          <input type='hidden' name='operation[save][<?= $id ?>][subject]' value='<?= $subject_id ?>' class="edit">
+          <input type='text' value='<?= $subject_name ?>' class="edit" disabled>
           <?php break; ?>
         <?php endif; ?>
       <?php endforeach; ?>
     </td>
     <td>
-      <select name='operation[save][<?= $id ?>][course_teachers][]' size='4' multiple>
+      <select name='operation[save][<?= $id ?>][course_teachers][]' size='4' class="edit" multiple>
         <?php foreach ($this->teachers as $teacher_row):
           $teacher_id = $teacher_row["id"];
           $teacher_name = $teacher_row['name'];
@@ -62,7 +62,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <select name='operation[save][<?= $id ?>][course_students][]' size='4' multiple>
+      <select name='operation[save][<?= $id ?>][course_students][]' size='4' class="edit" multiple>
         <?php foreach ($this->students as $student_row):
           $student_id = $student_row["id"];
           $student_name = $student_row['name'];
@@ -77,7 +77,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[delete]' value='<?= $id ?>'>Delete</button>
+      <button type='submit' name='operation[delete]' value='<?= $id ?>' class="edit-option-button">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode; // <tr>
@@ -91,6 +91,7 @@ use App\Config\LogManager;
           saveBtn.type = 'submit';
           saveBtn.name = 'operation[save][confirm]';
           saveBtn.value = '<?= $id ?>';
+          saveBtn.className = "edit-option-button-add"
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -113,10 +114,10 @@ use App\Config\LogManager;
 
   <!-- ADD -->
   <tr>
-    <td><input type='text' name='operation[add][name]'></td>
-    <td><textarea name='operation[add][description]'></textarea></td>
+    <td><input type='text' name='operation[add][name]' class="edit"></td>
+    <td><textarea name='operation[add][description]' class="edit"></textarea></td>
     <td>
-      <select name='operation[add][status]'>
+      <select name='operation[add][status]' class="edit">
         <option value="">Choose an option</option>
         <option value='Active'>Active</option>
         <option value='Suspended'>Suspended</option>
@@ -124,7 +125,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <select name='operation[add][subject]' onchange='selected_subject_submit();'>
+      <select name='operation[add][subject]' onchange='selected_subject_submit();' class="edit">
         <option value=''>Choose a subject</option>
         <?php foreach ($this->subjects as $subject_row):
           $subject_name = $subject_row["name"];
@@ -136,7 +137,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <select name='operation[add][teachers][]' size='4' multiple>
+      <select name='operation[add][teachers][]' size='2' class="edit" multiple>
         <?php foreach ($this->teachers as $teacher_row):
           $teacher_id = $teacher_row["id"];
           $teacher_name = $teacher_row["name"];
@@ -150,7 +151,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <select name='operation[add][students][]' size='4' multiple>
+      <select name='operation[add][students][]' size='2' class="edit" multiple>
         <?php foreach ($this->students as $student_row):
           $student_id = $student_row["id"];
           $student_name = $student_row['name'];
@@ -164,6 +165,6 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[add][confirm]'>Add</button>
+      <button type='submit' name='operation[add][confirm]' class="edit-option-button">Add</button>
     </td>
   </tr>

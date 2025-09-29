@@ -10,9 +10,9 @@
   $name = $subject_row['name'];
 ?>
   <tr>
-    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>'></td>
+    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>' class="edit"></td>
     <td>
-      <button type="submit" name="operation[delete]" value="<?= $id ?>">Delete</button>
+      <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit-option-button">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode; // <tr>
@@ -22,6 +22,7 @@
           saveBtn.type = 'submit';
           saveBtn.name = 'operation[save][confirm]';
           saveBtn.value = '<?= $id ?>';
+          saveBtn.className = 'edit-option-button-add'
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -40,6 +41,6 @@
 
 <!-- INSERT -->
 <tr>
-  <td><input type='text' name='operation[add][name]'></td>
-  <td><button type='submit' name='operation[add][confirm]'>Add</button></td>
+  <td><input type='text' name='operation[add][name]' class="edit"></td>
+  <td><button type='submit' name='operation[add][confirm]' class="edit-option-button">Add</button></td>
 </tr>

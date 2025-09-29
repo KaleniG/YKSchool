@@ -1,4 +1,4 @@
-<table>
+<table class="edit">
   <tr>
     <th>Name</th>
     <th>Description</th>
@@ -15,7 +15,7 @@
     <tr>
       <td><?= $name ?></td>
       <td><?= $description ?></td>
-      <td><input type='checkbox' name='operation[save][<?= $id ?>][is_student_subscribed]' value="t" <?= $checked ?>></td>
+      <td><input type='checkbox' name='operation[save][<?= $id ?>][is_student_subscribed]' value="t" class="edit" <?= $checked ?>></td>
       <td>
         <script>
           (function() {
@@ -27,11 +27,15 @@
             saveBtn.type = 'submit';
             saveBtn.name = 'operation[save][confirm]';
             saveBtn.value = '<?= $id ?>';
+            saveBtn.className = "edit-option-button-add"
             saveBtn.textContent = 'Save';
 
             function showSave() {
               if (!cell.contains(saveBtn)) {
                 cell.appendChild(saveBtn);
+                requestAnimationFrame(() => {
+                  saveBtn.classList.add('visible'); // trigger fade-in
+                });
               }
             }
 

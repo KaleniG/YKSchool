@@ -16,20 +16,21 @@ $asset = new AssetManager();
   <title>Administrator</title>
 </head>
 
-<body>
-  <form method="post" id="main_form">
-    <button type="submit" name="page" value="Home.php">Logout</button>
-    <select name="edit_selection" onchange='selected_subject_submit();'>
-      <option>Choose an option</option>
-      <option value="admins" <?= ($this->edit_selection == "admins") ? "selected" : ""; ?>>Administrators</option>
-      <option value="teachers" <?= ($this->edit_selection == "teachers") ? "selected" : ""; ?>>Teachers</option>
-      <option value="students" <?= ($this->edit_selection == "students") ? "selected" : ""; ?>>Students</option>
-      <option value="subjects" <?= ($this->edit_selection == "subjects") ? "selected" : ""; ?>>Subjects</option>
-      <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>
-    </select>
-    <br>
+<body class="edit">
+  <form method="post" id="main_form" class="edit">
+    <div class="edit-navbar">
+      <button type="submit" name="page" value="Home.php" class="edit">Logout</button>
+      <select name="edit_selection" onchange="selected_subject_submit();" class="edit-navbar">
+        <option>Select an option</option>
+        <option value="admins" <?= ($this->edit_selection == "admins") ? "selected" : ""; ?>>Administrators</option>
+        <option value="teachers" <?= ($this->edit_selection == "teachers") ? "selected" : ""; ?>>Teachers</option>
+        <option value="students" <?= ($this->edit_selection == "students") ? "selected" : ""; ?>>Students</option>
+        <option value="subjects" <?= ($this->edit_selection == "subjects") ? "selected" : ""; ?>>Subjects</option>
+        <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>
+      </select>
+    </div>
     <?php if (!empty($this->edit_selection)): ?>
-      <table>
+      <table class="edit">
       <?php endif; ?>
       <?php
 

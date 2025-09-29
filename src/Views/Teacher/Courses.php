@@ -1,4 +1,4 @@
-<table>
+<table class="edit">
   <tr>
     <th>Name</th>
     <th>Description</th>
@@ -10,8 +10,8 @@
     $description = $course["description"];
   ?>
     <tr>
-      <td><?= $name ?></td>
-      <td><textarea name='operation[save][<?= $id ?>][description]'><?= $description ?></textarea></td>
+      <td><input type="text" value="<?= $name ?>" class="edit" disabled></td>
+      <td><textarea name='operation[save][<?= $id ?>][description]' class="edit"><?= $description ?></textarea></td>
       <td>
         <script>
           (function() {
@@ -22,12 +22,16 @@
             saveBtn.type = 'submit';
             saveBtn.name = 'operation[save][confirm]';
             saveBtn.value = '<?= $id ?>';
+            saveBtn.className = "edit-option-button-add";
             saveBtn.textContent = 'Save';
 
             function showSave() {
               const cell = descriptionTextarea.closest('tr').querySelector('td:last-child');
               if (!cell.contains(saveBtn)) {
                 cell.appendChild(saveBtn);
+                requestAnimationFrame(() => {
+                  saveBtn.classList.add('visible'); // trigger fade-in
+                });
               }
             }
 

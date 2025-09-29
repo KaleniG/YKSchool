@@ -15,15 +15,14 @@ $asset = new AssetManager();
   <title>Student</title>
 </head>
 
-<body>
-  <form method="post">
-    <h2>Student Login</h2>
-    <button type="submit" name="page" value="Home.php">Home</button>
-    <label>Name:</label>
-    <input type="text" name="name" autocorrect="off" autocapitalize="off" spellcheck="false">
-    <label>Surname:</label>
-    <input type="text" name="surname" autocorrect="off" autocapitalize="off" spellcheck="false">
-    <button type="submit" name="login">Login</button>
+<body class="login">
+  <form method="post" class="login">
+    <h2 class="login">Student</h2>
+    <h3 class="login">Login</h3>
+    <button type="submit" name="page" value="Home.php" class="login">Home</button>
+    <input type="text" name="name" placeholder="Name" autocorrect="off" autocapitalize="off" spellcheck="false" class="login">
+    <input type="text" name="surname" placeholder="Surname" autocorrect="off" autocapitalize="off" spellcheck="false" class="login">
+    <button type="submit" name="login" class="login">Login</button>
   </form>
 </body>
 
