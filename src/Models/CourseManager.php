@@ -15,6 +15,12 @@ class CourseManager extends Model
 
     pg_prepare(
       Model::getConn(),
+      "get_all_courses",
+      "SELECT * FROM courses"
+    );
+
+    pg_prepare(
+      Model::getConn(),
       "get_all_courses_with_details",
       "SELECT 
       c.id AS id, 
@@ -33,6 +39,21 @@ class CourseManager extends Model
 
     pg_prepare(
       Model::getConn(),
+      "get_all_courses_on_student",
+      "SELECT 
+      c.id AS id,
+      c.name AS name,
+      c.description AS description,
+      EXISTS (
+        SELECT 1
+        FROM course_students cs
+        WHERE cs.course_id = c.id AND cs.student_id = $1
+      ) AS is_student_subscribed
+      FROM courses c"
+    );
+
+    pg_prepare(
+      Model::getConn(),
       "get_all_course_teachers",
       "SELECT * FROM course_teachers WHERE course_id = $1"
     );
@@ -41,6 +62,12 @@ class CourseManager extends Model
       Model::getConn(),
       "get_all_course_students",
       "SELECT * FROM course_students WHERE course_id = $1"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "get_all_teacher_courses",
+      "SELECT course_teachers.course_id AS id FROM course_teachers WHERE teacher_id = $1"
     );
 
     pg_prepare(
@@ -59,13 +86,13 @@ class CourseManager extends Model
     pg_prepare(
       Model::getConn(),
       "add_course_teacher",
-      "INSERT INTO course_teachers (course_id, teacher_id) VALUES ($1, $2)"
+      "INSERT INTO course_teachers (course_id, teacher_id) VALUES ($1, $2) ON CONFLICT DO NOTHING"
     );
 
     pg_prepare(
       Model::getConn(),
       "add_course_student",
-      "INSERT INTO course_students (course_id, student_id) VALUES ($1, $2)"
+      "INSERT INTO course_students (course_id, student_id) VALUES ($1, $2) ON CONFLICT DO NOTHING"
     );
 
     pg_prepare(
@@ -80,6 +107,12 @@ class CourseManager extends Model
       "DELETE FROM course_students WHERE course_id=$1 AND student_id=$2"
     );
 
+    pg_prepare(
+      Model::getConn(),
+      "update_course_description",
+      "UPDATE courses SET description=$1 WHERE id=$2"
+    );
+
     CourseManager::$prepared = true;
   }
 
@@ -87,19 +120,27 @@ class CourseManager extends Model
   {
     $result = pg_execute(
       Model::getConn(),
-      "get_all_admins",
+      "get_all_courses",
       []
     );
 
     if (!$result) LogManager::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
+  }
 
-    $query = "SELECT * FROM courses";
-    $result = pg_query(Model::getConn(), $query);
+  public function getAllTeacherCourses($id)
+  {
+    if (!isset($id))
+      LogManager::error("Invalid course get parameter");
 
-    if (!$result)
-      LogManager::error("Query failed");
+    $result = pg_execute(
+      Model::getConn(),
+      "get_all_teacher_courses",
+      [$id]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -132,16 +173,25 @@ class CourseManager extends Model
     return $courses;
   }
 
-  /*
-  public function getAllCourseTeachers()
+  public function getAllCoursesOnStudent($id)
   {
-    $query = "SELECT * FROM course_teachers";
-    $result = pg_query(Model::getConn(), $query);
+    $result = pg_execute(
+      Model::getConn(),
+      "get_all_courses_on_student",
+      [$id]
+    );
 
-    if (!$result) LogManager::error('Query failed: ' . Model::getError());
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
 
-    return pg_fetch_all($result);
-  }*/
+    $courses = pg_fetch_all($result);
+
+    if (!$courses) return [];
+
+    foreach ($courses as &$course)
+      $course["is_student_subscribed"] = ($course["is_student_subscribed"] == "t") ? true : false;
+
+    return $courses;
+  }
 
   public function getAllCourseTeachers($id)
   {
@@ -203,17 +253,6 @@ class CourseManager extends Model
     if (!$result) LogManager::error("Query failed: " . Model::getError());
     return pg_fetch_all($result);
   }
-
-  /*
-  public function getAllCourseStudents()
-  {
-    $query = "SELECT * FROM course_students";
-    $result = pg_query(Model::getConn(), $query);
-
-    if (!$result) LogManager::error('Query failed: ' . Model::getError());
-
-    return pg_fetch_all($result);
-  }*/
 
   public function updateChanges($changes)
   {
@@ -331,16 +370,18 @@ class CourseManager extends Model
     $changes["course_teachers"] = isset($changes["course_teachers"]) ? (array)$changes["course_teachers"] : [];
 
     foreach ($all_teachers as $teacher) {
-      $teacherId = $teacher["id"];
-      if (($key = array_search($teacherId, $changes["course_teachers"])) !== false) {
-        unset($changes["course_teachers"][$key]);
-      } else if (!in_array($teacherId, $changes["course_teachers"])) {
+      $teacherId = $teacher["teacher_id"];
+      if (!in_array($teacherId, $changes["course_teachers"])) {
         $result = pg_execute(
           Model::getConn(),
           "delete_course_teacher",
           [$id, $teacherId]
         );
+
         if (!$result) LogManager::error("Query failed: " . Model::getError());
+      } else {
+        $key = array_search($teacherId, $changes["course_teachers"]);
+        unset($changes["course_teachers"][$key]);
       }
     }
 
@@ -350,25 +391,26 @@ class CourseManager extends Model
         "add_course_teacher",
         [$id, $teacherId]
       );
+
       if (!$result) LogManager::error("Query failed: " . Model::getError());
     }
 
     $all_students = $this->getAllCourseStudents($id) ?? [];
-
-    // Ensure array
     $changes["course_students"] = isset($changes["course_students"]) ? (array)$changes["course_students"] : [];
 
     foreach ($all_students as $student) {
-      $studentId = $student["id"];
-      if (($key = array_search($studentId, $changes["course_students"])) !== false) {
-        unset($changes["course_students"][$key]);
-      } else if (!in_array($studentId, $changes["course_students"])) {
+      $studentId = $student["student_id"];
+      if (!in_array($studentId, $changes["course_students"])) {
         $result = pg_execute(
           Model::getConn(),
           "delete_course_student",
           [$id, $studentId]
         );
+
         if (!$result) LogManager::error("Query failed: " . Model::getError());
+      } else {
+        $key = array_search($studentId, $changes["course_students"]);
+        unset($changes["course_students"][$key]);
       }
     }
 
@@ -378,23 +420,29 @@ class CourseManager extends Model
         "add_course_student",
         [$id, $studentId]
       );
+
       if (!$result) LogManager::error("Query failed: " . Model::getError());
     }
   }
 
   public function updateDescription($changes)
   {
-    pg_prepare(
-      Model::getConn(),
-      "course_update",
-      "UPDATE courses SET description=$1 WHERE id=$2"
-    );
-    foreach ($changes as $id => $fields) {
-      $description = htmlspecialchars($fields['description']);
+    if (!isset($changes["id"]))
+      LogManager::error("Invalid course update parameter");
 
-      $result = pg_execute(Model::getConn(), "course_update", array($description, $id));
-      if (!$result) LogManager::error('Query failed: ' . Model::getError());
-    }
+    $id = htmlspecialchars($changes['id']);
+    $description = htmlspecialchars($changes['description']) ?? "";
+
+    if (!isset($description))
+      LogManager::error("Invalid course update parameter");
+
+    $result = pg_execute(
+      Model::getConn(),
+      "update_course_description",
+      [$description, $id]
+    );
+
+    if (!$result) LogManager::error('Query failed: ' . Model::getError());
   }
 
   public function updateUser($changes, $student_id)
@@ -425,6 +473,34 @@ class CourseManager extends Model
     foreach ($current_user_course_ids as $deleted_course) {
       pg_prepare(Model::getConn(), "delete_student_course", "DELETE FROM course_students WHERE course_id=$1 AND student_id=$2");
       $result = pg_execute(Model::getConn(), "delete_student_course", [$deleted_course, $student_id]);
+      if (!$result) LogManager::error("Query failed: " . Model::getError());
+    }
+  }
+
+  public function updateCourseSubscription($changes)
+  {
+    if (!isset($changes["student_id"], $changes["course_id"]))
+      LogManager::error("Invalid course update parameter");
+
+    $student_id = $changes['student_id'];
+    $course_id = $changes['course_id'];
+    $is_student_subscribed = $changes['is_student_subscribed'] ?? false;
+
+    if ($is_student_subscribed) {
+      $result = pg_execute(
+        Model::getConn(),
+        "add_course_student",
+        [$course_id, $student_id]
+      );
+
+      if (!$result) LogManager::error("Query failed: " . Model::getError());
+    } else {
+      $result = pg_execute(
+        Model::getConn(),
+        "delete_course_student",
+        [$course_id, $student_id]
+      );
+
       if (!$result) LogManager::error("Query failed: " . Model::getError());
     }
   }

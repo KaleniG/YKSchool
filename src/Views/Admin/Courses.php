@@ -13,7 +13,6 @@
 
 use App\Config\LogManager;
 
-//LogManager::error(var_export($this->courses, true));
 ?>
 <?php foreach ($this->courses as $course_row):
   $id = $course_row["id"];
@@ -64,12 +63,14 @@ use App\Config\LogManager;
     </td>
     <td>
       <select name='operation[save][<?= $id ?>][course_students][]' size='4' multiple>
-        <?php foreach ($this->students as $student_row):
+        <?php
+        //LogManager::error(var_export($this->students, true));
+        foreach ($this->students as $student_row):
           $student_id = $student_row["id"];
           $student_name = $student_row['name'];
           $student_surname = $student_row['surname'];
           $student_tuition_enabled = ($student_row["tuition_enabled"] == "t") ? true : false;
-          $selected = (in_array($teacher_id, $course_teachers)) ? "selected" : "";
+          $selected = (in_array($student_id, $course_students)) ? "selected" : "";
         ?>
           <?php if ($student_tuition_enabled): ?>
             <option value="<?= $student_id ?>" <?= $selected ?>><?= $student_name . " " . $student_surname ?></option>

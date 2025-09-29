@@ -6,5 +6,5 @@ use App\Controllers\AdminController;
 
 session_start();
 
-$controller = new AdminController;
+$controller = new AdminController();
 $controller->handleRequests();

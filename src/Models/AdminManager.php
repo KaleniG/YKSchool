@@ -68,14 +68,6 @@ class AdminManager extends Model
 
   public function getAllAdmins()
   {
-    /*
-    pg_prepare(
-      Model::getConn(),
-      "get_all_admins",
-      "SELECT * FROM administrators"
-    );
-    */
-
     $result = pg_execute(
       Model::getConn(),
       "get_all_admins",
@@ -87,7 +79,7 @@ class AdminManager extends Model
     return pg_fetch_all($result);
   }
 
-  public function updateChanges($changes) // Legacy
+  public function updateChanges($changes) 
   {
     pg_prepare(
       Model::getConn(),
@@ -135,14 +127,6 @@ class AdminManager extends Model
     if (!isset($id))
       LogManager::error("Invalid admin delete parameter");
 
-    /*
-    pg_prepare(
-      Model::getConn(),
-      "admin_delete",
-      "DELETE FROM administrators 
-      WHERE id=$1"
-    );
-*/
     $result = pg_execute(
       Model::getConn(),
       "admin_delete",
@@ -154,14 +138,6 @@ class AdminManager extends Model
 
   public function add(Admin $admin)
   {
-    /*
-    pg_prepare(
-      Model::getConn(),
-      "admin_add",
-      "INSERT INTO administrators (name, surname, email, phone_number) 
-      VALUES ($1, $2, $3, $4)"
-    );*/
-
     $result = pg_execute(
       Model::getConn(),
       "admin_add",

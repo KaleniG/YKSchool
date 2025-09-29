@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Config\LogManager;
 use App\Config\Path;
 use App\Models\Admin;
 use App\Models\AdminManager;
@@ -17,7 +16,7 @@ use App\Models\TeacherManager;
 
 /*
 $_POST["page"] $_SESSION["page"] -> contain the path to the page to load relative to the Views folder
-$_SESSION["user"] -> on login stores the user data (name, surname)
+$_SESSION["user"] -> on login stores the user data (name, surname...)
 $_SESSION["edit_selection"] -> on login stores the value from the select input to decide what content to display
 $_SESSION["admins"] -> on edit administrators option stores all admins
 $_SESSION["teachers"] -> on edit teachers option stores all teachers
@@ -40,13 +39,29 @@ class AdminController
   private $edit_selection = null;
   private $new_course_subject_selection = null;
 
-  public function handleRequests()
+  private function loadSession()
   {
     // PAGE HANDLING
     $defaultPage = "Admin/Login.php";
-
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["page"])) $_SESSION["page"] = $_POST["page"];
     $this->page = $_SESSION["page"] ?? $defaultPage;
+
+    // TABLES HANDLING
+    $this->user = $_SESSION["user"] ?? [];
+    $this->admins = $_SESSION["admins"] ?? [];
+    $this->teachers = $_SESSION["teachers"] ?? [];
+    $this->students = $_SESSION["students"] ?? [];
+    $this->subjects = $_SESSION["subjects"] ?? [];
+    $this->courses = $_SESSION["courses"] ?? [];
+
+    // NAVIGATION/TEMPORARIES HANDLING
+    $this->edit_selection = $_SESSION["edit_selection"] ?? null;
+    $this->new_course_subject_selection = $_SESSION["new_course_subject_selection"] ?? null;
+  }
+
+  public function handleRequests()
+  {
+    $this->loadSession();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       switch ($this->page) {
@@ -61,8 +76,8 @@ class AdminController
           break;
       }
 
-      //header("Location: admin.php");
-      //exit;
+      header("Location: admin.php");
+      exit;
     }
 
     include Path::views($this->page);
@@ -72,6 +87,7 @@ class AdminController
   {
     session_unset();
     header("Location: index.php");
+    exit;
   }
 
   private function handleLogin()
@@ -101,12 +117,17 @@ class AdminController
 
   private function handleEdit()
   {
-    // USER LOADING
-    if (isset($_SESSION["user"])) $this->user = $_SESSION["user"] ?? null;
-
     // EDITING OPTION LOADING
-    $this->edit_selection = $_POST["edit_selection"] ?? $_SESSION["edit_selection"] ?? null;
-    $_SESSION["edit_selection"] = $this->edit_selection;
+    if (isset($_SESSION["edit_selection"]))
+      $this->edit_selection = $_SESSION["edit_selection"];
+    else {
+      $this->edit_selection = $_POST["edit_selection"] ?? null;
+      $_SESSION["edit_selection"] = $this->edit_selection;
+    }
+    if (isset($_POST["edit_selection"]) && $_POST["edit_selection"] != $_SESSION["edit_selection"]) {
+      $this->edit_selection = $_POST["edit_selection"];
+      $_SESSION["edit_selection"] = $this->edit_selection;
+    }
 
     // HANDLING ALL EDITING OPTIONS
     if (isset($this->edit_selection)) {
@@ -132,7 +153,11 @@ class AdminController
 
   private function handleEditAdmins()
   {
-    // SESSION/DATABASE ADMINS LOADING
+    // UNSETTING TEMPORARY SESSION VARIABLES
+    unset($this->new_course_subject_selection);
+    unset($_SESSION["new_course_subject_selection"]);
+
+    // SESSION/DATABASE ADMINS LOADING (BUT ONLY ONCE)
     $manager = new AdminManager();
     $manager->prepareAll();
     if (isset($_SESSION["admins"]))
@@ -172,6 +197,10 @@ class AdminController
 
   private function handleEditTeachers()
   {
+    // UNSETTING TEMPORARY SESSION VARIABLES
+    unset($this->new_course_subject_selection);
+    unset($_SESSION["new_course_subject_selection"]);
+
     // SESSION/DATABASE TEACHERS LOADING
     if (isset($_SESSION["teachers"]))
       $this->teachers = $_SESSION["teachers"];
@@ -229,7 +258,11 @@ class AdminController
 
   private function handleEditStudents()
   {
-    // SESSION/DATABASE STUDENTS LOADING
+    // UNSETTING TEMPORARY SESSION VARIABLES
+    unset($this->new_course_subject_selection);
+    unset($_SESSION["new_course_subject_selection"]);
+
+    // SESSION/DATABASE STUDENTS LOADING (BUT ONLY ONCE)
     $manager = new StudentManager();
     $manager->prepareAll();
     if (isset($_SESSION["students"]))
@@ -271,7 +304,11 @@ class AdminController
 
   private function handleEditSubjects()
   {
-    // SESSION/DATABASE SUBJECTS LOADING
+    // UNSETTING TEMPORARY SESSION VARIABLES
+    unset($this->new_course_subject_selection);
+    unset($_SESSION["new_course_subject_selection"]);
+
+    // SESSION/DATABASE SUBJECTS LOADING (BUT ONLY ONCE)
     $manager = new SubjectManager();
     $manager->prepareAll();
     if (isset($_SESSION["subjects"]))
@@ -361,6 +398,9 @@ class AdminController
 
     // OPERATIONS ON COURSES
     if (isset($_POST["operation"])) {
+      $manager = new CourseManager();
+      $manager->prepareAll();
+
       if (isset($_POST["operation"]["save"]["confirm"])) {
         $id = $_POST["operation"]["save"]["confirm"];
         $changes = [
@@ -373,8 +413,16 @@ class AdminController
           "course_teachers" => $_POST["operation"]["save"][$id]["course_teachers"] ?? []
         ];
         $manager->update($changes);
+
+        // UNSETTING THE VARIABLE SINCE WE ARE NOT TRYING TO ADD ANYMORE
+        unset($this->new_course_subject_selection);
+        unset($_SESSION["new_course_subject_selection"]);
       } else if (isset($_POST["operation"]["delete"])) {
         $manager->delete($_POST["operation"]["delete"]);
+
+        // UNSETTING THE VARIABLE SINCE WE ARE NOT TRYING TO ADD ANYMORE
+        unset($this->new_course_subject_selection);
+        unset($_SESSION["new_course_subject_selection"]);
       } else if (isset($_POST["operation"]["add"]["confirm"])) {
         $course = new Course();
         $course->name = htmlspecialchars($_POST["operation"]["add"]["name"] ?? "");

@@ -31,6 +31,32 @@ class TeacherManager extends Model
 
     pg_prepare(
       Model::getConn(),
+      "get_teacher",
+      "SELECT 
+      t.id AS id, 
+      t.name AS name, 
+      t.surname AS surname, 
+      t.email AS email, 
+      t.phone_number AS phone_number, 
+      COALESCE(ARRAY_AGG(st.subject_id ORDER BY st.subject_id), '{}') AS teaching_subjects
+      FROM teachers t
+      LEFT JOIN subject_teachers st ON t.id = st.teacher_id
+      WHERE t.id=$1
+      GROUP BY t.id, t.name, t.surname, t.email, t.phone_number"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "get_teacher_courses",
+      "SELECT c.id AS id, c.name AS name, c.description AS description
+      FROM course_teachers ct
+      LEFT JOIN courses c ON ct.course_id = c.id
+      WHERE ct.teacher_id=$1
+      ORDER BY c.id"
+    );
+
+    pg_prepare(
+      Model::getConn(),
       "delete_teacher_subject",
       "DELETE FROM subject_teachers WHERE subject_id=$1 AND teacher_id=$2"
     );
@@ -60,57 +86,70 @@ class TeacherManager extends Model
 
   public function validate(Teacher $teacher)
   {
-    $query = "SELECT COUNT(*) FROM teachers WHERE name = $1 AND surname = $2";
-    $result = pg_query_params(Model::getConn(), $query, array($teacher->name, $teacher->surname));
+    pg_prepare(
+      Model::getConn(),
+      "teacher_validate",
+      "SELECT 
+      t.id AS id, 
+      t.name AS name, 
+      t.surname AS surname, 
+      t.email AS email, 
+      t.phone_number AS phone_number, 
+      COALESCE(ARRAY_AGG(st.subject_id ORDER BY st.subject_id), '{}') AS teaching_subjects
+      FROM teachers t
+      LEFT JOIN subject_teachers st ON t.id = st.teacher_id
+      WHERE t.name=$1 AND t.surname=$2
+      GROUP BY t.id, t.name, t.surname, t.email, t.phone_number"
+    );
+
+    $result = pg_execute(
+      Model::getConn(),
+      "teacher_validate",
+      [$teacher->name, $teacher->surname]
+    );
 
     if (!$result) LogManager::error("Query failed: " . Model::getError());
 
-    $count = pg_fetch_result($result, 0, 0);
-    return $count > 0;
+    $user = pg_fetch_assoc($result, 0);
+
+    if (isset($user) && !empty($user)) {
+      $teacher->id = $user["id"];
+      $teacher->name = $user["name"];
+      $teacher->surname = $user["surname"];
+      $teacher->email = $user["email"];
+      $teacher->phone_number = $user["phone_number"];
+
+      if (isset($user['teaching_subjects'])) {
+        $pgArray = trim($user['teaching_subjects'], '{}');
+        $teacher->teaching_subjects = ($pgArray === '') ? [] : array_map('intval', explode(',', $pgArray));
+      }
+
+      return $teacher;
+    } else
+      return false;
   }
 
-  public function getTeacher($name, $surname)
+  public function getTeacher($id)
   {
-    pg_prepare(
+    $result = pg_execute(
       Model::getConn(),
-      "get_{$name}_{$surname}_teacher",
-      "SELECT 
-        t.id AS teacher_id,
-        t.email AS teacher_email, 
-        t.phone_number AS teacher_phone_number, 
-        ARRAY_AGG(s.subject) AS teacher_subjects
-     FROM teachers t
-     LEFT JOIN subject_teachers st ON t.id = st.teacher_id
-     LEFT JOIN subjects s ON st.subject_id = s.id
-     WHERE t.name = $1 AND t.surname = $2
-     GROUP BY t.id, t.email, t.phone_number"
+      "get_teacher",
+      [$id]
     );
 
-    $result = pg_execute(Model::getConn(), "get_{$name}_{$surname}_teacher", [$name, $surname]);
-    if (!$result) {
-      LogManager::error("Query failed: " . Model::getError());
-    }
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
 
-    $row = pg_fetch_assoc($result);
+    $teacher = pg_fetch_assoc($result, 0);
 
-    if (!$row) {
-      return null; // teacher not found
-    }
+    if (isset($teacher) && !empty($teacher)) {
+      if (isset($teacher["teaching_subjects"])) {
+        $pgArray = trim($teacher["teaching_subjects"], '{}');
+        $teacher["teaching_subjects"] = ($pgArray === '') ? [] : array_map('intval', explode(',', $pgArray));
+      }
 
-    // teacher_subjects is a Postgres array literal or NULL
-    $teacher_subjects_string = $row['teacher_subjects'] ?? '{}';
-
-    // convert to PHP array:
-    $teacher_subjects_array = str_getcsv(trim($teacher_subjects_string, '{}'));
-
-    return [
-      "id" => $row['teacher_id'],
-      "name" => $name,
-      "surname" => $surname,
-      "email" => $row['teacher_email'],
-      "phone_number" => $row['teacher_phone_number'],
-      "teaching_subjects" => $teacher_subjects_array
-    ];
+      return $teacher;
+    } else
+      return false;
   }
 
   public function getAllTeachersWithSubjects()
@@ -135,6 +174,20 @@ class TeacherManager extends Model
     }
 
     return $teachers;
+  }
+
+
+  public function getTeacherCourses($id)
+  {
+    $result = pg_execute(
+      Model::getConn(),
+      "get_teacher_courses",
+      [$id]
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+
+    return pg_fetch_all($result);
   }
 
   public function getAllSubjectTeachers($subject_id)

@@ -16,7 +16,15 @@ class StudentManager extends Model
     pg_prepare(
       Model::getConn(),
       "get_all_students",
-      "SELECT * FROM students ORDER BY id ASC"
+      "SELECT * FROM students 
+      ORDER BY id ASC"
+    );
+
+    pg_prepare(
+      Model::getConn(),
+      "get_student",
+      "SELECT * FROM students 
+      WHERE id=$1"
     );
 
     pg_prepare(
@@ -36,15 +44,37 @@ class StudentManager extends Model
     StudentManager::$prepared = true;
   }
 
-  public function validate(Student $admin)
+  public function validate(Student $student)
   {
-    $query = "SELECT COUNT(*) FROM students WHERE name = $1 AND surname = $2";
-    $result = pg_query_params(Model::getConn(), $query, array($admin->name, $admin->surname));
+    pg_prepare(
+      Model::getConn(),
+      "student_validate",
+      "SELECT *
+      FROM students
+      WHERE name=$1 AND surname=$2"
+    );
 
-    if (!$result) LogManager::error("Query failed");
+    $result = pg_execute(
+      Model::getConn(),
+      "student_validate",
+      [$student->name, $student->surname]
+    );
 
-    $count = pg_fetch_result($result, 0, 0);
-    return $count > 0;
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+
+    $user = pg_fetch_assoc($result, 0);
+
+    if (isset($user) && !empty($user)) {
+      $student->id = $user["id"];
+      $student->name = $user["name"];
+      $student->surname = $user["surname"];
+      $student->email = $user["email"];
+      $student->phone_number = $user["phone_number"];
+      $student->tuition_enabled = ($user["tuition_enabled"] == "t") ? true : false;
+
+      return $student;
+    } else
+      return false;
   }
 
   public function getAllStudents()
@@ -60,25 +90,24 @@ class StudentManager extends Model
     return pg_fetch_all($result);
   }
 
-  public function getStudent($name, $surname)
+  public function getStudent($id)
   {
-    pg_prepare(
-      Model::getConn(),
-      "get_student",
-      "SELECT * FROM students WHERE students.name=$1 AND students.surname=$2 LIMIT 1"
-    );
+    if (!isset($id))
+      LogManager::error("Invalid student get parameters");
 
-    $result = pg_execute(Model::getConn(), "get_student", array($name, $surname));
+    $result = pg_execute(Model::getConn(), "get_student", [$id]);
+
     if (!$result) LogManager::error("Query failed");
 
-    $row = pg_fetch_assoc($result);
+    $student = pg_fetch_assoc($result);
+
     return [
-      "id" => $row['id'],
-      "name" => $row['name'],
-      "surname" => $row['surname'],
-      "email" => $row['email'],
-      "phone_number" => $row['phone_number'],
-      "tuition_enabled" => $row['tuition_enabled']
+      "id" => $student['id'],
+      "name" => $student['name'],
+      "surname" => $student['surname'],
+      "email" => $student['email'],
+      "phone_number" => $student['phone_number'],
+      "tuition_enabled" => $student['tuition_enabled']
     ];
   }
 
@@ -136,14 +165,6 @@ class StudentManager extends Model
     if (!isset($id))
       LogManager::error("Invalid student delete parameter");
 
-    /*
-    pg_prepare(
-      Model::getConn(),
-      "student_delete",
-      "DELETE FROM students 
-      WHERE id=$1"
-    );
-*/
     $result = pg_execute(
       Model::getConn(),
       "student_delete",
@@ -155,14 +176,6 @@ class StudentManager extends Model
 
   public function add(Student $student)
   {
-    /*
-    pg_prepare(
-      Model::getConn(),
-      "student_add",
-      "INSERT INTO students (name, surname, email, phone_number, tuition_enabled) 
-      VALUES ($1, $2, $3, $4, $5)"
-    );*/
-
     $result = pg_execute(
       Model::getConn(),
       "student_add",

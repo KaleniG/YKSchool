@@ -1,36 +1,45 @@
-<?php
-
-use App\Config\LogManager;
-
-if (isset($this->edit_selection)) {
-  echo ("<table>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Subscribed</th>
+    <th style="min-width: 90px;"></th>
+  </tr>
+  <?php
+  foreach ($this->courses as $course):
+    $id = $course["id"];
+    $name = $course["name"];
+    $description = $course["description"];
+    $checked = $course["is_student_subscribed"] ? "checked" : "";
+  ?>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Subscribed</th>
-    </tr>");
+      <td><?= $name ?></td>
+      <td><?= $description ?></td>
+      <td><input type='checkbox' name='operation[save][<?= $id ?>][is_student_subscribed]' value="t" <?= $checked ?>></td>
+      <td>
+        <script>
+          (function() {
+            const row = document.currentScript.closest('tr');
+            const checkbox = row.querySelector('input[name="operation[save][<?= $id ?>][is_student_subscribed]"]');
+            const cell = document.currentScript.parentNode;
 
-  $current_user_id = $this->current_table["students"]["id"];
-  foreach ($this->current_table["courses"] as $course) {
-    $course_id = $course["id"];
-    $course_name = $course["name"];
-    $course_description = $course["description"];
-    $checked = "";
+            const saveBtn = document.createElement('button');
+            saveBtn.type = 'submit';
+            saveBtn.name = 'operation[save][confirm]';
+            saveBtn.value = '<?= $id ?>';
+            saveBtn.className = 'nav-button';
+            saveBtn.textContent = 'Save';
 
+            function showSave() {
+              if (!cell.contains(saveBtn)) {
+                cell.appendChild(saveBtn);
+              }
+            }
 
-    foreach ($this->current_table["course_students"] as $course_row) {
-      if ($course_row["course_id"] == $course["id"]) {
-        $checked = "checked";
-        break;
-      }
-    }
-
-    echo ("<tr>
-      <td>$course_name</td>
-      <td>$course_description</td>
-      <td><input type='checkbox' name='modified_table[$course_id]' value='$current_user_id' $checked></td>
-    </tr>");
-  }
-
-  echo ("</table><br><button type='submit' name='operation' value='save_changes' class='nav-button'>Save Changes</button>");
-}
+            checkbox.addEventListener('change', showSave);
+          })();
+        </script>
+      </td>
+    </tr>
+  <?php endforeach; ?>
+</table>

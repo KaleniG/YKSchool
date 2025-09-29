@@ -1,31 +1,59 @@
+<?php
+$id = $this->user["id"];
+$name = $this->user["name"];
+$surname = $this->user["surname"];
+$email = $this->user["email"];
+$phone_number = $this->user["phone_number"];
+$teaching_subjects = $this->user["teaching_subjects"];
+?>
+
 <div class="account-table">
-  <label>Name:</label><input type="text" value="<?= $this->user->name ?>" disabled>
+  <label>Name:</label>
+  <input type="text" value="<?= $name ?>" disabled>
   <br>
-  <label>Surname:</label><input type="text" value="<?= $this->user->surname ?>" disabled>
+  <label>Surname:</label>
+  <input type="text" value="<?= $surname ?>" disabled>
   <br>
-  <?php
-
-  use App\Config\LogManager;
-
-  $id = $this->current_table["teachers"]["id"];
-  $email = $this->current_table["teachers"]["email"];
-  $phone_number = $this->current_table["teachers"]["phone_number"];
-
-  $subjects_table = $this->current_table["subjects"];
-  $teaching_subjects = $this->current_table["teachers"]["teaching_subjects"];
-
-  echo ("<label>E-mail:</label><input type='text' name='modified_table[{$id}][email]' value='{$email}'><br>");
-  echo ("<label>Phone Number:</label><input type='text' name='modified_table[{$id}][phone_number]' value='{$phone_number}'><br>");
-  echo ("<label>Teaching Subjects:</label><select name='modified_table[{$id}][teaching_subjects][]' class='teacher-subjects' size='3' multiple>");
-
-  foreach ($subjects_table as $subject_row) {
-    $subject_name = $subject_row['subject'];
-    $subject_id = $subject_row['id'];
-    $selected = in_array($subject_name, $teaching_subjects) ? "selected" : "";
-    echo ("<option value='{$subject_id}' $selected>$subject_name</option>");
-  }
-
-  echo ("</select><br>");
-  ?>
+  <label>E-mail:</label>
+  <input type='text' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>'>
+  <br>
+  <label>Phone Number:</label>
+  <input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>'>
+  <br>
+  <label>Teaching Subjects:</label>
+  <select name='operation[save][<?= $id ?>][teaching_subjects][]' class='teacher-subjects' size='4' multiple>
+    <?php foreach ($this->subjects as $subject_row):
+      $subject_id = $subject_row['id'];
+      $subject_name = $subject_row['name'];
+      $selected = in_array($subject_id, $teaching_subjects) ? "selected" : "";
+    ?>
+      <option value='<?= $subject_id ?>' <?= $selected ?>><?= $subject_name ?></option>
+    <?php endforeach ?>
+  </select>
+  <br>
 </div>
-<button type='submit' name='operation' value='save_changes' class='nav-button'>Save Changes</button>
+<script>
+  (function() {
+    const container = document.currentScript.previousElementSibling; // .account-table
+    const emailInput = container.querySelector('input[name="operation[save][<?= $id ?>][email]"]');
+    const phoneInput = container.querySelector('input[name="operation[save][<?= $id ?>][phone_number]"]');
+    const teachingSubjectsInput = container.querySelector('select[name="operation[save][<?= $id ?>][teaching_subjects][]"]');
+
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'submit';
+    saveBtn.name = 'operation[save][confirm]';
+    saveBtn.value = '<?= $id ?>';
+    saveBtn.className = 'nav-button';
+    saveBtn.textContent = 'Save Changes';
+
+    function showSave() {
+      if (!saveBtn.isConnected) {
+        container.insertAdjacentElement('afterend', saveBtn);
+      }
+    }
+
+    emailInput.addEventListener('input', showSave);
+    phoneInput.addEventListener('input', showSave);
+    teachingSubjectsInput.addEventListener('change', showSave);
+  })();
+</script>

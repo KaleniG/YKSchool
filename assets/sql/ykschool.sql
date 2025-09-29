@@ -73,7 +73,8 @@ CREATE TABLE IF NOT EXISTS course_teachers (
     CONSTRAINT fk_course_t FOREIGN KEY (course_id)
         REFERENCES courses (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_teacher FOREIGN KEY (teacher_id)
-        REFERENCES teachers (id) ON DELETE CASCADE ON UPDATE CASCADE
+        REFERENCES teachers (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE (course_id, teacher_id)
 );
 
 -- Course-Students table
@@ -84,5 +85,6 @@ CREATE TABLE IF NOT EXISTS course_students (
     CONSTRAINT fk_course_s FOREIGN KEY (course_id)
         REFERENCES courses (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_student FOREIGN KEY (student_id)
-        REFERENCES students (id) ON DELETE CASCADE ON UPDATE CASCADE
+        REFERENCES students (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE (course_id, student_id)
 );

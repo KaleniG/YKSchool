@@ -1,25 +1,41 @@
-<?php
-
-use App\Config\LogManager;
-
-if (isset($this->edit_selection)) {
-  echo ("<table>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th style="min-width: 90px;"></th>
+  </tr>
+  <?php foreach ($this->courses as $course):
+    $id = $course["id"];
+    $name = $course["name"];
+    $description = $course["description"];
+  ?>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>");
+      <td><?= $name ?></td>
+      <td><textarea name='operation[save][<?= $id ?>][description]' class='teacher-course-textarea'><?= $description ?></textarea></td>
+      <td>
+        <script>
+          (function() {
+            const row = document.currentScript.parentNode.parentNode; // <tr>
+            const descriptionTextarea = row.querySelector('textarea[name="operation[save][<?= $id ?>][description]"]');
 
+            const saveBtn = document.createElement('button');
+            saveBtn.type = 'submit';
+            saveBtn.name = 'operation[save][confirm]';
+            saveBtn.value = '<?= $id ?>';
+            saveBtn.className = 'nav-button';
+            saveBtn.textContent = 'Save';
 
-  foreach ($this->current_table["course_teachers"] as $course) {
-    $course_id = $course["id"];
-    $course_name = $course["name"];
-    $course_description = $course["description"];
+            function showSave() {
+              const cell = descriptionTextarea.closest('tr').querySelector('td:last-child');
+              if (!cell.contains(saveBtn)) {
+                cell.appendChild(saveBtn);
+              }
+            }
 
-    echo ("<tr>
-      <td>$course_name</td>
-      <td><textarea name='modified_table[$course_id][description]' class='teacher-course-textarea'>$course_description</textarea></t>
-    </tr>");
-  }
-
-  echo ("</table><br><button type='submit' name='operation' value='save_changes' class='nav-button'>Save Changes</button>");
-}
+            descriptionTextarea.addEventListener('input', showSave);
+          })();
+        </script>
+      </td>
+    </tr>
+  <?php endforeach; ?>
+</table>
