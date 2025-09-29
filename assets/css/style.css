@@ -1,9 +1,12 @@
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  /* top-align */
+  padding: 1rem 0;
+  /* give some spacing */
   background: #3b2524;
   font-family: "Segoe UI", Arial, sans-serif;
   color: #ffffd5;
@@ -114,9 +117,7 @@ input:-webkit-autofill:active {
 .main_form {
   width: 100%;
   max-width: 1400px;
-  margin: 2rem auto;
   padding: 1.5rem;
-  margin-top: auto;
   background: #3b2524;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);

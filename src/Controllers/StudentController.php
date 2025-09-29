@@ -147,7 +147,7 @@ class StudentController
   private function handleEditCourses()
   {
     // SESSION/DATABASE COURSES LOADING (BUT ONLY ONCE)
-    if (!isset($this->courses)) {
+    if (isset($this->courses)) {
       $manager = new CourseManager();
       $manager->prepareAll();
       $this->courses = $manager->getAllCoursesOnStudent($this->user["id"]) ?? [];
