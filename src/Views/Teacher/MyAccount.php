@@ -7,7 +7,7 @@ $phone_number = $this->user["phone_number"];
 $teaching_subjects = $this->user["teaching_subjects"];
 ?>
 
-<div class="account-table">
+<div>
   <label>Name:</label>
   <input type="text" value="<?= $name ?>" disabled>
   <br>
@@ -21,7 +21,7 @@ $teaching_subjects = $this->user["teaching_subjects"];
   <input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>'>
   <br>
   <label>Teaching Subjects:</label>
-  <select name='operation[save][<?= $id ?>][teaching_subjects][]' class='teacher-subjects' size='4' multiple>
+  <select name='operation[save][<?= $id ?>][teaching_subjects][]' size='4' multiple>
     <?php foreach ($this->subjects as $subject_row):
       $subject_id = $subject_row['id'];
       $subject_name = $subject_row['name'];
@@ -43,7 +43,6 @@ $teaching_subjects = $this->user["teaching_subjects"];
     saveBtn.type = 'submit';
     saveBtn.name = 'operation[save][confirm]';
     saveBtn.value = '<?= $id ?>';
-    saveBtn.className = 'nav-button';
     saveBtn.textContent = 'Save Changes';
 
     function showSave() {

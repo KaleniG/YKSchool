@@ -16,14 +16,14 @@ $asset = new AssetManager();
 </head>
 
 <body>
-  <form method="post" class="login-form">
+  <form method="post">
     <h2>Administrator Login</h2>
-    <button type="submit" name="page" value="Home.php" class="nav-button">Home</button>
+    <button type="submit" name="page" value="Home.php">Home</button>
     <label>Name:</label>
     <input type="text" name="name" autocorrect="off" autocapitalize="off" spellcheck="false">
     <label>Surname:</label>
     <input type="text" name="surname" autocorrect="off" autocapitalize="off" spellcheck="false">
-    <button type="submit" name="login" class="nav-button">Login</button>
+    <button type="submit" name="login">Login</button>
   </form>
 </body>
 

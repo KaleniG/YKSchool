@@ -7,7 +7,7 @@ $phone_number = $this->user["phone_number"];
 $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
 ?>
 
-<div class="account-table">
+<div>
   <label>Name:</label>
   <input type="text" value="<?= $name ?>" disabled>
   <br>
@@ -34,7 +34,6 @@ $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
     saveBtn.type = 'submit';
     saveBtn.name = 'operation[save][confirm]';
     saveBtn.value = '<?= $id ?>';
-    saveBtn.className = 'nav-button';
     saveBtn.textContent = 'Save Changes';
 
     function showSave() {

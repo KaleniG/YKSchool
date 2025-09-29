@@ -3,7 +3,7 @@
   <th>Surname</th>
   <th>E-mail</th>
   <th>Phone Number</th>
-  <th style="min-width: 180px;"></th>
+  <th></th>
 </tr>
 
 <!-- UPDATE/DELETE -->
@@ -21,7 +21,7 @@
     <td><input type="text" name="operation[save][<?= $id ?>][phone_number]" value="<?= $phone ?>"></td>
     <td>
       <?php if ($this->user["id"] != $id): ?>
-        <button type="submit" name="operation[delete]" value="<?= $id ?>" class="nav-button">Delete</button>
+        <button type="submit" name="operation[delete]" value="<?= $id ?>">Delete</button>
       <?php endif; ?>
       <script>
         (function() {
@@ -33,7 +33,6 @@
           saveBtn.type = 'submit';
           saveBtn.name = 'operation[save][confirm]';
           saveBtn.value = '<?= $id ?>';
-          saveBtn.className = 'nav-button';
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -58,5 +57,5 @@
   <td><input type='text' name='operation[add][surname]' autocorrect='off' autocapitalize='on' spellcheck='false'></td>
   <td><input type='email' name='operation[add][email]' autocapitalize='off' spellcheck='false'></td>
   <td><input type='text' name='operation[add][phone_number]' autocorrect='off' autocapitalize='off' spellcheck='false'></td>
-  <td><button type='submit' name='operation[add][confirm]' class='nav-button'>Add</button></td>
+  <td><button type='submit' name='operation[add][confirm]'>Add</button></td>
 </tr>

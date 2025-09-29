@@ -5,7 +5,7 @@
   <th>Subject</th>
   <th>Teachers</th>
   <th>Students</th>
-  <th style="min-width: 180px;"></th>
+  <th></th>
 </tr>
 
 <!-- UPDATE/DELETE -->
@@ -27,7 +27,7 @@ use App\Config\LogManager;
     <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>'></td>
     <td><textarea name='operation[save][<?= $id ?>][description]'><?= $description ?></textarea></td>
     <td>
-      <select name='operation[save][<?= $id ?>][status]' class='edit-select'>
+      <select name='operation[save][<?= $id ?>][status]'>
         <option>Choose an option</option>
         <option value='Active' <?= (($status == "Active") ? "selected" : "") ?>>Active</option>
         <option value='Suspended' <?= (($status == "Suspended") ? "selected" : "") ?>>Suspended</option>
@@ -41,7 +41,7 @@ use App\Config\LogManager;
       ?>
         <?php if ($course_subject_id == $subject_id): ?>
           <input type='hidden' name='operation[save][<?= $id ?>][subject]' value='<?= $subject_id ?>'>
-          <input type='text' value='<?= $subject_name ?>' class='edit-select-course' disabled>
+          <input type='text' value='<?= $subject_name ?>' disabled>
           <?php break; ?>
         <?php endif; ?>
       <?php endforeach; ?>
@@ -63,9 +63,7 @@ use App\Config\LogManager;
     </td>
     <td>
       <select name='operation[save][<?= $id ?>][course_students][]' size='4' multiple>
-        <?php
-        //LogManager::error(var_export($this->students, true));
-        foreach ($this->students as $student_row):
+        <?php foreach ($this->students as $student_row):
           $student_id = $student_row["id"];
           $student_name = $student_row['name'];
           $student_surname = $student_row['surname'];
@@ -79,7 +77,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[delete]' value='<?= $id ?>' class='nav-button'>Delete</button>
+      <button type='submit' name='operation[delete]' value='<?= $id ?>'>Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode; // <tr>
@@ -93,7 +91,6 @@ use App\Config\LogManager;
           saveBtn.type = 'submit';
           saveBtn.name = 'operation[save][confirm]';
           saveBtn.value = '<?= $id ?>';
-          saveBtn.className = 'nav-button';
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -119,7 +116,7 @@ use App\Config\LogManager;
     <td><input type='text' name='operation[add][name]'></td>
     <td><textarea name='operation[add][description]'></textarea></td>
     <td>
-      <select name='operation[add][status]' class="edit-select">
+      <select name='operation[add][status]'>
         <option value="">Choose an option</option>
         <option value='Active'>Active</option>
         <option value='Suspended'>Suspended</option>
@@ -127,7 +124,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <select name='operation[add][subject]' onchange='selected_subject_submit();' class="edit-select-course">
+      <select name='operation[add][subject]' onchange='selected_subject_submit();'>
         <option value=''>Choose a subject</option>
         <?php foreach ($this->subjects as $subject_row):
           $subject_name = $subject_row["name"];
@@ -167,6 +164,6 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[add][confirm]' class='nav-button'>Add</button>
+      <button type='submit' name='operation[add][confirm]'>Add</button>
     </td>
   </tr>

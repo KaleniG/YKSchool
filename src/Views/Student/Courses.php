@@ -3,7 +3,7 @@
     <th>Name</th>
     <th>Description</th>
     <th>Subscribed</th>
-    <th style="min-width: 90px;"></th>
+    <th></th>
   </tr>
   <?php
   foreach ($this->courses as $course):
@@ -27,7 +27,6 @@
             saveBtn.type = 'submit';
             saveBtn.name = 'operation[save][confirm]';
             saveBtn.value = '<?= $id ?>';
-            saveBtn.className = 'nav-button';
             saveBtn.textContent = 'Save';
 
             function showSave() {

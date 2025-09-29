@@ -4,7 +4,7 @@
   <th>E-mail</th>
   <th>Phone Number</th>
   <th>Teaching Subjects</th>
-  <th style="min-width: 180px;"></th>
+  <th></th>
 </tr>
 
 <!-- UPDATE/DELETE -->
@@ -33,7 +33,7 @@
       </select>
     </td>
     <td>
-      <button type="submit" name="operation[delete]" value="<?= $id ?>" class="nav-button">Delete</button>
+      <button type="submit" name="operation[delete]" value="<?= $id ?>">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode; // <tr>
@@ -45,7 +45,6 @@
           saveBtn.type = 'submit';
           saveBtn.name = 'operation[save][confirm]';
           saveBtn.value = '<?= $id ?>';
-          saveBtn.className = 'nav-button';
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -79,5 +78,5 @@
         <option value='<?= $subject_id ?>'><?= $subject_name ?></option>
       <?php endforeach; ?>
     </select></td>
-  <td><button type='submit' name='operation[add][confirm]' class='nav-button'>Add</button></td>
+  <td><button type='submit' name='operation[add][confirm]'>Add</button></td>
 </tr>

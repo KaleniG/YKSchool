@@ -2,7 +2,7 @@
   <tr>
     <th>Name</th>
     <th>Description</th>
-    <th style="min-width: 90px;"></th>
+    <th></th>
   </tr>
   <?php foreach ($this->courses as $course):
     $id = $course["id"];
@@ -11,7 +11,7 @@
   ?>
     <tr>
       <td><?= $name ?></td>
-      <td><textarea name='operation[save][<?= $id ?>][description]' class='teacher-course-textarea'><?= $description ?></textarea></td>
+      <td><textarea name='operation[save][<?= $id ?>][description]'><?= $description ?></textarea></td>
       <td>
         <script>
           (function() {
@@ -22,7 +22,6 @@
             saveBtn.type = 'submit';
             saveBtn.name = 'operation[save][confirm]';
             saveBtn.value = '<?= $id ?>';
-            saveBtn.className = 'nav-button';
             saveBtn.textContent = 'Save';
 
             function showSave() {

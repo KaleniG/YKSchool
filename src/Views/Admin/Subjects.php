@@ -1,6 +1,6 @@
 <tr>
   <th>Subject</th>
-  <th style="min-width: 180px;"></th>
+  <th></th>
 </tr>
 
 
@@ -12,7 +12,7 @@
   <tr>
     <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>'></td>
     <td>
-      <button type="submit" name="operation[delete]" value="<?= $id ?>" class="nav-button">Delete</button>
+      <button type="submit" name="operation[delete]" value="<?= $id ?>">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode; // <tr>
@@ -22,7 +22,6 @@
           saveBtn.type = 'submit';
           saveBtn.name = 'operation[save][confirm]';
           saveBtn.value = '<?= $id ?>';
-          saveBtn.className = 'nav-button';
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -42,5 +41,5 @@
 <!-- INSERT -->
 <tr>
   <td><input type='text' name='operation[add][name]'></td>
-  <td><button type='submit' name='operation[add][confirm]' class='nav-button'>Add</button></td>
+  <td><button type='submit' name='operation[add][confirm]'>Add</button></td>
 </tr>
