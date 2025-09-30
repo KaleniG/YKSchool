@@ -13,8 +13,12 @@
     $checked = $course["is_student_subscribed"] ? "checked" : "";
   ?>
     <tr>
-      <td><?= $name ?></td>
-      <td><?= $description ?></td>
+      <td>
+        <p class="edit"><?= $name ?></p>
+      </td>
+      <td>
+        <p class="edit"><?= $description ?></p>
+      </td>
       <td><input type='checkbox' name='operation[save][<?= $id ?>][is_student_subscribed]' value="t" class="edit" <?= $checked ?>></td>
       <td>
         <script>
@@ -24,9 +28,7 @@
             const cell = document.currentScript.parentNode;
 
             const saveBtn = document.createElement('button');
-            saveBtn.type = 'submit';
-            saveBtn.name = 'operation[save][confirm]';
-            saveBtn.value = '<?= $id ?>';
+            saveBtn.type = 'button';
             saveBtn.className = "edit-option-button-add"
             saveBtn.textContent = 'Save';
 
@@ -34,12 +36,41 @@
               if (!cell.contains(saveBtn)) {
                 cell.appendChild(saveBtn);
                 requestAnimationFrame(() => {
-                  saveBtn.classList.add('visible'); // trigger fade-in
+                  saveBtn.classList.add('visible');
                 });
               }
             }
 
+            async function sendData() {
+              const formData = new FormData();
+
+              if (checkbox.checked) {
+                formData.append("operation[save][<?= $id ?>][is_student_subscribed]", "t");
+              } else {
+                formData.append("operation[save][<?= $id ?>][is_student_subscribed]", "f");
+              }
+              formData.append("operation[save][confirm]", "<?= $id ?>");
+
+              try {
+                const response = await fetch("student.php", {
+                  method: "POST",
+                  body: formData
+                });
+
+              } catch (err) {
+                console.error("Failed to save the user data: ", err);
+              }
+
+              if (saveBtn.isConnected) {
+                requestAnimationFrame(() => {
+                  saveBtn.classList.remove('visible');
+                });
+                setTimeout(() => saveBtn.remove(), 400);
+              }
+            }
+
             checkbox.addEventListener('change', showSave);
+            saveBtn.addEventListener('click', sendData);
           })();
         </script>
       </td>

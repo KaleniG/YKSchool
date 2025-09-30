@@ -21,7 +21,7 @@ class AssetManager
   {
     $allfiles = "";
     foreach ($this->css as $css_file)
-      $allfiles .= "<link rel='stylesheet' href='{$css_file}?s=ss'>";
+      $allfiles .= "<link rel='stylesheet' href='{$css_file}'>";
     return $allfiles;
   }
 

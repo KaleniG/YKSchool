@@ -80,7 +80,7 @@ use App\Config\LogManager;
       <button type='submit' name='operation[delete]' value='<?= $id ?>' class="edit-option-button">Delete</button>
       <script>
         (function() {
-          const row = document.currentScript.parentNode.parentNode; // <tr>
+          const row = document.currentScript.parentNode.parentNode;
           const nameInput = row.querySelector('input[name="operation[save][<?= $id ?>][name]"]');
           const descriptionInput = row.querySelector('textarea[name="operation[save][<?= $id ?>][description]"]');
           const statusInput = row.querySelector('select[name="operation[save][<?= $id ?>][status]"]');
@@ -88,9 +88,7 @@ use App\Config\LogManager;
           const studentsInput = row.querySelector('select[name="operation[save][<?= $id ?>][course_students][]"]');
 
           const saveBtn = document.createElement('button');
-          saveBtn.type = 'submit';
-          saveBtn.name = 'operation[save][confirm]';
-          saveBtn.value = '<?= $id ?>';
+          saveBtn.type = 'button';
           saveBtn.className = "edit-option-button-add"
           saveBtn.textContent = 'Save';
 
@@ -98,6 +96,44 @@ use App\Config\LogManager;
             const cell = studentsInput.closest('tr').querySelector('td:last-child');
             if (!cell.contains(saveBtn)) {
               cell.appendChild(saveBtn);
+              requestAnimationFrame(() => {
+                saveBtn.classList.add('visible');
+              });
+            }
+          }
+
+          async function sendData() {
+            const formData = new FormData();
+
+            formData.append("operation[save][<?= $id ?>][name]", nameInput.value);
+            formData.append("operation[save][<?= $id ?>][description]", descriptionInput.value);
+            formData.append("operation[save][<?= $id ?>][status]", statusInput.value);
+
+            for (const option of teachersInput.selectedOptions) {
+              formData.append("operation[save][<?= $id ?>][course_teachers][]", option.value);
+            }
+
+            for (const option of studentsInput.selectedOptions) {
+              formData.append("operation[save][<?= $id ?>][course_students][]", option.value);
+            }
+
+            formData.append("operation[save][confirm]", "<?= $id ?>");
+
+            try {
+              const response = await fetch("admin.php", {
+                method: "POST",
+                body: formData
+              });
+
+            } catch (err) {
+              console.error("Failed to save the course data: ", err);
+            }
+
+            if (saveBtn.isConnected) {
+              requestAnimationFrame(() => {
+                saveBtn.classList.remove('visible');
+              });
+              setTimeout(() => saveBtn.remove(), 400);
             }
           }
 
@@ -106,6 +142,7 @@ use App\Config\LogManager;
           statusInput.addEventListener('change', showSave);
           teachersInput.addEventListener('change', showSave);
           studentsInput.addEventListener('change', showSave);
+          saveBtn.addEventListener('click', sendData);
         })();
       </script>
     </td>

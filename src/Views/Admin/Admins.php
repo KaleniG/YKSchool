@@ -30,9 +30,7 @@
           const phoneInput = row.querySelector('input[name="operation[save][<?= $id ?>][phone_number]"]');
 
           const saveBtn = document.createElement('button');
-          saveBtn.type = 'submit';
-          saveBtn.name = 'operation[save][confirm]';
-          saveBtn.value = '<?= $id ?>';
+          saveBtn.type = 'button';
           saveBtn.className = 'edit-option-button-add';
           saveBtn.textContent = 'Save';
 
@@ -41,13 +39,39 @@
             if (!cell.contains(saveBtn)) {
               cell.appendChild(saveBtn);
               requestAnimationFrame(() => {
-                saveBtn.classList.add('visible'); // trigger fade-in
+                saveBtn.classList.add('visible');
               });
+            }
+          }
+
+          async function sendData() {
+            const formData = new FormData();
+
+            formData.append("operation[save][<?= $id ?>][email]", emailInput.value);
+            formData.append("operation[save][<?= $id ?>][phone_number]", phoneInput.value);
+            formData.append("operation[save][confirm]", "<?= $id ?>");
+
+            try {
+              const response = await fetch("admin.php", {
+                method: "POST",
+                body: formData
+              });
+
+            } catch (err) {
+              console.error("Failed to save the user data: ", err);
+            }
+
+            if (saveBtn.isConnected) {
+              requestAnimationFrame(() => {
+                saveBtn.classList.remove('visible');
+              });
+              setTimeout(() => saveBtn.remove(), 400);
             }
           }
 
           emailInput.addEventListener('input', showSave);
           phoneInput.addEventListener('input', showSave);
+          saveBtn.addEventListener('click', sendData);
         })();
       </script>
     </td>

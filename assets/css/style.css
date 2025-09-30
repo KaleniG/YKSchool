@@ -630,4 +630,8 @@ label.edit {
   display: block;
   cursor: default;
   transition: color 0.3s ease;
+}
+
+p.edit {
+  color: #6d85a5;
 }/*# sourceMappingURL=style.css.map */
