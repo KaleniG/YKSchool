@@ -10,32 +10,12 @@
   <button type="button" class="present arrow right">▶</button>
 </div>
 
-<script>
-  let courses = [];
-  let currentIndex = 0;
+<script type="module">
+  import {
+    fetchCourses
+  } from './assets/js/Guest/CoursesRequest.js';
 
-  function fetchCourses() {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "guest.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        try {
-          courses = JSON.parse(xhr.responseText);
-          console.log("Got courses:", courses);
-          showCourse(currentIndex);
-        } catch (e) {
-          console.error("Invalid JSON:", xhr.responseText);
-        }
-      }
-    };
-
-    xhr.send();
-  }
-
-  function showCourse(index) {
+  function showCourse(courses, index) {
     if (!courses.length) return;
 
     const courseBox = document.querySelector(".present.course.box");
@@ -52,18 +32,31 @@
     }, 500);
   }
 
+  function setupArrows(courses, currentIndexRef) {
+    document.querySelector(".present.arrow.left").addEventListener("click", () => {
+      if (!courses.length) return;
+      currentIndexRef.value = (currentIndexRef.value - 1 + courses.length) % courses.length;
+      showCourse(courses, currentIndexRef.value);
+    });
 
-  document.querySelector(".present.arrow.left").addEventListener("click", () => {
-    if (!courses.length) return;
-    currentIndex = (currentIndex - 1 + courses.length) % courses.length;
-    showCourse(currentIndex);
+    document.querySelector(".present.arrow.right").addEventListener("click", () => {
+      if (!courses.length) return;
+      currentIndexRef.value = (currentIndexRef.value + 1) % courses.length;
+      showCourse(courses, currentIndexRef.value);
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const currentIndexRef = {
+      value: 0
+    };
+
+    try {
+      const courses = await fetchCourses();
+      if (courses.length > 0) showCourse(courses, currentIndexRef.value);
+      setupArrows(courses, currentIndexRef);
+    } catch (err) {
+      console.error(err);
+    }
   });
-
-  document.querySelector(".present.arrow.right").addEventListener("click", () => {
-    if (!courses.length) return;
-    currentIndex = (currentIndex + 1) % courses.length;
-    showCourse(currentIndex);
-  });
-
-  window.addEventListener("DOMContentLoaded", fetchCourses);
 </script>
