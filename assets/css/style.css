@@ -328,7 +328,7 @@ button.edit-option-button:hover {
   background-color: #ffffff;
 }
 
-button.edit-option-button-add {
+button.edit-option-button-save {
   width: 48%;
   height: 100%;
   font-family: "Montserrat", sans-serif;
@@ -345,11 +345,11 @@ button.edit-option-button-add {
   transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, transform 0.2s ease, opacity 0.4s ease;
 }
 
-button.edit-option-button-add.visible {
+button.edit-option-button-save.visible {
   opacity: 1;
 }
 
-button.edit-option-button-add:hover {
+button.edit-option-button-save:hover {
   color: #6cb9c9;
   border-color: #6cb9c9;
   background-color: #ffffff;
@@ -570,7 +570,7 @@ div.edit-account {
   padding: 15px;
 }
 
-button.edit-account-option-button-add {
+button.edit-account-option-button-save {
   width: 20%;
   height: 100%;
   font-family: "Montserrat", sans-serif;
@@ -587,11 +587,11 @@ button.edit-account-option-button-add {
   transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, transform 0.2s ease, opacity 0.4s ease;
 }
 
-button.edit-account-option-button-add.visible {
+button.edit-account-option-button-save.visible {
   opacity: 1;
 }
 
-button.edit-account-option-button-add:hover {
+button.edit-account-option-button-save:hover {
   color: #6cb9c9;
   border-color: #6cb9c9;
   background-color: #ffffff;

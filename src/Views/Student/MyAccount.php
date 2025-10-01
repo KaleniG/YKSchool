@@ -32,7 +32,7 @@ $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
 
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
-    saveBtn.className = "edit-account-option-button-add"
+    saveBtn.className = "edit-account-option-button-save"
     saveBtn.textContent = 'Save Changes';
 
     if (!saveBtn.isConnected) {

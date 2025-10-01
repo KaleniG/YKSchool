@@ -31,7 +31,7 @@
 
           const saveBtn = document.createElement('button');
           saveBtn.type = 'button';
-          saveBtn.className = 'edit-option-button-add';
+          saveBtn.className = 'edit-option-button-save';
           saveBtn.textContent = 'Save';
 
           function showSave() {
