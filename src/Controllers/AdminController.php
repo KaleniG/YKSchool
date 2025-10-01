@@ -15,15 +15,28 @@ use App\Models\Teacher;
 use App\Models\TeacherManager;
 
 /*
+$_POST["name"] $_POST["surname] -> credentials on login
 $_POST["page"] $_SESSION["page"] -> contain the path to the page to load relative to the Views folder
-$_SESSION["user"] -> on login stores the user data (name, surname...)
-$_SESSION["edit_selection"] -> on login stores the value from the select input to decide what content to display
+$_SESSION["user"] -> on login stores the user (admin) data (name, surname...)
+$_POST["edit_selection"] $_SESSION["edit_selection"] -> on login stores the value from the select input to decide what content to display
 $_SESSION["admins"] -> on edit administrators option stores all admins
 $_SESSION["teachers"] -> on edit teachers option stores all teachers
 $_SESSION["students"] -> on edit students option stores all students
 $_SESSION["subjects"] -> on edit subjects option stores all subjects
 $_SESSION["courses"] -> on edit courses option stores all courses
 $_SESSION["new_course_subject_selection"] -> on edit courses option stores the selected subject when trying to add a new course
+
+$_POST["operation"] -> array containing an operation assciative array:
+  ["save"]
+    ["confirm"] -> returns the id of the element to save
+    ["id"] -> used in format ["{$id}"] to access the filtered element's parameters that changed
+      ["...parameter name..."] -> parameter value to save for an element
+  ["delete"] -> returns the id of the element to delete
+  ["add"]
+    ["confirm"] -> just a submit value needed to actually add new element, does not contain any value
+    ["...parameter name..."] -> parameter value to add to a new element
+
+$_POST["operation"]["add"]["subject"] -> special exception, used to load $_SESSION["new_course_subject_selection"]
 */
 
 class AdminController
@@ -175,7 +188,8 @@ class AdminController
           "email" => htmlspecialchars($_POST["operation"]["save"][$id]["email"]),
           "phone_number" => htmlspecialchars($_POST["operation"]["save"][$id]["phone_number"])
         ];
-        $manager->update($changes);
+        if (filter_var($changes["email"], FILTER_VALIDATE_EMAIL))
+          $manager->update($changes);
       } else if (isset($_POST["operation"]["delete"])) {
         $manager->delete($_POST["operation"]["delete"]);
       } else if (isset($_POST["operation"]["add"]["confirm"])) {
@@ -230,6 +244,8 @@ class AdminController
           "phone_number" => htmlspecialchars($_POST["operation"]["save"][$id]["phone_number"]),
           "teaching_subjects" => $_POST["operation"]["save"][$id]["teaching_subjects"] ?? []
         ];
+        if (filter_var($changes["email"], FILTER_VALIDATE_EMAIL))
+          $manager->update($changes);
         $manager->update($changes);
       } else if (isset($_POST["operation"]["delete"])) {
         $manager->delete($_POST["operation"]["delete"]);
@@ -276,6 +292,8 @@ class AdminController
           "phone_number" => htmlspecialchars($_POST["operation"]["save"][$id]["phone_number"]),
           "tuition_enabled" => (htmlspecialchars($_POST["operation"]["save"][$id]["tuition_enabled"] ?? "f") == "t") ? true : false
         ];
+        if (filter_var($changes["email"], FILTER_VALIDATE_EMAIL))
+          $manager->update($changes);
         $manager->update($changes);
       } else if (isset($_POST["operation"]["delete"])) {
         $manager->delete($_POST["operation"]["delete"]);
@@ -423,7 +441,7 @@ class AdminController
           $manager->add($course);
 
         // SESSION VALUES REALOAD ON CHANGE (BUT ONLY FOR THE SUBJECT SELECTION IF IT CHANGED)
-        if (isset($_POST["new_course_subject_selection"]) && $_POST["operation"]["add"]["subject"] != $_SESSION["new_course_subject_selection"]) {
+        if (isset($_POST["operation"]["add"]["subject"]) && $_POST["operation"]["add"]["subject"] != $_SESSION["new_course_subject_selection"]) {
           $this->new_course_subject_selection = $_POST["operation"]["add"]["subject"];
           $_SESSION["new_course_subject_selection"] = $this->new_course_subject_selection;
         }

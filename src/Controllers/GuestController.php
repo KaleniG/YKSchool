@@ -2,10 +2,20 @@
 
 namespace App\Controllers;
 
-use App\Config\Log;
 use App\Config\Path;
 use App\Models\CourseManager;
 use App\Models\SubjectManager;
+
+/*
+$_POST["page"] $_SESSION["page"] -> contain the path to the page to load relative to the Views folder
+$_POST["present_selection"] $_SESSION["present_selection"] -> stores the value of the page to load
+$_POST["view_format"] $_SESSION["view_format"] -> stores the value of the page to load for the way to visualize the courses
+$_POST["word_filter"] $_SESSION["word_filter"] -> stores the user input from the textbox
+$_POST["subject_filter"] $_SESSION["subject_filter"] -> stores the user input from the select box with all of the subjects
+$_POST["view_format"] $_SESSION["view_format"] -> stores the value of the page to load for the way to visualize the courses
+$_SESSION["subjects"] -> stores all of the subjects from the start
+$_SESSION["courses"] -> stores all of the courses from the start, on press of the Home button or the use of the filtered search is loaded with courses' data
+*/
 
 class GuestController
 {
@@ -118,16 +128,18 @@ class GuestController
     if (isset($_SESSION["word_filter"]))
       $this->word_filter = $_SESSION["word_filter"];
     else {
-      $len = strlen(htmlspecialchars($_POST["search"]["word_filter"]));
-      if ($len >= 3 || $len == 0) {
-        $this->word_filter = htmlspecialchars($_POST["search"]["word_filter"]) ?? null;
+      $rawWord = $_POST["word_filter"] ?? "";
+      $len = strlen(trim($rawWord));
+      if ($len >= 3 || $len === 0) {
+        $this->word_filter = htmlspecialchars($rawWord);
         $_SESSION["word_filter"] = $this->word_filter;
       }
     }
-    if (isset($_POST["search"]["word_filter"]) && $_POST["search"]["word_filter"] != $_SESSION["word_filter"]) {
-      $len = strlen(htmlspecialchars($_POST["search"]["word_filter"]));
-      if ($len >= 3 || $len == 0) {
-        $this->word_filter = htmlspecialchars($_POST["search"]["word_filter"]);
+    if (isset($_POST["word_filter"]) && $_POST["word_filter"] != $_SESSION["word_filter"]) {
+      $rawWord = $_POST["word_filter"] ?? "";
+      $len = strlen(trim($rawWord));
+      if ($len >= 3 || $len === 0) {
+        $this->word_filter = htmlspecialchars($rawWord);
         $_SESSION["word_filter"] = $this->word_filter;
       }
     }
@@ -136,11 +148,11 @@ class GuestController
     if (isset($_SESSION["subject_filter"]))
       $this->subject_filter = $_SESSION["subject_filter"];
     else {
-      $this->subject_filter = $_POST["search"]["subject_filter"] ?? null;
+      $this->subject_filter = $_POST["subject_filter"] ?? null;
       $_SESSION["subject_filter"] = $this->subject_filter;
     }
-    if (isset($_POST["search"]["subject_filter"]) && $_POST["search"]["subject_filter"] != $_SESSION["subject_filter"]) {
-      $this->subject_filter = $_POST["search"]["subject_filter"];
+    if (isset($_POST["subject_filter"]) && $_POST["subject_filter"] != $_SESSION["subject_filter"]) {
+      $this->subject_filter = $_POST["subject_filter"];
       $_SESSION["subject_filter"] = $this->subject_filter;
     }
 

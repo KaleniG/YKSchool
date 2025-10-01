@@ -4,6 +4,10 @@ namespace App\Controllers;
 
 use App\Config\Path;
 
+/*
+$_POST["page"] -> contain the name of the file to load relative to index.php
+*/
+
 class MainController
 {
   public function handleRequests()

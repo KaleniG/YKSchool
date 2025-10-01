@@ -2,23 +2,24 @@
 
 namespace App\Controllers;
 
-use App\Config\Log;
 use App\Config\Path;
-use App\Models\Course;
 use App\Models\CourseManager;
-use App\Models\Student;
-use App\Models\StudentManager;
-use App\Models\Subject;
 use App\Models\SubjectManager;
 use App\Models\Teacher;
 use App\Models\TeacherManager;
 
 /*
 $_POST["page"] $_SESSION["page"] -> contain the path to the page to load relative to the Views folder
-$_SESSION["user"] -> on login stores the user data (name, surname...)
-$_SESSION["edit_selection"] -> on login stores the value from the select input to decide what content to display
-$_SESSION["subjects"] -> on edit subjects option stores all subjects
-$_SESSION["courses"] -> on edit courses option stores all courses
+$_SESSION["user"] -> on login stores the user (teacher) data (name, surname...)
+$_POST["edit_selection"] $_SESSION["edit_selection"] -> on login stores the value from the select input to decide what content to display
+$_SESSION["subjects"] -> on edit subjects option stores all subjects of the user (teacher)
+$_SESSION["courses"] -> on edit courses option stores all courses of the user (teacher)
+
+$_POST["operation"] -> array containing an operation assciative array:
+  ["save"]
+    ["confirm"] -> returns the id of the element to save
+    ["id"] -> used in format ["{$id}"] to access the filtered element's parameters that changed
+      ["...parameter name..."] -> parameter value to save for an element
 */
 
 class TeacherController
@@ -120,9 +121,6 @@ class TeacherController
     // HANDLING ALL EDITING OPTIONS
     if (isset($this->edit_selection)) {
       switch ($this->edit_selection) {
-        case "Home.php":
-          $this->handleHome();
-          break;
         case "myaccount":
           $this->handleEditMyAccount();
           break;
@@ -156,6 +154,8 @@ class TeacherController
           "phone_number" => htmlspecialchars($_POST["operation"]["save"][$id]["phone_number"]),
           "teaching_subjects" => $_POST["operation"]["save"][$id]["teaching_subjects"] ?? []
         ];
+        if (filter_var($changes["email"], FILTER_VALIDATE_EMAIL))
+          $manager->update($changes);
         $manager->update($changes);
       }
 
@@ -190,8 +190,8 @@ class TeacherController
       }
 
       // SESSION VALUES REALOAD ON CHANGE
-      $manager = new CourseManager();
-      $this->courses = $manager->getAllCourses() ?? [];
+      $manager = new TeacherManager();
+      $this->courses = $manager->getTeacherCourses($this->user["id"]) ?? [];
       $_SESSION["courses"] = $this->courses;
     }
   }
