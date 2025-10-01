@@ -7,28 +7,28 @@
 <!-- UPDATE/DELETE -->
 <?php foreach ($this->subjects as $subject_row):
   $id = $subject_row["id"];
-  $name = $subject_row['name'];
+  $name = $subject_row["name"];
 ?>
   <tr>
-    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
+    <td><input type="text" name="operation[save][<?= $id ?>][name]" value="<?= $name ?>" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
     <td>
       <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit option-button">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode;
-          const nameInput = row.querySelector('input[name="operation[save][<?= $id ?>][name]"]');
+          const nameInput = row.querySelector("input[name='operation[save][<?= $id ?>][name]']");
 
-          const saveBtn = document.createElement('button');
-          saveBtn.type = 'button';
-          saveBtn.className = 'edit option-button save';
-          saveBtn.textContent = 'Save';
+          const saveBtn = document.createElement("button");
+          saveBtn.type = "button";
+          saveBtn.className = "edit option-button save";
+          saveBtn.textContent = "Save";
 
           function showSave() {
-            const cell = row.querySelector('td:last-child');
+            const cell = row.querySelector("td:last-child");
             if (!cell.contains(saveBtn)) {
               cell.appendChild(saveBtn);
               requestAnimationFrame(() => {
-                saveBtn.classList.add('visible');
+                saveBtn.classList.add("visible");
               });
             }
           }
@@ -47,13 +47,13 @@
               console.error("Failed to save the course data:", err);
             }
 
-            saveBtn.classList.remove('visible');
+            saveBtn.classList.remove("visible");
             saveBtn.disabled = true;
             setTimeout(() => saveBtn.remove(), 400);
           }
 
-          nameInput.addEventListener('input', showSave);
-          saveBtn.addEventListener('click', sendData);
+          nameInput.addEventListener("input", showSave);
+          saveBtn.addEventListener("click", sendData);
         })();
       </script>
     </td>
@@ -62,6 +62,6 @@
 
 <!-- INSERT -->
 <tr>
-  <td><input type='text' name='operation[add][name]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
-  <td><button type='submit' name='operation[add][confirm]' class="edit option-button">Add</button></td>
+  <td><input type="text" name="operation[add][name]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
+  <td><button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button></td>
 </tr>

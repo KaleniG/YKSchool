@@ -13,39 +13,38 @@
 <script type="module">
   import {
     fetchCourses
-  } from './assets/js/Guest/CoursesRequest.js';
+  } from "./assets/js/Guest/CoursesRequest.js";
 
   function populateTable(courses) {
-    const tbody = document.querySelector('#coursesTable tbody');
-    tbody.innerHTML = '';
+    const tbody = document.querySelector("#coursesTable tbody");
+    tbody.innerHTML = "";
 
     courses.forEach(course => {
-      const tr = document.createElement('tr');
+      const tr = document.createElement("tr");
 
-      const tdName = document.createElement('td');
-      const inputName = document.createElement('input');
-      inputName.type = 'text';
+      const tdName = document.createElement("td");
+      const inputName = document.createElement("input");
+      inputName.type = "text";
       inputName.value = course.name;
       inputName.disabled = true;
-      inputName.classList.add('present');
+      inputName.classList.add("present");
       tdName.appendChild(inputName);
       tr.appendChild(tdName);
 
-      const tdDesc = document.createElement('td');
-      const textareaDesc = document.createElement('textarea');
+      const tdDesc = document.createElement("td");
+      const textareaDesc = document.createElement("textarea");
       textareaDesc.textContent = course.description;
       textareaDesc.disabled = true;
-      textareaDesc.classList.add('present');
-      textareaDesc.spell
+      textareaDesc.classList.add("present");
       tdDesc.appendChild(textareaDesc);
       tr.appendChild(tdDesc);
 
-      const tdSubject = document.createElement('td');
-      const inputSubject = document.createElement('input');
-      inputSubject.type = 'text';
+      const tdSubject = document.createElement("td");
+      const inputSubject = document.createElement("input");
+      inputSubject.type = "text";
       inputSubject.value = course.subject;
       inputSubject.disabled = true;
-      inputSubject.classList.add('present');
+      inputSubject.classList.add("present");
       tdSubject.appendChild(inputSubject);
       tr.appendChild(tdSubject);
 
@@ -54,7 +53,7 @@
   }
 
   function emptyMessage() {
-    const tbody = document.querySelector('#coursesTable tbody');
+    const tbody = document.querySelector("#coursesTable tbody");
     tbody.innerHTML = `
       <tr>
         <td colspan="3" style="text-align: center;">
@@ -64,7 +63,7 @@
     `;
   }
 
-  window.addEventListener('DOMContentLoaded', async () => {
+  window.addEventListener("DOMContentLoaded", async () => {
     try {
       const courses = await fetchCourses();
       if (courses && courses.length > 0) {
@@ -73,7 +72,7 @@
         emptyMessage();
       }
     } catch (err) {
-      console.error('Failed to load courses:', err);
+      console.error("Failed to load courses:", err);
       emptyMessage();
     }
   });

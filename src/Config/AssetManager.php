@@ -5,12 +5,12 @@ namespace App\Config;
 class AssetManager
 {
   private $css = [
-    'assets/css/style.css'
+    "assets/css/style.css"
   ];
 
   private $sql = [
-    'assets/sql/ykschool.sql'
-    //'assets/sql/add_admin.sql'
+    "assets/sql/ykschool.sql"
+    //"assets/sql/add_admin.sql"
   ];
 
   public function importCSS()

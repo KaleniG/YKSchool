@@ -83,7 +83,7 @@ class GuestController
           break;
       }
 
-      $self = $_SERVER['PHP_SELF'];
+      $self = $_SERVER["PHP_SELF"];
       header("Location: {$self}");
       exit;
     }

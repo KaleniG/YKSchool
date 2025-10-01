@@ -15,7 +15,7 @@ $asset = new AssetManager();
   <?= $asset->importCSS(); ?>
   <script>
     function submit() {
-      document.getElementById('main_form').submit();
+      document.getElementById("main_form").submit();
     }
   </script>
   <title>Student</title>
@@ -25,7 +25,7 @@ $asset = new AssetManager();
   <form method="post" id="main_form" class="edit">
     <div class="edit navbar">
       <button type="submit" name="page" value="Home.php" class="edit">Logout</button>
-      <select name="edit_selection" onchange='submit();' class="edit navbar">
+      <select name="edit_selection" onchange="submit();" class="edit navbar">
         <option>Select an option</option>
         <option value="myaccount" <?= ($this->edit_selection == "myaccount") ? "selected" : ""; ?>>My Account</option>
         <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>

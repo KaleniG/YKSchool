@@ -13,7 +13,7 @@
 <script type="module">
   import {
     fetchCourses
-  } from './assets/js/Guest/CoursesRequest.js';
+  } from "./assets/js/Guest/CoursesRequest.js";
 
   function showCourse(courses, index) {
     if (!courses.length) return;
@@ -69,7 +69,7 @@
 
       setupArrows(courses, currentIndexRef);
     } catch (err) {
-      console.error('Failed to fetch courses:', err);
+      console.error("Failed to fetch courses:", err);
       emptyMessage();
     }
   });

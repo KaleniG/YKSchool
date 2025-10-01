@@ -26,20 +26,20 @@
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode; // <tr>
-          const emailInput = row.querySelector('input[name="operation[save][<?= $id ?>][email]"]');
-          const phoneInput = row.querySelector('input[name="operation[save][<?= $id ?>][phone_number]"]');
+          const emailInput = row.querySelector("input[name='operation[save][<?= $id ?>][email]']");
+          const phoneInput = row.querySelector("input[name='operation[save][<?= $id ?>][phone_number]']");
 
-          const saveBtn = document.createElement('button');
-          saveBtn.type = 'button';
-          saveBtn.className = 'edit option-button save';
-          saveBtn.textContent = 'Save';
+          const saveBtn = document.createElement("button");
+          saveBtn.type = "button";
+          saveBtn.className = "edit option-button save";
+          saveBtn.textContent = "Save";
 
           function showSave() {
-            const cell = emailInput.closest('tr').querySelector('td:last-child');
+            const cell = emailInput.closest("tr").querySelector("td:last-child");
             if (!cell.contains(saveBtn)) {
               cell.appendChild(saveBtn);
               requestAnimationFrame(() => {
-                saveBtn.classList.add('visible');
+                saveBtn.classList.add("visible");
               });
             }
           }
@@ -63,15 +63,15 @@
 
             if (saveBtn.isConnected) {
               requestAnimationFrame(() => {
-                saveBtn.classList.remove('visible');
+                saveBtn.classList.remove("visible");
               });
               setTimeout(() => saveBtn.remove(), 400);
             }
           }
 
-          emailInput.addEventListener('input', showSave);
-          phoneInput.addEventListener('input', showSave);
-          saveBtn.addEventListener('click', sendData);
+          emailInput.addEventListener("input", showSave);
+          phoneInput.addEventListener("input", showSave);
+          saveBtn.addEventListener("click", sendData);
         })();
       </script>
     </td>
@@ -81,9 +81,9 @@
 
 <!-- INSERT -->
 <tr>
-  <td><input type='text' name='operation[add][name]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
-  <td><input type='text' name='operation[add][surname]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
-  <td><input type='email' name='operation[add][email]' autocomplete="off" autocapitalize='off' spellcheck='false' class="edit"></td>
-  <td><input type='number' name='operation[add][phone_number]' autocomplete="off" autocorrect="off" class="edit"></td>
-  <td><button type='submit' name='operation[add][confirm]' class="edit option-button">Add</button></td>
+  <td><input type="text" name="operation[add][name]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
+  <td><input type="text" name="operation[add][surname]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
+  <td><input type="email" name="operation[add][email]" autocomplete="off" autocapitalize="off" spellcheck="false" class="edit"></td>
+  <td><input type="number" name="operation[add][phone_number]" autocomplete="off" autocorrect="off" class="edit"></td>
+  <td><button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button></td>
 </tr>

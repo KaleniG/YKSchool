@@ -15,34 +15,34 @@ $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
     <input type="text" value="<?= $surname ?>" class="edit" disabled>
   </label>
   <label for="email" class="edit">E-mail:
-    <input type='text' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' autocomplete="off" autocorrect='off' autocapitalize='off' spellcheck='false' id="email" class="edit">
+    <input type="text" name="operation[save][<?= $id ?>][email]" value="<?= $email ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="email" class="edit">
   </label>
   <label for="phone_number" class="edit">Phone Number:
-    <input type='number' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' autocomplete="off" autocorrect='off' id="phone_number" class="edit">
+    <input type="number" name="operation[save][<?= $id ?>][phone_number]" value="<?= $phone_number ?>" autocomplete="off" autocorrect="off" id="phone_number" class="edit">
   </label>
   <label class="edit">Tution Status:
-    <input type='text' name='operation[save][<?= $id ?>][tuition_enabled]' value='<?= $tuition_enabled ?>' class="edit" disabled>
+    <input type="text" name="operation[save][<?= $id ?>][tuition_enabled]" value="<?= $tuition_enabled ?>" class="edit" disabled>
   </label>
 </div>
 <script>
   (function() {
     const container = document.currentScript.previousElementSibling;
-    const emailInput = container.querySelector('input[name="operation[save][<?= $id ?>][email]" ]');
-    const phoneInput = container.querySelector('input[name="operation[save][<?= $id ?>][phone_number]" ]');
+    const emailInput = container.querySelector("input[name='operation[save][<?= $id ?>][email]']");
+    const phoneInput = container.querySelector("input[name='operation[save][<?= $id ?>][phone_number]']");
 
-    const saveBtn = document.createElement('button');
-    saveBtn.type = 'button';
+    const saveBtn = document.createElement("button");
+    saveBtn.type = "button";
     saveBtn.className = "edit account option-button save"
-    saveBtn.textContent = 'Save Changes';
+    saveBtn.textContent = "Save Changes";
 
     if (!saveBtn.isConnected) {
-      container.insertAdjacentElement('afterend', saveBtn);
+      container.insertAdjacentElement("afterend", saveBtn);
     }
 
     function showSave() {
       if (saveBtn.isConnected) {
         requestAnimationFrame(() => {
-          saveBtn.classList.add('visible');
+          saveBtn.classList.add("visible");
         });
       }
     }
@@ -66,13 +66,13 @@ $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
 
       if (saveBtn.isConnected) {
         requestAnimationFrame(() => {
-          saveBtn.classList.remove('visible');
+          saveBtn.classList.remove("visible");
         });
       }
     }
 
-    emailInput.addEventListener('input', showSave);
-    phoneInput.addEventListener('input', showSave);
-    saveBtn.addEventListener('click', sendData);
+    emailInput.addEventListener("input", showSave);
+    phoneInput.addEventListener("input", showSave);
+    saveBtn.addEventListener("click", sendData);
   })();
 </script>

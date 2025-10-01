@@ -19,14 +19,14 @@
   $course_teachers = $course_row["course_teachers"];
 ?>
   <tr>
-    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
-    <td><textarea name='operation[save][<?= $id ?>][description]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"><?= $description ?></textarea></td>
+    <td><input type="text" name="operation[save][<?= $id ?>][name]" value="<?= $name ?>" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
+    <td><textarea name="operation[save][<?= $id ?>][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"><?= $description ?></textarea></td>
     <td>
-      <select name='operation[save][<?= $id ?>][status]' class="edit">
+      <select name="operation[save][<?= $id ?>][status]" class="edit">
         <option>Choose an option</option>
-        <option value='Active' <?= (($status == "Active") ? "selected" : "") ?>>Active</option>
-        <option value='Suspended' <?= (($status == "Suspended") ? "selected" : "") ?>>Suspended</option>
-        <option value='UnderDevelopment' <?= (($status == "UnderDevelopment") ? "selected" : "") ?>>Under Development</option>
+        <option value="Active" <?= (($status == "Active") ? "selected" : "") ?>>Active</option>
+        <option value="Suspended" <?= (($status == "Suspended") ? "selected" : "") ?>>Suspended</option>
+        <option value="UnderDevelopment" <?= (($status == "UnderDevelopment") ? "selected" : "") ?>>Under Development</option>
       </select>
     </td>
     <td>
@@ -35,18 +35,18 @@
         $subject_id = $subject_row["id"];
       ?>
         <?php if ($course_subject_id == $subject_id): ?>
-          <input type='hidden' name='operation[save][<?= $id ?>][subject]' value='<?= $subject_id ?>' class="edit">
-          <input type='text' value='<?= $subject_name ?>' class="edit" disabled>
+          <input type="hidden" name="operation[save][<?= $id ?>][subject]" value="<?= $subject_id ?>" class="edit">
+          <input type="text" value="<?= $subject_name ?>" class="edit" disabled>
           <?php break; ?>
         <?php endif; ?>
       <?php endforeach; ?>
     </td>
     <td>
-      <select name='operation[save][<?= $id ?>][course_teachers][]' size='4' class="edit" multiple>
+      <select name="operation[save][<?= $id ?>][course_teachers][]" size="4" class="edit" multiple>
         <?php foreach ($this->teachers as $teacher_row):
           $teacher_id = $teacher_row["id"];
-          $teacher_name = $teacher_row['name'];
-          $teacher_surname = $teacher_row['surname'];
+          $teacher_name = $teacher_row["name"];
+          $teacher_surname = $teacher_row["surname"];
           $teacher_teaching_subjects = $teacher_row["teaching_subjects"];
           $selected = (in_array($teacher_id, $course_teachers)) ? "selected" : "";
         ?>
@@ -57,11 +57,11 @@
       </select>
     </td>
     <td>
-      <select name='operation[save][<?= $id ?>][course_students][]' size='4' class="edit" multiple>
+      <select name="operation[save][<?= $id ?>][course_students][]" size="4" class="edit" multiple>
         <?php foreach ($this->students as $student_row):
           $student_id = $student_row["id"];
-          $student_name = $student_row['name'];
-          $student_surname = $student_row['surname'];
+          $student_name = $student_row["name"];
+          $student_surname = $student_row["surname"];
           $student_tuition_enabled = ($student_row["tuition_enabled"] == "t") ? true : false;
           $selected = (in_array($student_id, $course_students)) ? "selected" : "";
         ?>
@@ -72,27 +72,27 @@
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[delete]' value='<?= $id ?>' class="edit option-button">Delete</button>
+      <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit option-button">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode;
-          const nameInput = row.querySelector('input[name="operation[save][<?= $id ?>][name]"]');
-          const descriptionInput = row.querySelector('textarea[name="operation[save][<?= $id ?>][description]"]');
-          const statusInput = row.querySelector('select[name="operation[save][<?= $id ?>][status]"]');
-          const teachersInput = row.querySelector('select[name="operation[save][<?= $id ?>][course_teachers][]"]');
-          const studentsInput = row.querySelector('select[name="operation[save][<?= $id ?>][course_students][]"]');
+          const nameInput = row.querySelector("input[name='operation[save][<?= $id ?>][name]']");
+          const descriptionInput = row.querySelector("textarea[name='operation[save][<?= $id ?>][description]']");
+          const statusInput = row.querySelector("select[name='operation[save][<?= $id ?>][status]']");
+          const teachersInput = row.querySelector("select[name='operation[save][<?= $id ?>][course_teachers][]']");
+          const studentsInput = row.querySelector("select[name='operation[save][<?= $id ?>][course_students][]']");
 
-          const saveBtn = document.createElement('button');
-          saveBtn.type = 'button';
+          const saveBtn = document.createElement("button");
+          saveBtn.type = "button";
           saveBtn.className = "edit option-button save"
-          saveBtn.textContent = 'Save';
+          saveBtn.textContent = "Save";
 
           function showSave() {
-            const cell = studentsInput.closest('tr').querySelector('td:last-child');
+            const cell = studentsInput.closest("tr").querySelector("td:last-child");
             if (!cell.contains(saveBtn)) {
               cell.appendChild(saveBtn);
               requestAnimationFrame(() => {
-                saveBtn.classList.add('visible');
+                saveBtn.classList.add("visible");
               });
             }
           }
@@ -126,18 +126,18 @@
 
             if (saveBtn.isConnected) {
               requestAnimationFrame(() => {
-                saveBtn.classList.remove('visible');
+                saveBtn.classList.remove("visible");
               });
               setTimeout(() => saveBtn.remove(), 400);
             }
           }
 
-          nameInput.addEventListener('input', showSave);
-          descriptionInput.addEventListener('input', showSave);
-          statusInput.addEventListener('change', showSave);
-          teachersInput.addEventListener('change', showSave);
-          studentsInput.addEventListener('change', showSave);
-          saveBtn.addEventListener('click', sendData);
+          nameInput.addEventListener("input", showSave);
+          descriptionInput.addEventListener("input", showSave);
+          statusInput.addEventListener("change", showSave);
+          teachersInput.addEventListener("change", showSave);
+          studentsInput.addEventListener("change", showSave);
+          saveBtn.addEventListener("click", sendData);
         })();
       </script>
     </td>
@@ -146,30 +146,30 @@
 
   <!-- ADD -->
   <tr>
-    <td><input type='text' name='operation[add][name]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
-    <td><textarea name='operation[add][description]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></textarea></td>
+    <td><input type="text" name="operation[add][name]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
+    <td><textarea name="operation[add][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></textarea></td>
     <td>
-      <select name='operation[add][status]' class="edit">
+      <select name="operation[add][status]" class="edit">
         <option value="">Choose an option</option>
-        <option value='Active'>Active</option>
-        <option value='Suspended'>Suspended</option>
-        <option value='UnderDevelopment'>Under Development</option>
+        <option value="Active">Active</option>
+        <option value="Suspended">Suspended</option>
+        <option value="UnderDevelopment">Under Development</option>
       </select>
     </td>
     <td>
-      <select name='operation[add][subject]' onchange='submit();' class="edit">
-        <option value=''>Choose a subject</option>
+      <select name="operation[add][subject]" onchange="submit();" class="edit">
+        <option value="">Choose a subject</option>
         <?php foreach ($this->subjects as $subject_row):
           $subject_name = $subject_row["name"];
           $subject_id = $subject_row["id"];
           $selected = ($this->new_course_subject_selection == $subject_id) ? "selected" : "";
         ?>
-          <option value='<?= $subject_id ?>' <?= $selected ?>><?= $subject_name ?></option>
+          <option value="<?= $subject_id ?>" <?= $selected ?>><?= $subject_name ?></option>
         <?php endforeach; ?>
       </select>
     </td>
     <td>
-      <select name='operation[add][teachers][]' size='2' class="edit" multiple>
+      <select name="operation[add][teachers][]" size="2" class="edit" multiple>
         <?php foreach ($this->teachers as $teacher_row):
           $teacher_id = $teacher_row["id"];
           $teacher_name = $teacher_row["name"];
@@ -183,11 +183,11 @@
       </select>
     </td>
     <td>
-      <select name='operation[add][students][]' size='2' class="edit" multiple>
+      <select name="operation[add][students][]" size="2" class="edit" multiple>
         <?php foreach ($this->students as $student_row):
           $student_id = $student_row["id"];
-          $student_name = $student_row['name'];
-          $student_surname = $student_row['surname'];
+          $student_name = $student_row["name"];
+          $student_surname = $student_row["surname"];
           $student_tuition_enabled = ($student_row["tuition_enabled"] == "t") ? true : false;
         ?>
           <?php if ($student_tuition_enabled): ?>
@@ -197,6 +197,6 @@
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[add][confirm]' class="edit option-button">Add</button>
+      <button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button>
     </td>
   </tr>

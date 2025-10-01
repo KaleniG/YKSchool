@@ -106,12 +106,12 @@ class StudentManager extends Model
     $student = pg_fetch_assoc($result);
 
     return [
-      "id" => $student['id'],
-      "name" => $student['name'],
-      "surname" => $student['surname'],
-      "email" => $student['email'],
-      "phone_number" => $student['phone_number'],
-      "tuition_enabled" => $student['tuition_enabled']
+      "id" => $student["id"],
+      "name" => $student["name"],
+      "surname" => $student["surname"],
+      "email" => $student["email"],
+      "phone_number" => $student["phone_number"],
+      "tuition_enabled" => $student["tuition_enabled"]
     ];
   }
 
@@ -136,7 +136,7 @@ class StudentManager extends Model
     }
     if (array_key_exists("tuition_enabled", $changes)) {
       $fields[] = "tuition_enabled = $" . (count($values) + 1);
-      $values[] = ($changes["tuition_enabled"]) ? 't' : 'f';
+      $values[] = ($changes["tuition_enabled"]) ? "t" : "f";
     }
 
     if (empty($fields))

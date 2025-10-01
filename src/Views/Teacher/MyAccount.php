@@ -15,19 +15,19 @@ $teaching_subjects = $this->user["teaching_subjects"];
     <input type="text" value="<?= $surname ?>" class="edit" disabled>
   </label>
   <label for="email" class="edit">E-mail:
-    <input type='text' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' autocomplete="off" autocorrect='off' autocapitalize='off' spellcheck='false' id="email" class="edit">
+    <input type="text" name="operation[save][<?= $id ?>][email]" value="<?= $email ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="email" class="edit">
   </label>
   <label for="phone_number" class="edit">Phone Number:
-    <input type='number' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' autocomplete="off" autocorrect='off' id="phone_number" class="edit">
+    <input type="number" name="operation[save][<?= $id ?>][phone_number]" value="<?= $phone_number ?>" autocomplete="off" autocorrect="off" id="phone_number" class="edit">
   </label>
   <label for="teaching_subjects" class="edit">Teaching Subjects:
-    <select name='operation[save][<?= $id ?>][teaching_subjects][]' size='4' id="teaching_subjects" class="edit" multiple>
+    <select name="operation[save][<?= $id ?>][teaching_subjects][]" size="4" id="teaching_subjects" class="edit" multiple>
       <?php foreach ($this->subjects as $subject_row):
-        $subject_id = $subject_row['id'];
-        $subject_name = $subject_row['name'];
+        $subject_id = $subject_row["id"];
+        $subject_name = $subject_row["name"];
         $selected = in_array($subject_id, $teaching_subjects) ? "selected" : "";
       ?>
-        <option value='<?= $subject_id ?>' <?= $selected ?>><?= $subject_name ?></option>
+        <option value="<?= $subject_id ?>" <?= $selected ?>><?= $subject_name ?></option>
       <?php endforeach ?>
     </select>
   </label>
@@ -35,19 +35,19 @@ $teaching_subjects = $this->user["teaching_subjects"];
 <script>
   (function() {
     const container = document.currentScript.previousElementSibling;
-    const emailInput = container.querySelector('input[name="operation[save][<?= $id ?>][email]"]');
-    const phoneInput = container.querySelector('input[name="operation[save][<?= $id ?>][phone_number]"]');
-    const teachingSubjectsInput = container.querySelector('select[name="operation[save][<?= $id ?>][teaching_subjects][]"]');
+    const emailInput = container.querySelector("input[name='operation[save][<?= $id ?>][email]']");
+    const phoneInput = container.querySelector("input[name='operation[save][<?= $id ?>][phone_number]']");
+    const teachingSubjectsInput = container.querySelector("select[name='operation[save][<?= $id ?>][teaching_subjects][]']");
 
-    const saveBtn = document.createElement('button');
-    saveBtn.type = 'button';
-    saveBtn.className = 'edit account option-button save';
-    saveBtn.textContent = 'Save Changes';
-    container.insertAdjacentElement('afterend', saveBtn);
+    const saveBtn = document.createElement("button");
+    saveBtn.type = "button";
+    saveBtn.className = "edit account option-button save";
+    saveBtn.textContent = "Save Changes";
+    container.insertAdjacentElement("afterend", saveBtn);
 
     function showSave() {
       requestAnimationFrame(() => {
-        saveBtn.classList.add('visible');
+        saveBtn.classList.add("visible");
       });
     }
 
@@ -75,13 +75,13 @@ $teaching_subjects = $this->user["teaching_subjects"];
       }
 
       requestAnimationFrame(() => {
-        saveBtn.classList.remove('visible');
+        saveBtn.classList.remove("visible");
       });
     }
 
-    emailInput.addEventListener('input', showSave);
-    phoneInput.addEventListener('input', showSave);
-    teachingSubjectsInput.addEventListener('change', showSave);
-    saveBtn.addEventListener('click', sendData);
+    emailInput.addEventListener("input", showSave);
+    phoneInput.addEventListener("input", showSave);
+    teachingSubjectsInput.addEventListener("change", showSave);
+    saveBtn.addEventListener("click", sendData);
   })();
 </script>

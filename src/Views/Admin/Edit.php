@@ -15,7 +15,7 @@ $asset = new AssetManager();
   <?= $asset->importCSS(); ?>
   <script>
     function submit() {
-      document.getElementById('main_form').submit();
+      document.getElementById("main_form").submit();
     }
   </script>
   <title>Administrator</title>

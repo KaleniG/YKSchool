@@ -11,24 +11,24 @@
   ?>
     <tr>
       <td><input type="text" value="<?= $name ?>" class="edit" disabled></td>
-      <td><textarea name='operation[save][<?= $id ?>][description]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"><?= $description ?></textarea></td>
+      <td><textarea name="operation[save][<?= $id ?>][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"><?= $description ?></textarea></td>
       <td>
         <script>
           (function() {
-            const row = document.currentScript.parentNode.parentNode; // <tr>
-            const descriptionTextarea = row.querySelector('textarea[name="operation[save][<?= $id ?>][description]"]');
+            const row = document.currentScript.parentNode.parentNode;
+            const descriptionTextarea = row.querySelector("textarea[name='operation[save][<?= $id ?>][description]']");
 
-            const saveBtn = document.createElement('button');
-            saveBtn.type = 'button';
+            const saveBtn = document.createElement("button");
+            saveBtn.type = "button";
             saveBtn.className = "edit option-button save";
-            saveBtn.textContent = 'Save';
+            saveBtn.textContent = "Save";
 
             function showSave() {
-              const cell = descriptionTextarea.closest('tr').querySelector('td:last-child');
+              const cell = descriptionTextarea.closest("tr").querySelector("td:last-child");
               if (!cell.contains(saveBtn)) {
                 cell.appendChild(saveBtn);
                 requestAnimationFrame(() => {
-                  saveBtn.classList.add('visible');
+                  saveBtn.classList.add("visible");
                 });
               }
             }
@@ -51,14 +51,14 @@
 
               if (saveBtn.isConnected) {
                 requestAnimationFrame(() => {
-                  saveBtn.classList.remove('visible');
+                  saveBtn.classList.remove("visible");
                 });
                 setTimeout(() => saveBtn.remove(), 400);
               }
             }
 
-            descriptionTextarea.addEventListener('input', showSave);
-            saveBtn.addEventListener('click', sendData);
+            descriptionTextarea.addEventListener("input", showSave);
+            saveBtn.addEventListener("click", sendData);
           })();
         </script>
       </td>

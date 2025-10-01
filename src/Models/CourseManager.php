@@ -205,13 +205,13 @@ class CourseManager extends Model
     if (!$courses) return [];
 
     foreach ($courses as &$course) {
-      if (isset($course['course_teachers'])) {
-        $pgArray = trim($course['course_teachers'], '{}');
-        $course['course_teachers'] = $pgArray === '' ? [] : array_map('intval', explode(',', $pgArray));
+      if (isset($course["course_teachers"])) {
+        $pgArray = trim($course["course_teachers"], "{}");
+        $course["course_teachers"] = $pgArray === "" ? [] : array_map("intval", explode(",", $pgArray));
       }
-      if (isset($course['course_students'])) {
-        $pgArray = trim($course['course_students'], '{}');
-        $course['course_students'] = $pgArray === '' ? [] : array_map('intval', explode(',', $pgArray));
+      if (isset($course["course_students"])) {
+        $pgArray = trim($course["course_students"], "{}");
+        $course["course_students"] = $pgArray === "" ? [] : array_map("intval", explode(",", $pgArray));
       }
     }
 
@@ -375,8 +375,8 @@ class CourseManager extends Model
     if (!isset($changes["id"]))
       Log::error("Invalid course update parameter");
 
-    $id = htmlspecialchars($changes['id']);
-    $description = htmlspecialchars($changes['description']) ?? "";
+    $id = htmlspecialchars($changes["id"]);
+    $description = htmlspecialchars($changes["description"]) ?? "";
 
     if (!isset($description))
       Log::error("Invalid course update parameter");
@@ -387,7 +387,7 @@ class CourseManager extends Model
       [$description, $id]
     );
 
-    if (!$result) Log::error('Query failed: ' . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function updateCourseSubscription($changes)
@@ -397,9 +397,9 @@ class CourseManager extends Model
     if (!isset($changes["student_id"], $changes["course_id"]))
       Log::error("Invalid course update parameter");
 
-    $student_id = $changes['student_id'];
-    $course_id = $changes['course_id'];
-    $is_student_subscribed = $changes['is_student_subscribed'] ?? false;
+    $student_id = $changes["student_id"];
+    $course_id = $changes["course_id"];
+    $is_student_subscribed = $changes["is_student_subscribed"] ?? false;
 
     if ($is_student_subscribed) {
       $result = pg_execute(

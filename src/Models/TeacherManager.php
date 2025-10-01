@@ -119,9 +119,9 @@ class TeacherManager extends Model
       $teacher->email = $user["email"];
       $teacher->phone_number = $user["phone_number"];
 
-      if (isset($user['teaching_subjects'])) {
-        $pgArray = trim($user['teaching_subjects'], '{}');
-        $teacher->teaching_subjects = ($pgArray === '') ? [] : array_map('intval', explode(',', $pgArray));
+      if (isset($user["teaching_subjects"])) {
+        $pgArray = trim($user["teaching_subjects"], "{}");
+        $teacher->teaching_subjects = ($pgArray === "") ? [] : array_map("intval", explode(",", $pgArray));
       }
 
       return $teacher;
@@ -145,8 +145,8 @@ class TeacherManager extends Model
 
     if (isset($teacher) && !empty($teacher)) {
       if (isset($teacher["teaching_subjects"])) {
-        $pgArray = trim($teacher["teaching_subjects"], '{}');
-        $teacher["teaching_subjects"] = ($pgArray === '') ? [] : array_map('intval', explode(',', $pgArray));
+        $pgArray = trim($teacher["teaching_subjects"], "{}");
+        $teacher["teaching_subjects"] = ($pgArray === "") ? [] : array_map("intval", explode(",", $pgArray));
       }
 
       return $teacher;
@@ -171,9 +171,9 @@ class TeacherManager extends Model
     if (!$teachers) return [];
 
     foreach ($teachers as &$teacher) {
-      if (isset($teacher['teaching_subjects'])) {
-        $pgArray = trim($teacher['teaching_subjects'], '{}');
-        $teacher['teaching_subjects'] = $pgArray === '' ? [] : array_map('intval', explode(',', $pgArray));
+      if (isset($teacher["teaching_subjects"])) {
+        $pgArray = trim($teacher["teaching_subjects"], "{}");
+        $teacher["teaching_subjects"] = $pgArray === "" ? [] : array_map("intval", explode(",", $pgArray));
       }
     }
 

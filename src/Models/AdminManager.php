@@ -105,7 +105,7 @@ class AdminManager extends Model
       return;
 
     $values[] = $id;
-    $sql = "UPDATE administrators SET " . implode(', ', $fields) . " WHERE id=$" . count($values);
+    $sql = "UPDATE administrators SET " . implode(", ", $fields) . " WHERE id=$" . count($values);
 
     $result = pg_query_params(Model::getConn(), $sql, $values);
 
