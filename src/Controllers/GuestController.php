@@ -57,6 +57,12 @@ class GuestController
   {
     $this->loadSession();
 
+    if (!empty($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) === "xmlhttprequest") {
+      header("Content-Type: application/json");
+      echo json_encode($this->courses);
+      exit;
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       switch ($this->page) {
         case "Home.php":
@@ -162,8 +168,12 @@ class GuestController
   private function handlePresentAdvancedResearch()
   {
     // SESSION/DATABASE COURSES RELOADING WITH FILTERED COURSES
-    $manager = new CourseManager();
-    $this->courses = $manager->getAllCoursesWithFilter($this->word_filter, $this->subject_filter) ?? [];
-    $_SESSION["courses"] = $this->courses;
+    if (!empty($this->word_filter) || !empty($this->subject_filter)) {
+      $manager = new CourseManager();
+      $this->courses = $manager->getAllCoursesWithFilter($this->word_filter, $this->subject_filter) ?? [];
+      $_SESSION["courses"] = $this->courses;
+    } else {
+      $this->handlePresentHome();
+    }
   }
 }
