@@ -13,12 +13,8 @@
     $checked = $course["is_student_subscribed"] ? "checked" : "";
   ?>
     <tr>
-      <td>
-        <p class="edit"><?= $name ?></p>
-      </td>
-      <td>
-        <p class="edit"><?= $description ?></p>
-      </td>
+      <td><input type='text' value='<?= $name ?>' class="edit" disabled></td>
+      <td><input type='text' value='<?= $description ?>' class="edit" disabled></td>
       <td><input type='checkbox' name='operation[save][<?= $id ?>][is_student_subscribed]' value="t" class="edit" <?= $checked ?>></td>
       <td>
         <script>

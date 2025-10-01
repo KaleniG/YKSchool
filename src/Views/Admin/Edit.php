@@ -1,5 +1,6 @@
 <?php
 
+use App\Config\Path;
 use App\Config\AssetManager;
 
 $asset = new AssetManager();
@@ -33,9 +34,6 @@ $asset = new AssetManager();
       <table class="edit">
       <?php endif; ?>
       <?php
-
-      use App\Config\Path;
-
       switch ($this->edit_selection) {
         case "admins":
           include(Path::views("Admin/Admins.php"));
@@ -53,7 +51,6 @@ $asset = new AssetManager();
           include(Path::views("Admin/Courses.php"));
           break;
       }
-
       ?>
       <?php if (isset($this->edit_selection)): ?>
       </table>

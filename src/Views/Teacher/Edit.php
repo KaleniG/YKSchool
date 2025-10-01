@@ -1,5 +1,6 @@
 <?php
 
+use App\Config\Path;
 use App\Config\AssetManager;
 
 $asset = new AssetManager();
@@ -27,9 +28,6 @@ $asset = new AssetManager();
       </select>
     </div>
     <?php
-
-    use App\Config\Path;
-
     switch ($this->edit_selection) {
       case "myaccount":
         include(Path::views("Teacher/MyAccount.php"));

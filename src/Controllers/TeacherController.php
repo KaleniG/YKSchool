@@ -136,7 +136,9 @@ class TeacherController
   private function handleEditMyAccount()
   {
     // SESSION/DATABASE SUBJECTS LOADING (BUT ONLY ONCE)
-    if (isset($this->subjects)) {
+    if (isset($_SESSION["subjects"]))
+      $this->subjects = $_SESSION["subjects"];
+    else {
       $manager = new SubjectManager();
       $this->subjects = $manager->getAllSubjects() ?? [];
       $_SESSION["subjects"] = $this->subjects;
@@ -166,7 +168,9 @@ class TeacherController
   private function handleEditCourses()
   {
     // SESSION/DATABASE COURSES LOADING (BUT ONLY ONCE)
-    if (!isset($this->courses)) {
+    if (isset($_SESSION["courses"]))
+      $this->courses = $_SESSION["courses"];
+    else {
       $manager = new TeacherManager();
       $this->courses = $manager->getTeacherCourses($this->user["id"]) ?? [];
       $_SESSION["courses"] = $this->courses;

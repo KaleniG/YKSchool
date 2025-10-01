@@ -49,8 +49,8 @@ class TeacherManager extends Model
       Model::getConn(),
       "get_teacher_courses",
       "SELECT c.id AS id, c.name AS name, c.description AS description
-      FROM course_teachers ct
-      LEFT JOIN courses c ON ct.course_id = c.id
+      FROM courses c 
+      LEFT JOIN course_teachers ct ON ct.course_id = c.id
       WHERE ct.teacher_id=$1
       ORDER BY c.id"
     );

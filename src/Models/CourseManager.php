@@ -21,6 +21,19 @@ class CourseManager extends Model
 
     pg_prepare(
       Model::getConn(),
+      "get_all_courses_with_face_value",
+      "SELECT 
+      c.name AS name, 
+      c.description AS description, 
+      c.status AS status, 
+      s.name AS subject
+      FROM courses c
+      LEFT JOIN subjects s ON c.subject_id = s.id
+      ORDER BY c.id"
+    );
+
+    pg_prepare(
+      Model::getConn(),
       "get_all_courses_with_details",
       "SELECT 
       c.id AS id, 
@@ -119,6 +132,56 @@ class CourseManager extends Model
       "get_all_courses",
       []
     );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+
+    return pg_fetch_all($result);
+  }
+
+  public function getAllCoursesWithFaceValue()
+  {
+    $this->prepareAll();
+
+    $result = pg_execute(
+      Model::getConn(),
+      "get_all_courses_with_face_value",
+      []
+    );
+
+    if (!$result) LogManager::error("Query failed: " . Model::getError());
+
+    return pg_fetch_all($result);
+  }
+
+  public function getAllCoursesWithFilter($word_filter, $subject_filter)
+  {
+    if (empty($word_filter) && empty($subject_filter))
+      return;
+
+    $conditions = [];
+    $values = [];
+
+    if (!empty($subject_filter)) {
+      $conditions[] = "c.subject_id = $" . (count($values) + 1);
+      $values[] = $subject_filter;
+    }
+
+    if (!empty($word_filter)) {
+      $paramIndex = count($values) + 1;
+      $conditions[] = "(c.name ILIKE $" . $paramIndex . " OR c.description ILIKE $" . $paramIndex . ")";
+      $values[] = "%" . $word_filter . "%";
+    }
+
+    $sql = "SELECT 
+    c.name AS name, 
+    c.description AS description, 
+    s.name AS subject 
+    FROM courses c
+    LEFT JOIN subjects s ON c.subject_id = s.id
+    WHERE " . implode(" AND ", $conditions) . "
+    ORDER BY c.id";
+
+    $result = pg_query_params(Model::getConn(), $sql, $values);
 
     if (!$result) LogManager::error("Query failed: " . Model::getError());
 
