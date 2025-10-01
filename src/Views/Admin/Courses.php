@@ -162,7 +162,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <select name='operation[add][subject]' onchange='selected_subject_submit();' class="edit">
+      <select name='operation[add][subject]' onchange='submit();' class="edit">
         <option value=''>Choose a subject</option>
         <?php foreach ($this->subjects as $subject_row):
           $subject_name = $subject_row["name"];

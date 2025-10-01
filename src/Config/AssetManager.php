@@ -13,10 +13,6 @@ class AssetManager
     //'assets/sql/add_admin.sql'
   ];
 
-  private $js = [
-    'assets/js/submit.js'
-  ];
-
   public function importCSS()
   {
     $allfiles = "";
@@ -39,13 +35,5 @@ class AssetManager
     }
 
     return $sql_array;
-  }
-
-  public function importJS()
-  {
-    $allfiles = "";
-    foreach ($this->js as $js_file)
-      $allfiles .= "<script src='{$js_file}'></script>";
-    return $allfiles;
   }
 }

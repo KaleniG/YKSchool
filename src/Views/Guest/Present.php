@@ -13,7 +13,11 @@ $asset = new AssetManager();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?= $asset->importCSS(); ?>
-  <?= $asset->importJS(); ?>
+  <script>
+    function submit() {
+      document.getElementById('main_form').submit();
+    }
+  </script>
   <title>Guest</title>
 </head>
 
@@ -22,7 +26,7 @@ $asset = new AssetManager();
     <div class="present navbar">
       <button type="submit" name="page" value="Home.php" class="present">Back</button>
       <button type="submit" name="present_selection" value="home" class="present">Home</button>
-      <select name="view_format" onchange="selected_subject_submit();" class="present navbar">
+      <select name="view_format" onchange="submit();" class="present navbar">
         <option value="table" <?= ($this->view_format == "table") ? "selected" : "" ?>>Table View</option>
         <option value="panoramic" <?= ($this->view_format == "panoramic") ? "selected" : "" ?>>Panoramic View</option>
       </select>
