@@ -11,7 +11,7 @@
   ?>
     <tr>
       <td><input type="text" value="<?= $name ?>" class="edit" disabled></td>
-      <td><textarea name='operation[save][<?= $id ?>][description]' class="edit"><?= $description ?></textarea></td>
+      <td><textarea name='operation[save][<?= $id ?>][description]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"><?= $description ?></textarea></td>
       <td>
         <script>
           (function() {

@@ -7,8 +7,9 @@ require_once Path::autoloader();
 use Monolog\Level;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
 
-class LogManager
+class Log
 {
   private static ?Logger $logger = null;
 
@@ -21,8 +22,15 @@ class LogManager
       }
       $logFile = __DIR__ . "/../../runtime/app_session_{$sessionId}.log";
 
+      $handler = new StreamHandler($logFile, Level::Debug);
+
+      $output = "[%datetime%] %channel%.%level_name%: %message%\n";
+      $dateFormat = "Y-m-d H:i:s";
+      $formatter = new LineFormatter($output, $dateFormat, true, true);
+      $handler->setFormatter($formatter);
+
       self::$logger = new Logger('ykschool');
-      self::$logger->pushHandler(new StreamHandler($logFile, Level::Debug));
+      self::$logger->pushHandler($handler);
     }
 
     return self::$logger;

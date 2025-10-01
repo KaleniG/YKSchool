@@ -9,7 +9,7 @@ abstract class Model
   private static function initDB()
   {
     if (isset(self::$db_conn)) {
-      LogManager::error("Database connection already initialized");
+      Log::error("Database connection already initialized");
       return;
     } else {
       $conn_string = "host=localhost dbname=ykschool user=postgres password=Gr-dx23Fdg";
@@ -17,7 +17,7 @@ abstract class Model
 
       if (!self::$db_conn) {
         self::$db_conn = null;
-        LogManager::error("Failed to initialize the database connection: " . pg_last_error());
+        Log::error("Failed to initialize the database connection: " . pg_last_error());
         return;
       }
 
@@ -25,7 +25,7 @@ abstract class Model
       foreach ($assets->importSQL() as $sql_file) {
         $result = pg_query(self::$db_conn, $sql_file);
         if (!$result) {
-          LogManager::error("Error in SQL execution: " . pg_last_error(self::$db_conn));
+          Log::error("Error in SQL execution: " . pg_last_error(self::$db_conn));
           return;
         }
       }

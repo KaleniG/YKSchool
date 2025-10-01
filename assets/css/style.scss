@@ -86,6 +86,7 @@ button {
   background-color: $color-form-backgrounds;
   color: $color-primary;
   cursor: pointer;
+  user-select: none;
   transition:
     transform 0.2s ease,
     background-color 0.5s ease,
@@ -214,6 +215,7 @@ input[type="text"].login::placeholder {
   color: $color-primary;
   opacity: 1;
   transition: opacity 0.3s ease, color 0.5s ease;
+  user-select: none;
 }
 
 input[type="text"].login:hover,
@@ -230,7 +232,8 @@ input[type="text"].login:focus::placeholder {
 }
 
 input[type="text"].edit,
-input[type="email"].edit {
+input[type="email"].edit,
+input[type="number"].edit {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -245,10 +248,21 @@ input[type="email"].edit {
 }
 
 input[type="text"].edit:focus,
-input[type="email"].edit:focus {
+input[type="email"].edit:focus,
+input[type="number"].edit:focus {
   border-color: $color-primary-light;
   outline: none;
   color: $color-primary-light;
+}
+
+input[type="number"].edit::-webkit-inner-spin-button,
+input[type="number"].edit::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"].edit {
+  -moz-appearance: textfield;
 }
 
 input.edit[type="checkbox"] {
@@ -365,6 +379,10 @@ div.present.course.box.fade-out {
 }
 
 // SELECT
+select {
+  user-select: none;
+}
+
 select.edit,
 select.edit[multiple],
 select.edit.navbar,
@@ -561,6 +579,7 @@ label.edit {
   display: block;
   cursor: default;
   transition: color 0.3s ease;
+  user-select: none;
 }
 
 // P

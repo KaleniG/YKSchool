@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Config\LogManager;
+use App\Config\Log;
 use App\Config\Path;
 use App\Models\CourseManager;
 use App\Models\SubjectManager;

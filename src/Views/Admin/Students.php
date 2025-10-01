@@ -20,8 +20,8 @@
   <tr>
     <td><input type='text' value='<?= $name ?>' class="edit" disabled></td>
     <td><input type='text' value='<?= $surname ?>' class="edit" disabled></td>
-    <td><input type='email' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' class="edit"></td>
-    <td><input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' class="edit"></td>
+    <td><input type='email' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' autocomplete="off" autocorrect='off' autocapitalize='off' spellcheck='false' class="edit"></td>
+    <td><input type='number' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' autocomplete="off" autocorrect='off' class="edit"></td>
     <td><input type='checkbox' name='operation[save][<?= $id ?>][tuition_enabled]' value='t' class="edit" <?= $checked ?>></td>
     <td>
       <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit option-button">Delete</button>
@@ -89,10 +89,10 @@
 
 <!-- INSERT -->
 <tr>
-  <td><input type='text' name='operation[add][name]' class="edit"></td>
-  <td><input type='text' name='operation[add][surname]' class="edit"></td>
-  <td><input type='email' name='operation[add][email]' class="edit"></td>
-  <td><input type='text' name='operation[add][phone_number]' class="edit"></td>
+  <td><input type='text' name='operation[add][name]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
+  <td><input type='text' name='operation[add][surname]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
+  <td><input type='email' name='operation[add][email]' autocomplete="off" autocorrect='off' autocapitalize='off' spellcheck='false' class="edit"></td>
+  <td><input type='number' name='operation[add][phone_number]' autocomplete="off" autocorrect='off' class="edit"></td>
   <td><input type='checkbox' name='operation[add][tuition_enabled]' value='t' class="edit"></td>
   <td><button type='submit' name='operation[add][confirm]' class=" edit option-button">Add</button></td>
 </tr>

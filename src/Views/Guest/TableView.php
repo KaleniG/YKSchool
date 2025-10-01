@@ -36,6 +36,7 @@
       textareaDesc.textContent = course.description;
       textareaDesc.disabled = true;
       textareaDesc.classList.add('present');
+      textareaDesc.spell
       tdDesc.appendChild(textareaDesc);
       tr.appendChild(tdDesc);
 

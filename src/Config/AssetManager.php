@@ -17,7 +17,7 @@ class AssetManager
   {
     $allfiles = "";
     foreach ($this->css as $css_file)
-      $allfiles .= "<link rel='stylesheet' href='{$css_file}?s=s'>";
+      $allfiles .= "<link rel='stylesheet' href='{$css_file}?s=s3'>";
     return $allfiles;
   }
 
@@ -28,7 +28,7 @@ class AssetManager
     foreach ($this->sql as $file) {
       $sql_str = file_get_contents($file);
       if ($sql_str === false) {
-        LogManager::error("Failed to read SQL file");
+        Log::error("Failed to read SQL file");
         return;
       }
       array_push($sql_array, $sql_str);

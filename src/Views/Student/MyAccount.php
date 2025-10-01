@@ -15,10 +15,10 @@ $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
     <input type="text" value="<?= $surname ?>" class="edit" disabled>
   </label>
   <label for="email" class="edit">E-mail:
-    <input type='text' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' id="email" class="edit">
+    <input type='text' name='operation[save][<?= $id ?>][email]' value='<?= $email ?>' autocomplete="off" autocorrect='off' autocapitalize='off' spellcheck='false' id="email" class="edit">
   </label>
   <label for="phone_number" class="edit">Phone Number:
-    <input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' id="phone_number" class="edit">
+    <input type='number' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' autocomplete="off" autocorrect='off' id="phone_number" class="edit">
   </label>
   <label class="edit">Tution Status:
     <input type='text' name='operation[save][<?= $id ?>][tuition_enabled]' value='<?= $tuition_enabled ?>' class="edit" disabled>

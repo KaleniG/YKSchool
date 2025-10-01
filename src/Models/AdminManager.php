@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Config\LogManager;
+use App\Config\Log;
 use App\Config\Model;
 
 class AdminManager extends Model
@@ -51,7 +51,7 @@ class AdminManager extends Model
       [$admin->name, $admin->surname]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $user = pg_fetch_assoc($result, 0);
 
@@ -76,7 +76,7 @@ class AdminManager extends Model
       []
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -86,7 +86,7 @@ class AdminManager extends Model
     $this->prepareAll();
 
     if (!isset($changes["id"]))
-      LogManager::error("Invalid admin update parameters");
+      Log::error("Invalid admin update parameters");
 
     $id = $changes["id"];
     $fields = [];
@@ -109,7 +109,7 @@ class AdminManager extends Model
 
     $result = pg_query_params(Model::getConn(), $sql, $values);
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function delete($id)
@@ -117,7 +117,7 @@ class AdminManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid admin delete parameter");
+      Log::error("Invalid admin delete parameter");
 
     $result = pg_execute(
       Model::getConn(),
@@ -125,7 +125,7 @@ class AdminManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function add(Admin $admin)
@@ -138,6 +138,6 @@ class AdminManager extends Model
       [$admin->name, $admin->surname, $admin->email, $admin->phone_number]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 }

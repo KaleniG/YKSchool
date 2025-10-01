@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Config\LogManager;
+use App\Config\Log;
 use App\Config\Model;
 
 class CourseManager extends Model
@@ -133,7 +133,7 @@ class CourseManager extends Model
       []
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -148,7 +148,7 @@ class CourseManager extends Model
       []
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -183,7 +183,7 @@ class CourseManager extends Model
 
     $result = pg_query_params(Model::getConn(), $sql, $values);
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -198,7 +198,7 @@ class CourseManager extends Model
       []
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $courses = pg_fetch_all($result);
 
@@ -228,7 +228,7 @@ class CourseManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $courses = pg_fetch_all($result);
 
@@ -245,7 +245,7 @@ class CourseManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid course delete parameter");
+      Log::error("Invalid course delete parameter");
 
     $result = pg_execute(
       Model::getConn(),
@@ -253,7 +253,7 @@ class CourseManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -263,7 +263,7 @@ class CourseManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid course delete parameter");
+      Log::error("Invalid course delete parameter");
 
     $result = pg_execute(
       Model::getConn(),
@@ -271,7 +271,7 @@ class CourseManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -281,7 +281,7 @@ class CourseManager extends Model
     $this->prepareAll();
 
     if (!isset($changes["id"]))
-      LogManager::error("Invalid student update parameters");
+      Log::error("Invalid student update parameters");
 
     $id = $changes["id"];
     $fields = [];
@@ -305,7 +305,7 @@ class CourseManager extends Model
 
     $result = pg_query_params(Model::getConn(), $sql, $values);
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $all_teachers = $this->getAllCourseTeachers($id) ?? [];
 
@@ -321,7 +321,7 @@ class CourseManager extends Model
           [$id, $teacherId]
         );
 
-        if (!$result) LogManager::error("Query failed: " . Model::getError());
+        if (!$result) Log::error("Query failed: " . Model::getError());
       } else {
         $key = array_search($teacherId, $changes["course_teachers"]);
         unset($changes["course_teachers"][$key]);
@@ -335,7 +335,7 @@ class CourseManager extends Model
         [$id, $teacherId]
       );
 
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     }
 
     $all_students = $this->getAllCourseStudents($id) ?? [];
@@ -350,7 +350,7 @@ class CourseManager extends Model
           [$id, $studentId]
         );
 
-        if (!$result) LogManager::error("Query failed: " . Model::getError());
+        if (!$result) Log::error("Query failed: " . Model::getError());
       } else {
         $key = array_search($studentId, $changes["course_students"]);
         unset($changes["course_students"][$key]);
@@ -364,7 +364,7 @@ class CourseManager extends Model
         [$id, $studentId]
       );
 
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     }
   }
 
@@ -373,13 +373,13 @@ class CourseManager extends Model
     $this->prepareAll();
 
     if (!isset($changes["id"]))
-      LogManager::error("Invalid course update parameter");
+      Log::error("Invalid course update parameter");
 
     $id = htmlspecialchars($changes['id']);
     $description = htmlspecialchars($changes['description']) ?? "";
 
     if (!isset($description))
-      LogManager::error("Invalid course update parameter");
+      Log::error("Invalid course update parameter");
 
     $result = pg_execute(
       Model::getConn(),
@@ -387,7 +387,7 @@ class CourseManager extends Model
       [$description, $id]
     );
 
-    if (!$result) LogManager::error('Query failed: ' . Model::getError());
+    if (!$result) Log::error('Query failed: ' . Model::getError());
   }
 
   public function updateCourseSubscription($changes)
@@ -395,7 +395,7 @@ class CourseManager extends Model
     $this->prepareAll();
 
     if (!isset($changes["student_id"], $changes["course_id"]))
-      LogManager::error("Invalid course update parameter");
+      Log::error("Invalid course update parameter");
 
     $student_id = $changes['student_id'];
     $course_id = $changes['course_id'];
@@ -408,7 +408,7 @@ class CourseManager extends Model
         [$course_id, $student_id]
       );
 
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     } else {
       $result = pg_execute(
         Model::getConn(),
@@ -416,7 +416,7 @@ class CourseManager extends Model
         [$course_id, $student_id]
       );
 
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     }
   }
 
@@ -425,7 +425,7 @@ class CourseManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid course delete parameter");
+      Log::error("Invalid course delete parameter");
 
     $result = pg_execute(
       Model::getConn(),
@@ -433,7 +433,7 @@ class CourseManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function add(Course $course)
@@ -446,7 +446,7 @@ class CourseManager extends Model
       [$course->name, $course->description, $course->status, $course->subject]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $new_course_id = pg_fetch_assoc($result, 0);
 
@@ -457,7 +457,7 @@ class CourseManager extends Model
         [$new_course_id["id"], $teacher_id]
       );
 
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     }
 
     foreach ($course->students as $student_id) {
@@ -467,7 +467,7 @@ class CourseManager extends Model
         [$new_course_id["id"], $student_id]
       );
 
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     }
   }
 }

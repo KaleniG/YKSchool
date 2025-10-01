@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Config\LogManager;
+use App\Config\Log;
 use App\Config\Model;
 
 class TeacherManager extends Model
@@ -108,7 +108,7 @@ class TeacherManager extends Model
       [$teacher->name, $teacher->surname]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $user = pg_fetch_assoc($result, 0);
 
@@ -139,7 +139,7 @@ class TeacherManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $teacher = pg_fetch_assoc($result, 0);
 
@@ -164,7 +164,7 @@ class TeacherManager extends Model
       []
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $teachers = pg_fetch_all($result);
 
@@ -190,7 +190,7 @@ class TeacherManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -200,7 +200,7 @@ class TeacherManager extends Model
     $this->prepareAll();
 
     if (!isset($changes["id"]))
-      LogManager::error("Invalid student update parameters");
+      Log::error("Invalid student update parameters");
 
     $id = $changes["id"];
     $fields = [];
@@ -220,7 +220,7 @@ class TeacherManager extends Model
 
     $result = pg_query_params(Model::getConn(), $sql, $values);
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $manager = new SubjectManager();
     $manager->prepareAll();
@@ -241,7 +241,7 @@ class TeacherManager extends Model
           "delete_teacher_subject",
           [$subjectId, $id]
         );
-        if (!$result) LogManager::error("Query failed: " . Model::getError());
+        if (!$result) Log::error("Query failed: " . Model::getError());
       }
     }
 
@@ -251,7 +251,7 @@ class TeacherManager extends Model
         "add_teacher_subject",
         [$subjectId, $id]
       );
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     }
   }
 
@@ -260,7 +260,7 @@ class TeacherManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid subject delete parameters");
+      Log::error("Invalid subject delete parameters");
 
     $result = pg_execute(
       Model::getConn(),
@@ -268,7 +268,7 @@ class TeacherManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function add(Teacher $teacher)
@@ -281,7 +281,7 @@ class TeacherManager extends Model
       [$teacher->name, $teacher->surname, $teacher->email, $teacher->phone_number]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $new_teacher_id = pg_fetch_assoc($result, 0);
 
@@ -293,7 +293,7 @@ class TeacherManager extends Model
         [$teaching_subject, $new_teacher_id["id"]]
       );
 
-      if (!$result) LogManager::error("Query failed: " . Model::getError());
+      if (!$result) Log::error("Query failed: " . Model::getError());
     }
   }
 }

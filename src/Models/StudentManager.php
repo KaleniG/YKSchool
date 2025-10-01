@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Config\LogManager;
+use App\Config\Log;
 use App\Config\Model;
 
 class StudentManager extends Model
@@ -60,7 +60,7 @@ class StudentManager extends Model
       [$student->name, $student->surname]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     $user = pg_fetch_assoc($result, 0);
 
@@ -87,7 +87,7 @@ class StudentManager extends Model
       []
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -97,11 +97,11 @@ class StudentManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid student get parameters");
+      Log::error("Invalid student get parameters");
 
     $result = pg_execute(Model::getConn(), "get_student", [$id]);
 
-    if (!$result) LogManager::error("Query failed");
+    if (!$result) Log::error("Query failed");
 
     $student = pg_fetch_assoc($result);
 
@@ -120,7 +120,7 @@ class StudentManager extends Model
     $this->prepareAll();
 
     if (!isset($changes["id"]))
-      LogManager::error("Invalid student update parameters");
+      Log::error("Invalid student update parameters");
 
     $id = $changes["id"];
     $fields = [];
@@ -147,7 +147,7 @@ class StudentManager extends Model
 
     $result = pg_query_params(Model::getConn(), $sql, $values);
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function delete($id)
@@ -155,7 +155,7 @@ class StudentManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid student delete parameter");
+      Log::error("Invalid student delete parameter");
 
     $result = pg_execute(
       Model::getConn(),
@@ -163,7 +163,7 @@ class StudentManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function add(Student $student)
@@ -176,6 +176,6 @@ class StudentManager extends Model
       [$student->name, $student->surname, $student->email, $student->phone_number, (($student->tuition_enabled) ? "t" : "f")]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 }

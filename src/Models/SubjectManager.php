@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Config\LogManager;
+use App\Config\Log;
 use App\Config\Model;
 
 class SubjectManager extends Model
@@ -56,7 +56,7 @@ class SubjectManager extends Model
       []
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -71,7 +71,7 @@ class SubjectManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
 
     return pg_fetch_all($result);
   }
@@ -81,7 +81,7 @@ class SubjectManager extends Model
     $this->prepareAll();
 
     if (!isset($changes["id"], $changes["name"]))
-      LogManager::error("Invalid student update parameters");
+      Log::error("Invalid student update parameters");
 
     $id = $changes["id"];
     $changed_name = $changes["name"] ?? "";
@@ -92,7 +92,7 @@ class SubjectManager extends Model
       [$changed_name, $id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function delete($id)
@@ -100,7 +100,7 @@ class SubjectManager extends Model
     $this->prepareAll();
 
     if (!isset($id))
-      LogManager::error("Invalid subject delete parameters");
+      Log::error("Invalid subject delete parameters");
 
     $result = pg_execute(
       Model::getConn(),
@@ -108,7 +108,7 @@ class SubjectManager extends Model
       [$id]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 
   public function add(Subject $subject)
@@ -121,6 +121,6 @@ class SubjectManager extends Model
       [$subject->name]
     );
 
-    if (!$result) LogManager::error("Query failed: " . Model::getError());
+    if (!$result) Log::error("Query failed: " . Model::getError());
   }
 }

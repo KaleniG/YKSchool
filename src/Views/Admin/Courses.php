@@ -9,11 +9,6 @@
 </tr>
 
 <!-- UPDATE/DELETE -->
-<?php
-
-use App\Config\LogManager;
-
-?>
 <?php foreach ($this->courses as $course_row):
   $id = $course_row["id"];
   $name = $course_row["name"];
@@ -24,8 +19,8 @@ use App\Config\LogManager;
   $course_teachers = $course_row["course_teachers"];
 ?>
   <tr>
-    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>' class="edit"></td>
-    <td><textarea name='operation[save][<?= $id ?>][description]' class="edit"><?= $description ?></textarea></td>
+    <td><input type='text' name='operation[save][<?= $id ?>][name]' value='<?= $name ?>' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
+    <td><textarea name='operation[save][<?= $id ?>][description]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"><?= $description ?></textarea></td>
     <td>
       <select name='operation[save][<?= $id ?>][status]' class="edit">
         <option>Choose an option</option>
@@ -151,8 +146,8 @@ use App\Config\LogManager;
 
   <!-- ADD -->
   <tr>
-    <td><input type='text' name='operation[add][name]' class="edit"></td>
-    <td><textarea name='operation[add][description]' class="edit"></textarea></td>
+    <td><input type='text' name='operation[add][name]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
+    <td><textarea name='operation[add][description]' autocomplete="off" autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></textarea></td>
     <td>
       <select name='operation[add][status]' class="edit">
         <option value="">Choose an option</option>

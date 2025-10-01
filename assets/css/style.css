@@ -81,6 +81,9 @@ button {
   background-color: rgba(255, 255, 255, 0.4);
   color: #8a6da5;
   cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   transition: transform 0.2s ease, background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, opacity 0.4s ease;
 }
 
@@ -203,12 +206,17 @@ input[type=text].login::-moz-placeholder {
   opacity: 1;
   -moz-transition: opacity 0.3s ease, color 0.5s ease;
   transition: opacity 0.3s ease, color 0.5s ease;
+  -moz-user-select: none;
+       user-select: none;
 }
 
 input[type=text].login::placeholder {
   color: #8a6da5;
   opacity: 1;
   transition: opacity 0.3s ease, color 0.5s ease;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 input[type=text].login:hover,
@@ -230,7 +238,8 @@ input[type=text].login:focus::placeholder {
 }
 
 input[type=text].edit,
-input[type=email].edit {
+input[type=email].edit,
+input[type=number].edit {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -245,10 +254,21 @@ input[type=email].edit {
 }
 
 input[type=text].edit:focus,
-input[type=email].edit:focus {
+input[type=email].edit:focus,
+input[type=number].edit:focus {
   border-color: #b08fe0;
   outline: none;
   color: #b08fe0;
+}
+
+input[type=number].edit::-webkit-inner-spin-button,
+input[type=number].edit::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number].edit {
+  -moz-appearance: textfield;
 }
 
 input.edit[type=checkbox] {
@@ -361,6 +381,12 @@ div.present.course.box {
 
 div.present.course.box.fade-out {
   opacity: 0;
+}
+
+select {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 select.edit,
@@ -556,6 +582,9 @@ label.edit {
   display: block;
   cursor: default;
   transition: color 0.3s ease;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 p {

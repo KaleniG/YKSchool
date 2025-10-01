@@ -30,7 +30,7 @@ $asset = new AssetManager();
         <option value="table" <?= ($this->view_format == "table") ? "selected" : "" ?>>Table View</option>
         <option value="panoramic" <?= ($this->view_format == "panoramic") ? "selected" : "" ?>>Panoramic View</option>
       </select>
-      <input type="text" name="search[word_filter]" value="<?= $this->word_filter ?>" minlength="3" class="present navbar">
+      <input type="text" name="search[word_filter]" value="<?= $this->word_filter ?>" minlength="3" autocomplete="on" autocorrect='off' autocapitalize='off' spellcheck='false' class="present navbar">
       <select name="search[subject_filter]" class="present navbar">
         <option value="">Select a subject</option>
         <?php foreach ($this->subjects as $subject):
