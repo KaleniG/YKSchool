@@ -20,7 +20,7 @@
 
             const saveBtn = document.createElement('button');
             saveBtn.type = 'button';
-            saveBtn.className = "edit-option-button-save";
+            saveBtn.className = "edit option-button save";
             saveBtn.textContent = 'Save';
 
             function showSave() {

@@ -1,13 +1,13 @@
-<div class="present-panoramic">
-  <button type="button" class="present-arrow left">◀</button>
+<div class="present panoramic">
+  <button type="button" class="present arrow left">◀</button>
 
-  <div class="present-course-box">
-    <h2 class="present-course-title"></h2>
-    <h3 class="present-course-subject"></h3>
-    <p class="present-course-description"></p>
+  <div class="present course box">
+    <h2 class="present course title"></h2>
+    <h3 class="present course subject"></h3>
+    <p class="present course description"></p>
   </div>
 
-  <button type="button" class="present-arrow right">▶</button>
+  <button type="button" class="present arrow right">▶</button>
 </div>
 
 <script>
@@ -38,30 +38,28 @@
   function showCourse(index) {
     if (!courses.length) return;
 
-    const courseBox = document.querySelector(".present-course-box");
+    const courseBox = document.querySelector(".present.course.box");
     const course = courses[index];
 
-    // Fade out first
     courseBox.classList.add("fade-out");
 
-    // After transition, update content and fade back in
     setTimeout(() => {
-      courseBox.querySelector(".present-course-title").textContent = course.name;
-      courseBox.querySelector(".present-course-subject").textContent = course.subject;
-      courseBox.querySelector(".present-course-description").textContent = course.description;
+      courseBox.querySelector(".present.course.title").textContent = course.name;
+      courseBox.querySelector(".present.course.subject").textContent = course.subject;
+      courseBox.querySelector(".present.course.description").textContent = course.description;
 
       courseBox.classList.remove("fade-out");
-    }, 500); // matches the CSS transition duration
+    }, 500);
   }
 
 
-  document.querySelector(".present-arrow.left").addEventListener("click", () => {
+  document.querySelector(".present.arrow.left").addEventListener("click", () => {
     if (!courses.length) return;
     currentIndex = (currentIndex - 1 + courses.length) % courses.length;
     showCourse(currentIndex);
   });
 
-  document.querySelector(".present-arrow.right").addEventListener("click", () => {
+  document.querySelector(".present.arrow.right").addEventListener("click", () => {
     if (!courses.length) return;
     currentIndex = (currentIndex + 1) % courses.length;
     showCourse(currentIndex);

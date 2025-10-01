@@ -77,7 +77,7 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[delete]' value='<?= $id ?>' class="edit-option-button">Delete</button>
+      <button type='submit' name='operation[delete]' value='<?= $id ?>' class="edit option-button">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode;
@@ -89,7 +89,7 @@ use App\Config\LogManager;
 
           const saveBtn = document.createElement('button');
           saveBtn.type = 'button';
-          saveBtn.className = "edit-option-button-save"
+          saveBtn.className = "edit option-button save"
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -202,6 +202,6 @@ use App\Config\LogManager;
       </select>
     </td>
     <td>
-      <button type='submit' name='operation[add][confirm]' class="edit-option-button">Add</button>
+      <button type='submit' name='operation[add][confirm]' class="edit option-button">Add</button>
     </td>
   </tr>

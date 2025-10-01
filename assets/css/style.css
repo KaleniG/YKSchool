@@ -105,25 +105,25 @@ button.present {
   font-size: 15px;
 }
 
-button.edit-option-button,
-button.edit-option-button-save {
+button.edit.option-button,
+button.edit.option-button.save {
   font-size: 14px;
   padding: 8px;
   width: 48%;
   margin: 0;
 }
 
-button.edit-option-button-save,
-button.edit-account-option-button-save {
+button.edit.option-button.save,
+button.edit.account.option-button.save {
   opacity: 0;
 }
 
-button.edit-option-button-save.visible,
-button.edit-account-option-button-save.visible {
+button.edit.option-button.save.visible,
+button.edit.account.option-button.save.visible {
   opacity: 1;
 }
 
-button.edit-account-option-button-save {
+button.edit.account.option-button.save {
   width: 20%;
   font-size: 14px;
   padding: 8px;
@@ -131,14 +131,14 @@ button.edit-account-option-button-save {
 }
 
 button.edit:hover,
-button.edit-option-button:hover,
-button.edit-option-button-save:hover,
-button.edit-account-option-button-save:hover,
+button.edit.option-button:hover,
+button.edit.option-button.save:hover,
+button.edit.account.option-button.save:hover,
 button.present:hover {
   background-color: #f2e5f7;
 }
 
-button.present-arrow {
+button.present.arrow {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,12 +153,12 @@ button.present-arrow {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-button.present-arrow:hover {
+button.present.arrow:hover {
   background-color: #b08fe0;
   color: #f2e5f7;
 }
 
-button.present-arrow.right {
+button.present.arrow.right {
   transform: none;
 }
 
@@ -175,12 +175,12 @@ h3.login {
   margin-bottom: 10px;
 }
 
-h2.present-course-title {
+h2.present.course.title {
   font-size: 1.4rem;
   color: #5d4989;
 }
 
-h3.present-course-subject {
+h3.present.course.subject {
   font-size: 1rem;
   color: #8a6da5;
 }
@@ -271,7 +271,7 @@ input.edit[type=checkbox]:checked {
 }
 
 input[type=text].present,
-input[type=text].present-navbar {
+input[type=text].present.navbar {
   font-family: "Montserrat", sans-serif;
   border: 1px solid #8a6da5;
   border-radius: 3px;
@@ -288,7 +288,7 @@ input[type=text].present {
   font-size: 14px;
 }
 
-input[type=text].present-navbar {
+input[type=text].present.navbar {
   font-size: 15px;
   font-weight: 560;
   background-color: rgba(255, 255, 255, 0.4);
@@ -299,35 +299,35 @@ input[type=text].present-navbar {
 
 input[type=text].present:hover,
 input[type=text].present:focus,
-input[type=text].present-navbar:hover,
-input[type=text].present-navbar:focus {
+input[type=text].present.navbar:hover,
+input[type=text].present.navbar:focus {
   border-color: #b08fe0;
   outline: none;
 }
 
 input[type=text].present:hover,
-input[type=text].present-navbar:hover {
+input[type=text].present.navbar:hover {
   color: #b08fe0;
   background-color: #f2e5f7;
 }
 
-div.edit-navbar,
-div.edit-account,
-div.present-navbar,
-div.present-panoramic {
+div.edit.navbar,
+div.edit.account,
+div.present.navbar,
+div.present.panoramic {
   border: 1px solid #8a6da5;
   border-radius: 3px;
   padding: 15px;
   gap: 20px;
 }
 
-div.edit-navbar,
-div.present-navbar {
+div.edit.navbar,
+div.present.navbar {
   display: flex;
   align-items: center;
 }
 
-div.edit-account {
+div.edit.account {
   width: 20%;
   display: flex;
   flex-direction: column;
@@ -335,12 +335,12 @@ div.edit-account {
   margin-bottom: 10px;
 }
 
-div.present-navbar {
+div.present.navbar {
   flex-wrap: wrap;
   align-items: flex-start;
 }
 
-div.present-panoramic {
+div.present.panoramic {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -349,7 +349,7 @@ div.present-panoramic {
   padding: 20px;
 }
 
-div.present-course-box {
+div.present.course.box {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -359,14 +359,14 @@ div.present-course-box {
   opacity: 1;
 }
 
-div.present-course-box.fade-out {
+div.present.course.box.fade-out {
   opacity: 0;
 }
 
 select.edit,
 select.edit[multiple],
-select.edit-navbar,
-select.present-navbar {
+select.edit.navbar,
+select.present.navbar {
   font-family: "Montserrat", sans-serif;
   border: 1px solid #8a6da5;
   border-radius: 3px;
@@ -396,8 +396,8 @@ select.edit[multiple] {
   max-height: calc(3em + 16px);
 }
 
-select.edit-navbar,
-select.present-navbar {
+select.edit.navbar,
+select.present.navbar {
   font-size: 15px;
   font-weight: 560;
   padding: 12px 20px;
@@ -408,10 +408,10 @@ select.edit:hover,
 select.edit:focus,
 select.edit[multiple]:hover,
 select.edit[multiple]:focus,
-select.edit-navbar:hover,
-select.edit-navbar:focus,
-select.present-navbar:hover,
-select.present-navbar:focus {
+select.edit.navbar:hover,
+select.edit.navbar:focus,
+select.present.navbar:hover,
+select.present.navbar:focus {
   background-color: #f2e5f7;
   border-color: #b08fe0;
   color: #b08fe0;
@@ -562,7 +562,7 @@ p {
   color: #8a6da5;
 }
 
-p.present-course-description {
+p.present.course.description {
   font-size: 0.9rem;
   line-height: 1.4;
 }/*# sourceMappingURL=style.css.map */

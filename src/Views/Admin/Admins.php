@@ -21,7 +21,7 @@
     <td><input type="text" name="operation[save][<?= $id ?>][phone_number]" value="<?= $phone ?>" class="edit"></td>
     <td>
       <?php if ($this->user["id"] != $id): ?>
-        <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit-option-button">Delete</button>
+        <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit option-button">Delete</button>
       <?php endif; ?>
       <script>
         (function() {
@@ -31,7 +31,7 @@
 
           const saveBtn = document.createElement('button');
           saveBtn.type = 'button';
-          saveBtn.className = 'edit-option-button-save';
+          saveBtn.className = 'edit option-button save';
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -85,5 +85,5 @@
   <td><input type='text' name='operation[add][surname]' autocorrect='off' autocapitalize='on' spellcheck='false' class="edit"></td>
   <td><input type='email' name='operation[add][email]' autocapitalize='off' spellcheck='false' class="edit"></td>
   <td><input type='text' name='operation[add][phone_number]' autocorrect='off' autocapitalize='off' spellcheck='false' class="edit"></td>
-  <td><button type='submit' name='operation[add][confirm]' class="edit-option-button">Add</button></td>
+  <td><button type='submit' name='operation[add][confirm]' class="edit option-button">Add</button></td>
 </tr>

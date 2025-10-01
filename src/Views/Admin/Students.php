@@ -24,7 +24,7 @@
     <td><input type='text' name='operation[save][<?= $id ?>][phone_number]' value='<?= $phone_number ?>' class="edit"></td>
     <td><input type='checkbox' name='operation[save][<?= $id ?>][tuition_enabled]' value='t' class="edit" <?= $checked ?>></td>
     <td>
-      <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit-option-button">Delete</button>
+      <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit option-button">Delete</button>
       <script>
         (function() {
           const row = document.currentScript.parentNode.parentNode;
@@ -34,7 +34,7 @@
 
           const saveBtn = document.createElement('button');
           saveBtn.type = 'button';
-          saveBtn.className = 'edit-option-button-save';
+          saveBtn.className = 'edit option-button save';
           saveBtn.textContent = 'Save';
 
           function showSave() {
@@ -94,5 +94,5 @@
   <td><input type='email' name='operation[add][email]' class="edit"></td>
   <td><input type='text' name='operation[add][phone_number]' class="edit"></td>
   <td><input type='checkbox' name='operation[add][tuition_enabled]' value='t' class="edit"></td>
-  <td><button type='submit' name='operation[add][confirm]' class=" edit-option-button">Add</button></td>
+  <td><button type='submit' name='operation[add][confirm]' class=" edit option-button">Add</button></td>
 </tr>

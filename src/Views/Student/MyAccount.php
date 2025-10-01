@@ -7,7 +7,7 @@ $phone_number = $this->user["phone_number"];
 $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
 ?>
 
-<div class="edit-account">
+<div class="edit account">
   <label class="edit">Name:
     <input type="text" value="<?= $name ?>" class="edit" disabled>
   </label>
@@ -32,7 +32,7 @@ $tuition_enabled = $this->user["tuition_enabled"] ? "Enabled" : "Disabled";
 
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
-    saveBtn.className = "edit-account-option-button-save"
+    saveBtn.className = "edit account option-button save"
     saveBtn.textContent = 'Save Changes';
 
     if (!saveBtn.isConnected) {

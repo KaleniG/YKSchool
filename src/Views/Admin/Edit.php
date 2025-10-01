@@ -19,9 +19,9 @@ $asset = new AssetManager();
 
 <body class="edit">
   <form method="post" id="main_form" class="edit">
-    <div class="edit-navbar">
+    <div class="edit navbar">
       <button type="submit" name="page" value="Home.php" class="edit">Logout</button>
-      <select name="edit_selection" onchange="selected_subject_submit();" class="edit-navbar">
+      <select name="edit_selection" onchange="selected_subject_submit();" class="edit navbar">
         <option>Select an option</option>
         <option value="admins" <?= ($this->edit_selection == "admins") ? "selected" : ""; ?>>Administrators</option>
         <option value="teachers" <?= ($this->edit_selection == "teachers") ? "selected" : ""; ?>>Teachers</option>

@@ -115,25 +115,25 @@ button.present {
   font-size: 15px;
 }
 
-button.edit-option-button,
-button.edit-option-button-save {
+button.edit.option-button,
+button.edit.option-button.save {
   font-size: 14px;
   padding: 8px;
   width: 48%;
   margin: 0;
 }
 
-button.edit-option-button-save,
-button.edit-account-option-button-save {
+button.edit.option-button.save,
+button.edit.account.option-button.save {
   opacity: 0;
 }
 
-button.edit-option-button-save.visible,
-button.edit-account-option-button-save.visible {
+button.edit.option-button.save.visible,
+button.edit.account.option-button.save.visible {
   opacity: 1;
 }
 
-button.edit-account-option-button-save {
+button.edit.account.option-button.save {
   width: 20%;
   font-size: 14px;
   padding: 8px;
@@ -141,14 +141,14 @@ button.edit-account-option-button-save {
 }
 
 button.edit:hover,
-button.edit-option-button:hover,
-button.edit-option-button-save:hover,
-button.edit-account-option-button-save:hover,
+button.edit.option-button:hover,
+button.edit.option-button.save:hover,
+button.edit.account.option-button.save:hover,
 button.present:hover {
   background-color: $color-background;
 }
 
-button.present-arrow {
+button.present.arrow {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,12 +163,12 @@ button.present-arrow {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-button.present-arrow:hover {
+button.present.arrow:hover {
   background-color: $color-primary-light;
   color: $color-background;
 }
 
-button.present-arrow.right {
+button.present.arrow.right {
   transform: none;
 }
 
@@ -186,12 +186,12 @@ h3.login {
   margin-bottom: 10px;
 }
 
-h2.present-course-title {
+h2.present.course.title {
   font-size: 1.4rem;
   color: $color-primary-dark;
 }
 
-h3.present-course-subject {
+h3.present.course.subject {
   font-size: 1rem;
   color: $color-primary;
 }
@@ -271,7 +271,7 @@ input.edit[type="checkbox"]:checked {
 }
 
 input[type="text"].present,
-input[type="text"].present-navbar {
+input[type="text"].present.navbar {
   font-family: 'Montserrat', sans-serif;
   border: 1px solid $color-primary;
   border-radius: 3px;
@@ -288,7 +288,7 @@ input[type="text"].present {
   font-size: 14px;
 }
 
-input[type="text"].present-navbar {
+input[type="text"].present.navbar {
   font-size: 15px;
   font-weight: 560;
   background-color: $color-form-backgrounds;
@@ -299,36 +299,36 @@ input[type="text"].present-navbar {
 
 input[type="text"].present:hover,
 input[type="text"].present:focus,
-input[type="text"].present-navbar:hover,
-input[type="text"].present-navbar:focus {
+input[type="text"].present.navbar:hover,
+input[type="text"].present.navbar:focus {
   border-color: $color-primary-light;
   outline: none;
 }
 
 input[type="text"].present:hover,
-input[type="text"].present-navbar:hover {
+input[type="text"].present.navbar:hover {
   color: $color-primary-light;
   background-color: $color-background;
 }
 
 // DIV
-div.edit-navbar,
-div.edit-account,
-div.present-navbar,
-div.present-panoramic {
+div.edit.navbar,
+div.edit.account,
+div.present.navbar,
+div.present.panoramic {
   border: 1px solid $color-primary;
   border-radius: 3px;
   padding: 15px;
   gap: 20px;
 }
 
-div.edit-navbar,
-div.present-navbar {
+div.edit.navbar,
+div.present.navbar {
   display: flex;
   align-items: center;
 }
 
-div.edit-account {
+div.edit.account {
   width: 20%;
   display: flex;
   flex-direction: column;
@@ -336,12 +336,12 @@ div.edit-account {
   margin-bottom: 10px;
 }
 
-div.present-navbar {
+div.present.navbar {
   flex-wrap: wrap;
   align-items: flex-start;
 }
 
-div.present-panoramic {
+div.present.panoramic {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -350,7 +350,7 @@ div.present-panoramic {
   padding: 20px;
 }
 
-div.present-course-box {
+div.present.course.box {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -360,15 +360,15 @@ div.present-course-box {
   opacity: 1;
 }
 
-div.present-course-box.fade-out {
+div.present.course.box.fade-out {
   opacity: 0;
 }
 
 // SELECT
 select.edit,
 select.edit[multiple],
-select.edit-navbar,
-select.present-navbar {
+select.edit.navbar,
+select.present.navbar {
   font-family: 'Montserrat', sans-serif;
   border: 1px solid $color-primary;
   border-radius: 3px;
@@ -398,8 +398,8 @@ select.edit[multiple] {
   max-height: calc(2 * 1.5em + 16px);
 }
 
-select.edit-navbar,
-select.present-navbar {
+select.edit.navbar,
+select.present.navbar {
   font-size: 15px;
   font-weight: 560;
   padding: 12px 20px;
@@ -410,10 +410,10 @@ select.edit:hover,
 select.edit:focus,
 select.edit[multiple]:hover,
 select.edit[multiple]:focus,
-select.edit-navbar:hover,
-select.edit-navbar:focus,
-select.present-navbar:hover,
-select.present-navbar:focus {
+select.edit.navbar:hover,
+select.edit.navbar:focus,
+select.present.navbar:hover,
+select.present.navbar:focus {
   background-color: $color-background;
   border-color: $color-primary-light;
   color: $color-primary-light;
@@ -568,7 +568,7 @@ p {
   color: $color-primary;
 }
 
-p.present-course-description {
+p.present.course.description {
   font-size: 0.9rem;
   line-height: 1.4;
 }
