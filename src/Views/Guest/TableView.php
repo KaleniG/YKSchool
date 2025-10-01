@@ -53,12 +53,28 @@
     });
   }
 
+  function emptyMessage() {
+    const tbody = document.querySelector('#coursesTable tbody');
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="3" style="text-align: center;">
+          <h3 class="present course subject">No courses found</h3>
+        </td>
+      </tr>
+    `;
+  }
+
   window.addEventListener('DOMContentLoaded', async () => {
     try {
       const courses = await fetchCourses();
-      populateTable(courses);
+      if (courses && courses.length > 0) {
+        populateTable(courses);
+      } else {
+        emptyMessage();
+      }
     } catch (err) {
       console.error('Failed to load courses:', err);
+      emptyMessage();
     }
   });
 </script>

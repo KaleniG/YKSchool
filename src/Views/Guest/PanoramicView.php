@@ -46,6 +46,13 @@
     });
   }
 
+  function emptyMessage() {
+    const courseBox = document.querySelector(".present.course.box");
+    courseBox.querySelector(".present.course.title").textContent = "No courses found";
+    courseBox.querySelector(".present.course.subject").textContent = "";
+    courseBox.querySelector(".present.course.description").textContent = "";
+  }
+
   window.addEventListener("DOMContentLoaded", async () => {
     const currentIndexRef = {
       value: 0
@@ -53,10 +60,17 @@
 
     try {
       const courses = await fetchCourses();
-      if (courses.length > 0) showCourse(courses, currentIndexRef.value);
+
+      if (courses && courses.length > 0) {
+        showCourse(courses, currentIndexRef.value);
+      } else {
+        emptyMessage();
+      }
+
       setupArrows(courses, currentIndexRef);
     } catch (err) {
-      console.error(err);
+      console.error('Failed to fetch courses:', err);
+      emptyMessage();
     }
   });
 </script>
