@@ -25,10 +25,10 @@ class CourseManager extends Model
       "SELECT 
       c.name AS name, 
       c.description AS description, 
-      c.status AS status, 
       s.name AS subject
       FROM courses c
       LEFT JOIN subjects s ON c.subject_id = s.id
+      WHERE c.status = 'Active' 
       ORDER BY c.id"
     );
 
@@ -178,7 +178,7 @@ class CourseManager extends Model
     s.name AS subject 
     FROM courses c
     LEFT JOIN subjects s ON c.subject_id = s.id
-    WHERE " . implode(" AND ", $conditions) . "
+    WHERE " . implode(" AND ", $conditions) . " AND c.status = 'Active' 
     ORDER BY c.id";
 
     $result = pg_query_params(Model::getConn(), $sql, $values);
