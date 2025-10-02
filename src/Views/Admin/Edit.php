@@ -26,7 +26,7 @@ $asset = new AssetManager();
     <div class="edit navbar">
       <button type="submit" name="page" value="Home.php" class="edit">Logout</button>
       <select name="edit_selection" onchange="submit();" class="edit navbar">
-        <option>Select an option</option>
+        <option value="">Select an option</option>
         <option value="admins" <?= ($this->edit_selection == "admins") ? "selected" : ""; ?>>Administrators</option>
         <option value="teachers" <?= ($this->edit_selection == "teachers") ? "selected" : ""; ?>>Teachers</option>
         <option value="students" <?= ($this->edit_selection == "students") ? "selected" : ""; ?>>Students</option>
@@ -34,31 +34,25 @@ $asset = new AssetManager();
         <option value="courses" <?= ($this->edit_selection == "courses") ? "selected" : ""; ?>>Courses</option>
       </select>
     </div>
-    <?php if (!empty($this->edit_selection)): ?>
-      <table class="edit">
-      <?php endif; ?>
-      <?php
-      switch ($this->edit_selection) {
-        case "admins":
-          include(Path::views("Admin/Admins.php"));
-          break;
-        case "teachers":
-          include(Path::views("Admin/Teachers.php"));
-          break;
-        case "students":
-          include(Path::views("Admin/Students.php"));
-          break;
-        case "subjects":
-          include(Path::views("Admin/Subjects.php"));
-          break;
-        case "courses":
-          include(Path::views("Admin/Courses.php"));
-          break;
-      }
-      ?>
-      <?php if (isset($this->edit_selection)): ?>
-      </table>
-    <?php endif; ?>
+    <?php
+    switch ($this->edit_selection) {
+      case "admins":
+        include(Path::views("Admin/Admins.php"));
+        break;
+      case "teachers":
+        include(Path::views("Admin/Teachers.php"));
+        break;
+      case "students":
+        include(Path::views("Admin/Students.php"));
+        break;
+      case "subjects":
+        include(Path::views("Admin/Subjects.php"));
+        break;
+      case "courses":
+        include(Path::views("Admin/Courses.php"));
+        break;
+    }
+    ?>
   </form>
 </body>
 
