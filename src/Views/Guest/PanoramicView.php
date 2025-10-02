@@ -44,6 +44,16 @@
       currentIndexRef.value = (currentIndexRef.value + 1) % courses.length;
       showCourse(courses, currentIndexRef.value);
     });
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "ArrowLeft") {
+        document.querySelector(".present.arrow.left").click();
+      }
+
+      if (event.key === "ArrowRight" || event.key === "Enter") {
+        document.querySelector(".present.arrow.right").click();
+      }
+    });
   }
 
   function emptyMessage() {
