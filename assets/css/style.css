@@ -23,7 +23,7 @@ body {
   display: flex;
   justify-content: center;
   background-color: #f2e5f7;
-  background-image: radial-gradient(#7f44f7 0.5px, #f2e5f7 0.7px);
+  background-image: radial-gradient(#7f44f7 0.5px, #f2e5f7 0.8px);
   background-size: 8px 8px;
   font-family: "Montserrat", sans-serif;
 }
@@ -133,14 +133,6 @@ button.edit.account.option-button.save {
   margin: 0;
 }
 
-button.edit:hover,
-button.edit.option-button:hover,
-button.edit.option-button.save:hover,
-button.edit.account.option-button.save:hover,
-button.present:hover {
-  background-color: #f2e5f7;
-}
-
 button.present.arrow {
   display: flex;
   align-items: center;
@@ -188,6 +180,18 @@ h3.present.course.subject {
   color: #8a6da5;
 }
 
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 50px #f2e5f7 inset;
+  -webkit-text-fill-color: #8a6da5;
+  caret-color: #8a6da5;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 50px #f2e5f7 inset;
+  -webkit-text-fill-color: #8a6da5;
+  caret-color: #8a6da5;
+}
+
 input[type=text].login {
   padding: 12px 15px;
   font-size: 14px;
@@ -197,7 +201,7 @@ input[type=text].login {
   border: 1px solid #8a6da5;
   border-radius: 3px;
   color: #8a6da5;
-  background-color: #f2e5f7;
+  background-color: rgba(255, 255, 255, 0.4);
   transition: transform 0.2s ease, background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
 }
 
@@ -222,7 +226,6 @@ input[type=text].login::placeholder {
 input[type=text].login:hover,
 input[type=text].login:focus {
   border-color: #b08fe0;
-  background-color: #f2e5f7;
   outline: none;
 }
 
@@ -246,6 +249,7 @@ input[type=number].edit {
   padding: 8px;
   margin: 0;
   border: 1px solid #8a6da5;
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 3px;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
@@ -322,13 +326,8 @@ input[type=text].present:focus,
 input[type=text].present.navbar:hover,
 input[type=text].present.navbar:focus {
   border-color: #b08fe0;
-  outline: none;
-}
-
-input[type=text].present:hover,
-input[type=text].present.navbar:hover {
   color: #b08fe0;
-  background-color: #f2e5f7;
+  outline: none;
 }
 
 div.edit.navbar,
@@ -338,6 +337,7 @@ div.present.panoramic {
   border: 1px solid #8a6da5;
   border-radius: 3px;
   padding: 15px;
+  background-color: rgba(255, 255, 255, 0.4);
   gap: 20px;
 }
 
@@ -438,7 +438,6 @@ select.edit.navbar:hover,
 select.edit.navbar:focus,
 select.present.navbar:hover,
 select.present.navbar:focus {
-  background-color: #f2e5f7;
   border-color: #b08fe0;
   color: #b08fe0;
   outline: none;
@@ -460,13 +459,11 @@ select.edit[multiple] option:checked {
 
 select.edit option:not(:checked):hover,
 select.edit[multiple] option:not(:checked):hover {
-  background-color: rgba(200, 200, 200, 0.6);
   color: #8a6da5;
 }
 
 select.edit option:checked:hover,
 select.edit[multiple] option:checked:hover {
-  background-color: rgba(176, 143, 224, 0.6);
   color: #f2e5f7;
 }
 
@@ -482,11 +479,6 @@ select.edit[multiple]::-webkit-scrollbar-thumb {
   background-color: #8a6da5;
   border-radius: 4px;
   border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
-select.edit::-webkit-scrollbar-thumb:hover,
-select.edit[multiple]::-webkit-scrollbar-thumb:hover {
-  background-color: #b08fe0;
 }
 
 table.edit,
@@ -567,7 +559,6 @@ textarea.edit:hover,
 textarea.present:hover,
 textarea.edit:focus,
 textarea.present:focus {
-  background-color: #f2e5f7;
   border-color: #b08fe0;
   color: #b08fe0;
   outline: none;

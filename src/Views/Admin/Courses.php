@@ -24,7 +24,6 @@
       <td><textarea name="operation[save][<?= $id ?>][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"><?= $description ?></textarea></td>
       <td>
         <select name="operation[save][<?= $id ?>][status]" class="edit">
-          <option>Choose a status</option>
           <option value="Active" <?= (($status == "Active") ? "selected" : "") ?>>Active</option>
           <option value="Suspended" <?= (($status == "Suspended") ? "selected" : "") ?>>Suspended</option>
           <option value="UnderDevelopment" <?= (($status == "UnderDevelopment") ? "selected" : "") ?>>Under Development</option>
@@ -151,7 +150,7 @@
       <td><textarea name="operation[add][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></textarea></td>
       <td>
         <select name="operation[add][status]" class="edit">
-          <option value="">Choose a status</option>
+          <option value="" disabled selected>Choose a status</option>
           <option value="Active">Active</option>
           <option value="Suspended">Suspended</option>
           <option value="UnderDevelopment">Under Development</option>
@@ -159,7 +158,7 @@
       </td>
       <td>
         <select name="operation[add][subject]" onchange="submit();" class="edit">
-          <option value="">Choose a subject</option>
+          <option value="" disabled selected>Choose a subject</option>
           <?php foreach ($this->subjects as $subject_row):
             $subject_name = $subject_row["name"];
             $subject_id = $subject_row["id"];

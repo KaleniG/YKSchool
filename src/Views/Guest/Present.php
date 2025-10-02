@@ -32,7 +32,7 @@ $asset = new AssetManager();
       </select>
       <input type="text" name="word_filter" value="<?= $this->word_filter ?>" minlength="3" autocomplete="on" autocorrect="off" autocapitalize="off" spellcheck="false" class=" present navbar">
       <select name="subject_filter" class="present navbar">
-        <option value="">Select a subject</option>
+        <option value="" disabled selected>Select a subject</option>
         <?php foreach ($this->subjects as $subject):
           $id = $subject["id"];
           $name = $subject["name"];
