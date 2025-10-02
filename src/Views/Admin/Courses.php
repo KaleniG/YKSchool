@@ -141,81 +141,122 @@
           })();
         </script>
       </td>
-    <?php endforeach; ?>
     </tr>
+  <?php endforeach; ?>
 
-    <!-- ADD -->
-    <tr>
-      <td><input type="text" name="operation[add][name]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
-      <td><textarea name="operation[add][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></textarea></td>
-      <td>
-        <select name="operation[add][status]" class="edit">
-          <option value="" disabled selected>Choose a status</option>
-          <option value="Active">Active</option>
-          <option value="Suspended">Suspended</option>
-          <option value="UnderDevelopment">Under Development</option>
-        </select>
-      </td>
-      <td>
-        <select name="operation[add][subject]" onchange="submit();" class="edit">
-          <option value="" disabled selected>Choose a subject</option>
-          <?php foreach ($this->subjects as $subject_row):
-            $subject_name = $subject_row["name"];
-            $subject_id = $subject_row["id"];
-            $selected = ($this->new_course_subject_selection == $subject_id) ? "selected" : "";
-          ?>
-            <option value="<?= $subject_id ?>" <?= $selected ?>><?= $subject_name ?></option>
-          <?php endforeach; ?>
-        </select>
-      </td>
-      <td>
-        <select name="operation[add][teachers][]" size="2" class="edit" multiple>
-          <?php foreach ($this->teachers as $teacher_row):
-            $teacher_id = $teacher_row["id"];
-            $teacher_name = $teacher_row["name"];
-            $teacher_surname = $teacher_row["surname"];
-            $teacher_teaching_subjects = $teacher_row["teaching_subjects"];
-          ?>
-            <?php if (in_array($this->new_course_subject_selection, $teacher_teaching_subjects)): ?>
-              <option value="<?= $teacher_id ?>"><?= $teacher_name . " " . $teacher_surname ?></option>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        </select>
-      </td>
-      <td>
-        <select name="operation[add][students][]" size="2" class="edit" multiple>
-          <?php foreach ($this->students as $student_row):
-            $student_id = $student_row["id"];
-            $student_name = $student_row["name"];
-            $student_surname = $student_row["surname"];
-            $student_tuition_enabled = ($student_row["tuition_enabled"] == "t") ? true : false;
-          ?>
-            <?php if ($student_tuition_enabled): ?>
-              <option value="<?= $student_id ?>"><?= $student_name . " " . $student_surname ?></option>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        </select>
-      </td>
-      <td>
-        <button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button>
-      </td>
-    </tr>
-    <script>
-      const confirmButton = document.querySelector("button[name='operation[add][confirm]']");
-      const nameInput = document.querySelector("input[name='operation[add][name]']");
-      const statusSelect = document.querySelector("select[name='operation[add][status]']");
-      const subjectSelect = document.querySelector("select[name='operation[add][subject]']");
+  <!-- ADD -->
+  <tr>
+    <td><input type="text" name="operation[add][name]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
+    <td><textarea name="operation[add][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></textarea></td>
+    <td>
+      <select name="operation[add][status]" class="edit">
+        <option value="" disabled selected>Choose a status</option>
+        <option value="Active">Active</option>
+        <option value="Suspended">Suspended</option>
+        <option value="UnderDevelopment">Under Development</option>
+      </select>
+    </td>
+    <td>
+      <select name="operation[add][subject]" class="edit">
+        <option value="" disabled selected>Choose a subject</option>
+        <?php foreach ($this->subjects as $subject_row):
+          $subject_name = $subject_row["name"];
+          $subject_id = $subject_row["id"];
+          $selected = ($this->new_course_subject_selection == $subject_id) ? "selected" : "";
+        ?>
+          <option value="<?= $subject_id ?>" <?= $selected ?>><?= $subject_name ?></option>
+        <?php endforeach; ?>
+      </select>
+    </td>
+    <td>
+      <select name="operation[add][teachers][]" size="2" class="edit" multiple>
+      </select>
+    </td>
+    <td>
+      <select name="operation[add][students][]" size="2" class="edit" multiple>
+        <?php foreach ($this->students as $student_row):
+          $student_id = $student_row["id"];
+          $student_name = $student_row["name"];
+          $student_surname = $student_row["surname"];
+          $student_tuition_enabled = ($student_row["tuition_enabled"] == "t") ? true : false;
+        ?>
+          <?php if ($student_tuition_enabled): ?>
+            <option value="<?= $student_id ?>"><?= $student_name . " " . $student_surname ?></option>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </select>
+    </td>
+    <td>
+      <button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button>
+    </td>
+  </tr>
+  <script type="module">
+    const confirmButton = document.querySelector("button[name='operation[add][confirm]']");
+    const nameInput = document.querySelector("input[name='operation[add][name]']");
+    const statusSelect = document.querySelector("select[name='operation[add][status]']");
+    const subjectSelect = document.querySelector("select[name='operation[add][subject]']");
+    const teachersSelect = document.querySelector("select[name='operation[add][teachers][]']");
 
-      confirmButton.addEventListener("click", (event) => {
-        nameInput.required = true;
-        statusSelect.required = true;
-        subjectSelect.required = true;
+    confirmButton.addEventListener("click", (event) => {
+      nameInput.required = true;
+      statusSelect.required = true;
+      subjectSelect.required = true;
 
-        setTimeout(() => {
-          nameInput.required = false;
-          statusSelect.required = false;
-          subjectSelect.required = false;
-        }, 0);
+      setTimeout(() => {
+        nameInput.required = false;
+        statusSelect.required = false;
+        subjectSelect.required = false;
+      }, 0);
+    });
+
+    function fetchTeachers() {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "admin.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              try {
+                const data = JSON.parse(xhr.responseText);
+                resolve(data);
+              } catch (e) {
+                reject(new Error("Invalid JSON: " + xhr.responseText));
+              }
+            } else {
+              reject(new Error("Request failed with status " + xhr.status));
+            }
+          }
+        };
+
+        xhr.send();
       });
-    </script>
+    }
+
+    subjectSelect.addEventListener("change", async function() {
+      const subjectId = Number(this.value);;
+      teachersSelect.innerHTML = "";
+
+      if (!subjectId) return;
+
+      try {
+        const teachers = await fetchTeachers();
+        console.log(teachers);
+        console.log(subjectId);
+        teachers.forEach(t => {
+          if (t.teaching_subjects.includes(subjectId)) {
+            console.log("dsafdfsgdsf");
+            const opt = document.createElement("option");
+            opt.value = t.id;
+            opt.textContent = t.name + " " + t.surname;
+            teachersSelect.appendChild(opt);
+          }
+        });
+      } catch (e) {
+        console.error("Error fetching teachers:", e);
+      }
+    });
+  </script>
 </table>

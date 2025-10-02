@@ -467,6 +467,11 @@ select.edit[multiple] option:checked:hover {
   color: #f2e5f7;
 }
 
+select.edit option:disabled,
+select.present option:disabled {
+  color: #5d4989;
+}
+
 select.edit::-webkit-scrollbar,
 select.edit[multiple]::-webkit-scrollbar {
   width: 8px;

@@ -76,6 +76,12 @@ class AdminController
   {
     $this->loadSession();
 
+    if (!empty($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) === "xmlhttprequest") {
+      header("Content-Type: application/json");
+      echo json_encode($this->teachers);
+      exit;
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       switch ($this->page) {
         case "Home.php":
