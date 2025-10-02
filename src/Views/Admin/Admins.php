@@ -87,3 +87,18 @@
   <td><input type="number" name="operation[add][phone_number]" autocomplete="off" autocorrect="off" class="edit"></td>
   <td><button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button></td>
 </tr>
+<script>
+  const confirmButton = document.querySelector("button[name='operation[add][confirm]']");
+  const nameInput = document.querySelector("input[name='operation[add][name]']");
+  const surnameInput = document.querySelector("input[name='operation[add][surname]']");
+
+  confirmButton.addEventListener("click", (event) => {
+    nameInput.required = true;
+    surnameInput.required = true;
+
+    setTimeout(() => {
+      nameInput.required = false;
+      surnameInput.required = false;
+    }, 0);
+  });
+</script>

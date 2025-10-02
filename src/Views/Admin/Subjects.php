@@ -65,3 +65,15 @@
   <td><input type="text" name="operation[add][name]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></td>
   <td><button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button></td>
 </tr>
+<script>
+  const confirmButton = document.querySelector("button[name='operation[add][confirm]']");
+  const nameInput = document.querySelector("input[name='operation[add][name]']");
+
+  confirmButton.addEventListener("click", (event) => {
+    nameInput.required = true;
+
+    setTimeout(() => {
+      nameInput.required = false;
+    }, 0);
+  });
+</script>

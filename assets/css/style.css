@@ -23,8 +23,8 @@ body {
   display: flex;
   justify-content: center;
   background-color: #f2e5f7;
-  background-image: radial-gradient(#7f44f7 0.5px, #f2e5f7 0.5px);
-  background-size: 10px 10px;
+  background-image: radial-gradient(#7f44f7 0.5px, #f2e5f7 0.7px);
+  background-size: 8px 8px;
   font-family: "Montserrat", sans-serif;
 }
 

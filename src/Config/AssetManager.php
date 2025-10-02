@@ -16,8 +16,9 @@ class AssetManager
   public function importCSS()
   {
     $allfiles = "";
+    $randMario = mt_rand(1, 11000);
     foreach ($this->css as $css_file)
-      $allfiles .= "<link rel='stylesheet' href='{$css_file}?s=s3'>";
+      $allfiles .= "<link rel='stylesheet' href='{$css_file}?randMario={$randMario}'>";
     return $allfiles;
   }
 

@@ -23,7 +23,7 @@
     <td><textarea name="operation[save][<?= $id ?>][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"><?= $description ?></textarea></td>
     <td>
       <select name="operation[save][<?= $id ?>][status]" class="edit">
-        <option>Choose an option</option>
+        <option>Choose a status</option>
         <option value="Active" <?= (($status == "Active") ? "selected" : "") ?>>Active</option>
         <option value="Suspended" <?= (($status == "Suspended") ? "selected" : "") ?>>Suspended</option>
         <option value="UnderDevelopment" <?= (($status == "UnderDevelopment") ? "selected" : "") ?>>Under Development</option>
@@ -150,7 +150,7 @@
     <td><textarea name="operation[add][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"></textarea></td>
     <td>
       <select name="operation[add][status]" class="edit">
-        <option value="">Choose an option</option>
+        <option value="">Choose a status</option>
         <option value="Active">Active</option>
         <option value="Suspended">Suspended</option>
         <option value="UnderDevelopment">Under Development</option>
@@ -200,3 +200,21 @@
       <button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button>
     </td>
   </tr>
+  <script>
+    const confirmButton = document.querySelector("button[name='operation[add][confirm]']");
+    const nameInput = document.querySelector("input[name='operation[add][name]']");
+    const statusSelect = document.querySelector("select[name='operation[add][status]']");
+    const subjectSelect = document.querySelector("select[name='operation[add][subject]']");
+
+    confirmButton.addEventListener("click", (event) => {
+      nameInput.required = true;
+      statusSelect.required = true;
+      subjectSelect.required = true;
+
+      setTimeout(() => {
+        nameInput.required = false;
+        statusSelect.required = false;
+        subjectSelect.required = false;
+      }, 0);
+    });
+  </script>
