@@ -1,4 +1,3 @@
-// assets/js/Guest/CourseCarousel.js
 import { fetchCourses } from "./CoursesRequest.js";
 
 function showCourse(courses, index) {
@@ -48,7 +47,6 @@ function emptyMessage() {
   courseBox.querySelector(".present.course.description").textContent = "";
 }
 
-// self-initialize
 window.addEventListener("DOMContentLoaded", async () => {
   const currentIndexRef = { value: 0 };
 

@@ -19,6 +19,6 @@ class MainController
       exit;
     }
 
-    include Path::views("Home.php");
+    include Path::views("Common/Home.php");
   }
 }

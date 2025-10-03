@@ -14,7 +14,7 @@
   ?>
     <tr data-id="<?= $id ?>">
       <td><input type="text" value="<?= $name ?>" class="edit" disabled></td>
-      <td><textarea name="operation[save][<?= $id ?>][description]" autocomplete="off" autocorrect="off" autocapitalize="on" spellcheck="false" class="edit"><?= $description ?></textarea></td>
+      <td><textarea class="edit" disabled><?= $description ?></textarea></td>
       <td><input type="checkbox" name="operation[save][<?= $id ?>][is_student_subscribed]" value="t" class="edit" <?= $checked ?>></td>
       <td></td>
     </tr>

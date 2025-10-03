@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkbox = row.querySelector("input[type='checkbox'][name^='operation[save]']");
     if (!checkbox) return;
 
-    // Append the save button in the last cell of the row
     const lastCell = row.querySelector("td:last-child");
 
     const saveBtn = document.createElement("button");
