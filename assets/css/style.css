@@ -122,12 +122,14 @@ button.edit.option-button.save {
 }
 
 button.edit.option-button.save,
-button.edit.account.option-button.save {
+button.edit.account.option-button.save,
+button.present.reset {
   opacity: 0;
 }
 
 button.edit.option-button.save.visible,
-button.edit.account.option-button.save.visible {
+button.edit.account.option-button.save.visible,
+button.present.reset.visible {
   opacity: 1;
 }
 

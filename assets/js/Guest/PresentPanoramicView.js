@@ -6,7 +6,7 @@ const navbar = document.querySelector("div[class='present navbar']");
 
 const resetBtn = document.createElement("button");
 resetBtn.type = "button";
-resetBtn.className = "present";
+resetBtn.className = "present reset";
 resetBtn.textContent = "Reset";
 
 function showCourse(courses, index) {
@@ -72,7 +72,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     resetBtn.addEventListener("click", function () {
       wordFilterInput.value = "";
       subjectFilterSelect.value = "";
-      navbar.removeChild(resetBtn);
+      requestAnimationFrame(() => resetBtn.classList.remove("visible"));
+      setTimeout(() => navbar.removeChild(resetBtn), 400);
       applyFilters();
     });
 
@@ -86,6 +87,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (word !== "") {
         if (!navbar.contains(resetBtn)) {
           navbar.appendChild(resetBtn);
+          requestAnimationFrame(() => resetBtn.classList.add("visible"));
         }
         filtered = filtered.filter(c =>
           c.name.toLowerCase().includes(word) ||
@@ -96,6 +98,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (subject !== "") {
         if (!navbar.contains(resetBtn)) {
           navbar.appendChild(resetBtn);
+          requestAnimationFrame(() => resetBtn.classList.add("visible"));
         }
         filtered = filtered.filter(c => c.subject == subject);
       }
