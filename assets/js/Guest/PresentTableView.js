@@ -84,7 +84,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       let filtered = courses_filtered;
 
-      if (word !== "") {
+      if (word !== "" && word.length >= 3) {
         if (!navbar.contains(resetBtn)) {
           navbar.appendChild(resetBtn);
           requestAnimationFrame(() => resetBtn.classList.add("visible"));

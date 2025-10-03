@@ -417,11 +417,11 @@ select.edit[multiple] {
   font-size: 12px;
   padding: 5px;
   overflow-y: auto;
-  scrollbar-width: thin;
   scrollbar-color: $color-primary $color-form-backgrounds;
   height: calc(2 * 1.5em + 16px);
   min-height: calc(2 * 1.5em + 16px);
   max-height: calc(2 * 1.5em + 16px);
+  scrollbar-width: none;
 }
 
 select.edit.navbar,
@@ -479,6 +479,7 @@ select.edit[multiple]::-webkit-scrollbar {
   width: 8px;
   background: $color-form-backgrounds;
   border-radius: 4px;
+  display: none;
 }
 
 select.edit::-webkit-scrollbar-thumb,
