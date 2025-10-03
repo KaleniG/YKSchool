@@ -153,41 +153,6 @@ class CourseManager extends Model
     return pg_fetch_all($result);
   }
 
-  public function getAllCoursesWithFilter($word_filter, $subject_filter)
-  {
-    if (empty($word_filter) && empty($subject_filter))
-      return;
-
-    $conditions = [];
-    $values = [];
-
-    if (!empty($subject_filter)) {
-      $conditions[] = "c.subject_id = $" . (count($values) + 1);
-      $values[] = $subject_filter;
-    }
-
-    if (!empty($word_filter)) {
-      $paramIndex = count($values) + 1;
-      $conditions[] = "(c.name ILIKE $" . $paramIndex . " OR c.description ILIKE $" . $paramIndex . ")";
-      $values[] = "%" . $word_filter . "%";
-    }
-
-    $sql = "SELECT 
-    c.name AS name, 
-    c.description AS description, 
-    s.name AS subject 
-    FROM courses c
-    LEFT JOIN subjects s ON c.subject_id = s.id
-    WHERE " . implode(" AND ", $conditions) . " AND c.status = 'Active' 
-    ORDER BY c.id";
-
-    $result = pg_query_params(Model::getConn(), $sql, $values);
-
-    if (!$result) Log::error("Query failed: " . Model::getError());
-
-    return pg_fetch_all($result);
-  }
-
   public function getAllCoursesWithDetails()
   {
     $this->prepareAll();

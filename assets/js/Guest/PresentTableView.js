@@ -2,6 +2,9 @@ import {
   fetchCourses
 } from "./CoursesRequest.js";
 
+const wordFilterInput = document.querySelector("input[name='word_filter']");
+const subjectFilterSelect = document.querySelector("select[name='subject_filter']");
+
 function populateTable(courses) {
   const tbody = document.querySelector("#coursesTable tbody");
   tbody.innerHTML = "";
@@ -53,11 +56,41 @@ function emptyMessage() {
 window.addEventListener("DOMContentLoaded", async () => {
   try {
     const courses = await fetchCourses();
+    let courses_filtered = courses;
+
     if (courses && courses.length > 0) {
-      populateTable(courses);
+      applyFilters();
     } else {
       emptyMessage();
     }
+
+    function applyFilters() {
+      const word = wordFilterInput.value.trim().toLowerCase();
+      const subject = subjectFilterSelect.value;
+
+      let filtered = courses_filtered;
+
+      if (word !== "") {
+        filtered = filtered.filter(c =>
+          c.name.toLowerCase().includes(word) ||
+          c.description.toLowerCase().includes(word)
+        );
+      }
+
+      if (subject !== "") {
+        filtered = filtered.filter(c => c.subject == subject);
+      }
+
+      if (filtered.length > 0) {
+        populateTable(filtered);
+      } else {
+        emptyMessage();
+      }
+    }
+
+    wordFilterInput.addEventListener("input", applyFilters);
+    subjectFilterSelect.addEventListener("change", applyFilters);
+
   } catch (err) {
     console.error("Failed to load courses:", err);
     emptyMessage();

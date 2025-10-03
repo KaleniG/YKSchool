@@ -20,23 +20,20 @@ $asset = new AssetManager();
   <form method="post" class="present">
     <div class="present navbar">
       <button type="submit" name="page" value="Home.php" class="present">Back</button>
-      <button type="submit" name="present_selection" value="home" class="present">Home</button>
-      <select name="view_format" onchange="submit();" class="present navbar">
+      <select name="view_format" class="present navbar">
         <option value="table" <?= ($this->view_format == "table") ? "selected" : "" ?>>Table View</option>
         <option value="panoramic" <?= ($this->view_format == "panoramic") ? "selected" : "" ?>>Panoramic View</option>
       </select>
       <input type="text" name="word_filter" value="<?= $this->word_filter ?>" minlength="3" autocomplete="on" autocorrect="off" autocapitalize="off" spellcheck="false" class=" present navbar">
       <select name="subject_filter" class="present navbar">
-        <option value="" disabled selected>Select a subject</option>
+        <option value="" selected>Subject</option>
         <?php foreach ($this->subjects as $subject):
-          $id = $subject["id"];
           $name = $subject["name"];
-          $selected = ($id == $this->subject_filter) ? "selected" : "";
+          $selected = ($name == $this->subject_filter) ? "selected" : "";
         ?>
-          <option value="<?= $id ?>" <?= $selected ?>><?= $name ?></option>
+          <option value="<?= $name ?>" <?= $selected ?>><?= $name ?></option>
         <?php endforeach; ?>
       </select>
-      <button type="submit" name="present_selection" value="advancedresearch" class="present">Search</button>
     </div>
     <?php
     switch ($this->view_format) {

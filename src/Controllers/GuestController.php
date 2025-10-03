@@ -53,9 +53,6 @@ class GuestController
     }
 
     // NAVIGATION/TEMPORARIES HANDLING
-    $default_selection = "home";
-    $this->present_selection = $_SESSION["present_selection"] ?? $default_selection;
-
     $default_view_format = "table";
     $this->view_format = $_SESSION["view_format"] ?? $default_view_format;
 
@@ -100,18 +97,6 @@ class GuestController
 
   private function handlePresent()
   {
-    // PRESENT OPTION LOADING
-    if (isset($_SESSION["present_selection"]))
-      $this->present_selection = $_SESSION["present_selection"];
-    else {
-      $this->present_selection = $_POST["present_selection"] ?? null;
-      $_SESSION["present_selection"] = $this->present_selection;
-    }
-    if (isset($_POST["present_selection"]) && $_POST["present_selection"] != $_SESSION["present_selection"]) {
-      $this->present_selection = $_POST["present_selection"];
-      $_SESSION["present_selection"] = $this->present_selection;
-    }
-
     // VIEW FORMAT LOADING
     if (isset($_SESSION["view_format"]))
       $this->view_format = $_SESSION["view_format"];
@@ -154,38 +139,6 @@ class GuestController
     if (isset($_POST["subject_filter"]) && $_POST["subject_filter"] != $_SESSION["subject_filter"]) {
       $this->subject_filter = $_POST["subject_filter"];
       $_SESSION["subject_filter"] = $this->subject_filter;
-    }
-
-    // HANDLING ALL PRESENT OPTIONS
-    if (isset($this->present_selection)) {
-      switch ($this->present_selection) {
-        case "home":
-          $this->handlePresentHome();
-          break;
-        case "advancedresearch":
-          $this->handlePresentAdvancedResearch();
-          break;
-      }
-    }
-  }
-
-  private function handlePresentHome()
-  {
-    // SESSION/DATABASE COURSES RELOADING WITH ALL COURSES
-    $manager = new CourseManager();
-    $this->courses = $manager->getAllCoursesWithFaceValue() ?? [];
-    $_SESSION["courses"] = $this->courses;
-  }
-
-  private function handlePresentAdvancedResearch()
-  {
-    // SESSION/DATABASE COURSES RELOADING WITH FILTERED COURSES
-    if (!empty($this->word_filter) || !empty($this->subject_filter)) {
-      $manager = new CourseManager();
-      $this->courses = $manager->getAllCoursesWithFilter($this->word_filter, $this->subject_filter) ?? [];
-      $_SESSION["courses"] = $this->courses;
-    } else {
-      $this->handlePresentHome();
     }
   }
 }

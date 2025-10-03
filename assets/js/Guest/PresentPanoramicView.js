@@ -1,5 +1,8 @@
 import { fetchCourses } from "./CoursesRequest.js";
 
+const wordFilterInput = document.querySelector("input[name='word_filter']");
+const subjectFilterSelect = document.querySelector("select[name='subject_filter']");
+
 function showCourse(courses, index) {
   if (!courses.length) return;
 
@@ -52,14 +55,71 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const courses = await fetchCourses();
+    const filteredCoursesRef = { value: courses };
+    let courses_filtered = courses;
 
     if (courses && courses.length > 0) {
-      showCourse(courses, currentIndexRef.value);
+      applyFilters();
     } else {
       emptyMessage();
     }
 
-    setupArrows(courses, currentIndexRef);
+    function applyFilters() {
+      currentIndexRef.value = 0;
+      const word = wordFilterInput.value.trim().toLowerCase();
+      const subject = subjectFilterSelect.value;
+
+      let filtered = courses;
+
+      if (word !== "") {
+        filtered = filtered.filter(c =>
+          c.name.toLowerCase().includes(word) ||
+          c.description.toLowerCase().includes(word)
+        );
+      }
+
+      if (subject !== "") {
+        filtered = filtered.filter(c => c.subject == subject);
+      }
+
+      filteredCoursesRef.value = filtered; // update the filtered array
+
+      if (filtered.length > 0) {
+        showCourse(filtered, currentIndexRef.value);
+      } else {
+        emptyMessage();
+      }
+    }
+
+    function setupArrows(currentIndexRef, filteredCoursesRef) {
+      document.querySelector(".present.arrow.left").addEventListener("click", () => {
+        const courses = filteredCoursesRef.value;
+        if (!courses.length) return;
+        currentIndexRef.value = (currentIndexRef.value - 1 + courses.length) % courses.length;
+        showCourse(courses, currentIndexRef.value);
+      });
+
+      document.querySelector(".present.arrow.right").addEventListener("click", () => {
+        const courses = filteredCoursesRef.value;
+        if (!courses.length) return;
+        currentIndexRef.value = (currentIndexRef.value + 1) % courses.length;
+        showCourse(courses, currentIndexRef.value);
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") {
+          document.querySelector(".present.arrow.left").click();
+        }
+        if (event.key === "ArrowRight" || event.key === "Enter") {
+          document.querySelector(".present.arrow.right").click();
+        }
+      });
+    }
+
+    wordFilterInput.addEventListener("input", applyFilters);
+    subjectFilterSelect.addEventListener("change", applyFilters);
+
+    setupArrows(currentIndexRef, filteredCoursesRef);
   } catch (err) {
     console.error("Failed to fetch courses:", err);
     emptyMessage();
