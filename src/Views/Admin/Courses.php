@@ -6,7 +6,7 @@
     <th>Subject</th>
     <th>Teachers</th>
     <th>Students</th>
-    <th></th>
+    <th>Operations</th>
   </tr>
 
   <!-- UPDATE/DELETE -->

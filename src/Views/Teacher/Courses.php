@@ -2,7 +2,7 @@
   <tr>
     <th>Name</th>
     <th>Description</th>
-    <th></th>
+    <th>Save</th>
   </tr>
   <?php foreach ($this->courses as $course):
     $id = $course["id"];

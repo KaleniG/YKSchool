@@ -4,7 +4,7 @@
     <th>Surname</th>
     <th>E-mail</th>
     <th>Phone Number</th>
-    <th></th>
+    <th>Operations</th>
   </tr>
 
   <!-- UPDATE/DELETE -->

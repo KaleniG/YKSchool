@@ -185,7 +185,7 @@ h3 {
 h2.login,
 h3.login {
   color: $color-primary;
-  text-align: left;
+  text-align: center;
   margin-bottom: 10px;
 }
 
@@ -419,6 +419,7 @@ select.edit[multiple] {
   padding: 8px;
   width: 100%;
   box-sizing: border-box;
+  scrollbar-width: none;
 }
 
 select.edit[multiple] {
@@ -514,13 +515,13 @@ table.edit td,
 table.present th,
 table.present td {
   padding: 12px;
-  text-align: left;
   background-color: $color-form-backgrounds;
   border: 1px solid rgba($color-primary, 0.4);
 }
 
 table.edit th,
 table.present th {
+  text-align: center;
   background-color: $color-primary;
   color: $color-background;
   font-weight: 600;

@@ -1,7 +1,7 @@
 <table class="edit">
   <tr>
     <th>Subject</th>
-    <th></th>
+    <th>Operations</th>
   </tr>
 
   <!-- UPDATE/DELETE -->

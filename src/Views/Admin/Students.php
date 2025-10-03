@@ -5,7 +5,7 @@
     <th>E-mail</th>
     <th>Phone Number</th>
     <th>Tuition Enabled</th>
-    <th></th>
+    <th>Operations</th>
   </tr>
 
   <!-- UPDATE/DELETE -->

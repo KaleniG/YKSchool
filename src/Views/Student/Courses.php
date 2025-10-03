@@ -3,7 +3,7 @@
     <th>Name</th>
     <th>Description</th>
     <th>Subscribed</th>
-    <th></th>
+    <th>Save</th>
   </tr>
   <?php
   foreach ($this->courses as $course):
