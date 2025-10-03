@@ -5,7 +5,7 @@ if (textareas) {
   textareas.forEach(textarea => {
     textarea.addEventListener("wheel", (e) => {
       e.preventDefault();
-      textarea.scrollTop += e.deltaY * 0.01;
+      textarea.scrollTop += e.deltaY * 0.15;
     }, {
       passive: false
     });
@@ -16,7 +16,7 @@ if (multipleSelects) {
   multipleSelects.forEach(select => {
     select.addEventListener("wheel", (e) => {
       e.preventDefault();
-      select.scrollTop += e.deltaY * 0.01;
+      select.scrollTop += e.deltaY * 0.15;
     }, {
       passive: false
     });

@@ -100,12 +100,7 @@ button {
   color: $color-primary;
   cursor: pointer;
   user-select: none;
-  transition:
-    transform 0.2s ease,
-    background-color 0.5s ease,
-    border-color 0.5s ease,
-    color 0.5s ease,
-    opacity 0.4s ease;
+  transition: transform 0.2s ease, background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, opacity 0.4s ease;
 }
 
 button:hover {
@@ -339,6 +334,12 @@ input[type="text"].present.navbar:focus {
   outline: none;
 }
 
+input[type="text"].present:disabled:hover,
+input[type="text"].edit:disabled:hover {
+  border: 1px solid $color-primary;
+  color: $color-primary;
+}
+
 // DIV
 div.edit.navbar,
 div.edit.account,
@@ -428,7 +429,6 @@ select.edit[multiple] {
   height: calc(2 * 1.5em + 16px);
   min-height: calc(2 * 1.5em + 16px);
   max-height: calc(2 * 1.5em + 16px);
-  scrollbar-width: none;
 }
 
 select.edit.navbar,
@@ -577,6 +577,18 @@ textarea.present {
   cursor: text;
   resize: none;
   transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, transform 0.2s ease;
+}
+
+textarea.edit:disabled,
+textarea.present:disabled {
+  cursor: default;
+}
+
+textarea.edit:disabled:hover,
+textarea.present:disabled:hover {
+  color: $color-primary;
+  background-color: $color-form-backgrounds;
+  border: 1px solid $color-primary;
 }
 
 textarea.edit:hover,
