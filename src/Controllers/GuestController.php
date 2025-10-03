@@ -8,8 +8,6 @@ use App\Models\SubjectManager;
 
 /*
 $_POST["page"] $_SESSION["page"] -> contain the path to the page to load relative to the Views folder
-$_POST["present_selection"] $_SESSION["present_selection"] -> stores the value of the page to load
-$_POST["view_format"] $_SESSION["view_format"] -> stores the value of the page to load for the way to visualize the courses
 $_POST["word_filter"] $_SESSION["word_filter"] -> stores the user input from the textbox
 $_POST["subject_filter"] $_SESSION["subject_filter"] -> stores the user input from the select box with all of the subjects
 $_POST["view_format"] $_SESSION["view_format"] -> stores the value of the page to load for the way to visualize the courses
@@ -23,7 +21,6 @@ class GuestController
   private $courses = [];
   private $subjects = [];
 
-  private $present_selection = null;
   private $word_filter = null;
   private $subject_filter = null;
   private $view_format = null;

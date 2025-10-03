@@ -4,6 +4,12 @@ import {
 
 const wordFilterInput = document.querySelector("input[name='word_filter']");
 const subjectFilterSelect = document.querySelector("select[name='subject_filter']");
+const navbar = document.querySelector("div[class='present navbar']");
+
+const resetBtn = document.createElement("button");
+resetBtn.type = "button";
+resetBtn.className = "present";
+resetBtn.textContent = "Reset";
 
 function populateTable(courses) {
   const tbody = document.querySelector("#coursesTable tbody");
@@ -64,6 +70,13 @@ window.addEventListener("DOMContentLoaded", async () => {
       emptyMessage();
     }
 
+    resetBtn.addEventListener("click", function () {
+      wordFilterInput.value = "";
+      subjectFilterSelect.value = "";
+      navbar.removeChild(resetBtn);
+      applyFilters();
+    });
+
     function applyFilters() {
       const word = wordFilterInput.value.trim().toLowerCase();
       const subject = subjectFilterSelect.value;
@@ -71,6 +84,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       let filtered = courses_filtered;
 
       if (word !== "") {
+        if (!navbar.contains(resetBtn)) {
+          navbar.appendChild(resetBtn);
+        }
         filtered = filtered.filter(c =>
           c.name.toLowerCase().includes(word) ||
           c.description.toLowerCase().includes(word)
@@ -78,6 +94,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
 
       if (subject !== "") {
+        if (!navbar.contains(resetBtn)) {
+          navbar.appendChild(resetBtn);
+        }
         filtered = filtered.filter(c => c.subject == subject);
       }
 

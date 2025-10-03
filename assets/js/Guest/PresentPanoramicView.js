@@ -2,6 +2,12 @@ import { fetchCourses } from "./CoursesRequest.js";
 
 const wordFilterInput = document.querySelector("input[name='word_filter']");
 const subjectFilterSelect = document.querySelector("select[name='subject_filter']");
+const navbar = document.querySelector("div[class='present navbar']");
+
+const resetBtn = document.createElement("button");
+resetBtn.type = "button";
+resetBtn.className = "present";
+resetBtn.textContent = "Reset";
 
 function showCourse(courses, index) {
   if (!courses.length) return;
@@ -56,13 +62,19 @@ window.addEventListener("DOMContentLoaded", async () => {
   try {
     const courses = await fetchCourses();
     const filteredCoursesRef = { value: courses };
-    let courses_filtered = courses;
 
     if (courses && courses.length > 0) {
       applyFilters();
     } else {
       emptyMessage();
     }
+
+    resetBtn.addEventListener("click", function () {
+      wordFilterInput.value = "";
+      subjectFilterSelect.value = "";
+      navbar.removeChild(resetBtn);
+      applyFilters();
+    });
 
     function applyFilters() {
       currentIndexRef.value = 0;
@@ -72,6 +84,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       let filtered = courses;
 
       if (word !== "") {
+        if (!navbar.contains(resetBtn)) {
+          navbar.appendChild(resetBtn);
+        }
         filtered = filtered.filter(c =>
           c.name.toLowerCase().includes(word) ||
           c.description.toLowerCase().includes(word)
@@ -79,6 +94,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
 
       if (subject !== "") {
+        if (!navbar.contains(resetBtn)) {
+          navbar.appendChild(resetBtn);
+        }
         filtered = filtered.filter(c => c.subject == subject);
       }
 

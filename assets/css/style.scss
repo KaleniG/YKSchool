@@ -22,6 +22,7 @@ $color-form-backgrounds: rgba(255, 255, 255, 0.4);
 }
 
 // BODY
+
 body {
   display: flex;
   justify-content: center;
@@ -29,6 +30,11 @@ body {
   background-image: radial-gradient($color-background-gradient 0.5px, $color-background 0.8px);
   background-size: 8px 8px;
   font-family: 'Montserrat', sans-serif;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 body.home,
