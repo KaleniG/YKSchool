@@ -13,16 +13,11 @@ $asset = new AssetManager();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?= $asset->importCSS(); ?>
-  <script>
-    function submit() {
-      document.getElementById("main_form").submit();
-    }
-  </script>
   <title>Guest</title>
 </head>
 
 <body class="present">
-  <form method="post" id="main_form" class="present">
+  <form method="post" class="present">
     <div class="present navbar">
       <button type="submit" name="page" value="Home.php" class="present">Back</button>
       <button type="submit" name="present_selection" value="home" class="present">Home</button>
@@ -57,3 +52,6 @@ $asset = new AssetManager();
 </body>
 
 </html>
+
+<!-- SCRIPTS LOADING -->
+<script src="assets/js/Common/ReloadSelection.js"></script>

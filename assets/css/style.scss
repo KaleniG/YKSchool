@@ -538,8 +538,15 @@ table.edit td:last-child {
 }
 
 // TEXTAREA
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
 textarea.edit,
 textarea.present {
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 500;

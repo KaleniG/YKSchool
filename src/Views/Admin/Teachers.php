@@ -17,7 +17,7 @@
     $phone_number = $teacher_row["phone_number"];
     $teaching_subjects = $teacher_row["teaching_subjects"];
   ?>
-    <tr>
+    <tr data-id="<?= $id ?>">
       <td><input type="text" value="<?= $name ?>" class="edit" disabled></td>
       <td><input type="text" value="<?= $surname ?>" class="edit" disabled></td>
       <td><input type="email" name="operation[save][<?= $id ?>][email]" value="<?= $email ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="edit"></td>
@@ -35,64 +35,6 @@
       </td>
       <td>
         <button type="submit" name="operation[delete]" value="<?= $id ?>" class="edit option-button">Delete</button>
-        <script>
-          (function() {
-            const row = document.currentScript.parentNode.parentNode;
-            const emailInput = row.querySelector("input[name='operation[save][<?= $id ?>][email]']");
-            const phoneInput = row.querySelector("input[name='operation[save][<?= $id ?>][phone_number]']");
-            const teachingSubjectsInput = row.querySelector("select[name='operation[save][<?= $id ?>][teaching_subjects][]']");
-
-            const saveBtn = document.createElement("button");
-            saveBtn.type = "button";
-            saveBtn.className = "edit option-button save";
-            saveBtn.textContent = "Save";
-
-            function showSave() {
-              const cell = teachingSubjectsInput.closest("tr").querySelector("td:last-child");
-              if (!cell.contains(saveBtn)) {
-                cell.appendChild(saveBtn);
-                requestAnimationFrame(() => {
-                  saveBtn.classList.add("visible");
-                });
-              }
-            }
-
-            async function sendData() {
-              const formData = new FormData();
-
-              formData.append("operation[save][<?= $id ?>][email]", emailInput.value);
-              formData.append("operation[save][<?= $id ?>][phone_number]", phoneInput.value);
-
-              for (const option of teachingSubjectsInput.selectedOptions) {
-                formData.append("operation[save][<?= $id ?>][teaching_subjects][]", option.value);
-              }
-
-              formData.append("operation[save][confirm]", "<?= $id ?>");
-
-              try {
-                const response = await fetch("admin.php", {
-                  method: "POST",
-                  body: formData
-                });
-
-              } catch (err) {
-                console.error("Failed to save the course data: ", err);
-              }
-
-              if (saveBtn.isConnected) {
-                requestAnimationFrame(() => {
-                  saveBtn.classList.remove("visible");
-                });
-                setTimeout(() => saveBtn.remove(), 400);
-              }
-            }
-
-            emailInput.addEventListener("input", showSave);
-            phoneInput.addEventListener("input", showSave);
-            teachingSubjectsInput.addEventListener("change", showSave);
-            saveBtn.addEventListener("click", sendData);
-          })();
-        </script>
       </td>
     </tr>
   <?php endforeach; ?>
@@ -104,7 +46,6 @@
     <td><input type="email" name="operation[add][email]" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="edit"></td>
     <td><input type="number" name="operation[add][phone_number]" autocomplete="off" autocorrect="off" class="edit"></td>
     <td><select name="operation[add][teaching_subjects][]" size="2" class="edit" multiple>
-
         <?php foreach ($this->subjects as $subject_row):
           $subject_id = $subject_row["id"];
           $subject_name = $subject_row["name"];
@@ -115,19 +56,8 @@
     </td>
     <td><button type="submit" name="operation[add][confirm]" class="edit option-button">Add</button></td>
   </tr>
-  <script>
-    const confirmButton = document.querySelector("button[name='operation[add][confirm]']");
-    const nameInput = document.querySelector("input[name='operation[add][name]']");
-    const surnameInput = document.querySelector("input[name='operation[add][surname]']");
-
-    confirmButton.addEventListener("click", (event) => {
-      nameInput.required = true;
-      surnameInput.required = true;
-
-      setTimeout(() => {
-        nameInput.required = false;
-        surnameInput.required = false;
-      }, 0);
-    });
-  </script>
 </table>
+
+<!-- SCRIPT LOADING -->
+<script src="assets/js/Common/Scroll.js"></script>
+<script src="assets/js/Admin/EditTeachers.js"></script>

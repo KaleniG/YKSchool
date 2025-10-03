@@ -40,13 +40,13 @@ CREATE TABLE IF NOT EXISTS students (
 -- Subjects table
 CREATE TABLE IF NOT EXISTS subjects (
     id SERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR(20) NOT NULL
+    name VARCHAR(70) NOT NULL
 );
 
 -- Courses table
 CREATE TABLE IF NOT EXISTS courses (
     id SERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR(20) NOT NULL,
+    name VARCHAR(70) NOT NULL,
     description TEXT,
     status course_status DEFAULT 'UnderDevelopment',
     subject_id INT DEFAULT NULL,

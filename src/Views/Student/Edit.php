@@ -13,16 +13,11 @@ $asset = new AssetManager();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?= $asset->importCSS(); ?>
-  <script>
-    function submit() {
-      document.getElementById("main_form").submit();
-    }
-  </script>
   <title>Student</title>
 </head>
 
 <body class="edit">
-  <form method="post" id="main_form" class="edit">
+  <form method="post" class="edit">
     <div class="edit navbar">
       <button type="submit" name="page" value="Home.php" class="edit">Logout</button>
       <select name="edit_selection" onchange="submit();" class="edit navbar">
@@ -45,3 +40,6 @@ $asset = new AssetManager();
 </body>
 
 </html>
+
+<!-- SCRIPTS LOADING -->
+<script src="assets/js/Common/ReloadSelection.js"></script>

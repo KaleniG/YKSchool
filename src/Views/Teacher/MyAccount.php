@@ -7,7 +7,7 @@ $phone_number = $this->user["phone_number"];
 $teaching_subjects = $this->user["teaching_subjects"];
 ?>
 
-<div class="edit account">
+<div class="edit account" data-user-id="<?= $id ?>">
   <label class="edit">Name:
     <input type="text" value="<?= $name ?>" class="edit" disabled>
   </label>
@@ -32,56 +32,7 @@ $teaching_subjects = $this->user["teaching_subjects"];
     </select>
   </label>
 </div>
-<script>
-  (function() {
-    const container = document.currentScript.previousElementSibling;
-    const emailInput = container.querySelector("input[name='operation[save][<?= $id ?>][email]']");
-    const phoneInput = container.querySelector("input[name='operation[save][<?= $id ?>][phone_number]']");
-    const teachingSubjectsInput = container.querySelector("select[name='operation[save][<?= $id ?>][teaching_subjects][]']");
 
-    const saveBtn = document.createElement("button");
-    saveBtn.type = "button";
-    saveBtn.className = "edit account option-button save";
-    saveBtn.textContent = "Save Changes";
-    container.insertAdjacentElement("afterend", saveBtn);
-
-    function showSave() {
-      requestAnimationFrame(() => {
-        saveBtn.classList.add("visible");
-      });
-    }
-
-    async function sendData() {
-      const formData = new FormData();
-
-      formData.append("operation[save][<?= $id ?>][email]", emailInput.value);
-      formData.append("operation[save][<?= $id ?>][phone_number]", phoneInput.value);
-
-      for (const option of teachingSubjectsInput.selectedOptions) {
-        formData.append("operation[save][<?= $id ?>][teaching_subjects][]", option.value);
-      }
-
-      formData.append("operation[save][confirm]", "<?= $id ?>");
-
-      try {
-        const response = await fetch("teacher.php", {
-          method: "POST",
-          body: formData
-        });
-
-
-      } catch (err) {
-        console.error("Failed to save the user data: ", err);
-      }
-
-      requestAnimationFrame(() => {
-        saveBtn.classList.remove("visible");
-      });
-    }
-
-    emailInput.addEventListener("input", showSave);
-    phoneInput.addEventListener("input", showSave);
-    teachingSubjectsInput.addEventListener("change", showSave);
-    saveBtn.addEventListener("click", sendData);
-  })();
-</script>
+<!-- SCRIPTS LOADING -->
+<script src="assets/js/Common/Scroll.js"></script>
+<script src="assets/js/Teacher/EditMyAccount.js"></script>

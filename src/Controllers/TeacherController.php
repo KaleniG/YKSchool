@@ -156,7 +156,6 @@ class TeacherController
         ];
         if (filter_var($changes["email"], FILTER_VALIDATE_EMAIL))
           $manager->update($changes);
-        $manager->update($changes);
       }
 
       // SESSION VALUES REALOAD ON CHANGE
