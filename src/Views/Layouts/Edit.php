@@ -13,6 +13,7 @@ $asset = new AssetManager();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?= $asset->importCSS(); ?>
+  <?= $asset->importJS(); ?>
   <title><?= $user_type ?></title>
 </head>
 
