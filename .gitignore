@@ -4,3 +4,35 @@ composer.phar
 *.log
 *.css.map
 *.css
+
+# Dependencies
+node_modules/
+
+assets/js/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+.env
+.env.*.local
+
+.tmp/
+temp/
+
+# PHPStan cache
+.phpstan/cache/
+phpstan.neon.local
+phpstan.neon.dist
+
+# PHPUnit
+.phpunit.result.cache
+
+# Local environment/config
+.env.local
+.env.php
