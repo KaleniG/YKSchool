@@ -16,10 +16,14 @@
   },
   "homepage": "https://github.com/KaleniG/YKSchool#readme",
   "devDependencies": {
+    "@types/jquery": "^3.5.33",
     "typescript": "^5.9.3"
   },
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1"
   }
 }

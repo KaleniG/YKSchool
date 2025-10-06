@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     if (courses.length > 0)
-      populateTable(courses);
+      applyFilters();
     else
       emptyMessage();
 
