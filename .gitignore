@@ -1,38 +1,37 @@
+# === PHP / Composer ===
 composer.phar
 /vendor/
 
+# === Logs ===
 *.log
-*.css.map
-*.css
-
-# Dependencies
-node_modules/
-
-assets/js/
-
-# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# TypeScript
+# === Assets / Build Artifacts ===
+*.css.map
+*.css
+assets/js/
+
+# === Node / TypeScript ===
+node_modules/
 *.tsbuildinfo
 
-.env
-.env.*.local
-
+# Temporary files
 .tmp/
 temp/
 
-# PHPStan cache
+# === Environment Files ===
+.env
+.env.*.local
+.env.local
+.env.php
+
+# === PHPStan ===
 .phpstan/cache/
 phpstan.neon.local
 phpstan.neon.dist
 
-# PHPUnit
+# === PHPUnit ===
 .phpunit.result.cache
-
-# Local environment/config
-.env.local
-.env.php
