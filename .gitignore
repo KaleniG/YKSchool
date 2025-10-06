@@ -12,7 +12,7 @@ pnpm-debug.log*
 # === Assets / Build Artifacts ===
 *.css.map
 *.css
-assets/js/
+assets/js
 
 # === Node / TypeScript ===
 node_modules/
